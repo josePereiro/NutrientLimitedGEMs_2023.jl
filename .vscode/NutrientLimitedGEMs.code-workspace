@@ -1,0 +1,34 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../../University/Research/WIP/2021/Chemostat_Folsom2014"
+		},
+		{
+			"path": "../../Chemostat_Folsom2015"
+		},
+		{
+			"path": "../../../../University/Research/WIP/MetEP_Entropy"
+		},
+		{
+			"path": "../../MetEP"
+		},
+		{
+			"path": "../../MetLP"
+		},
+		{
+			"path": "../../COBREXA"
+		},
+		{
+			"path": "../../MetNets"
+		},
+		// {
+		// 	"path": "../../COBREXA_Utils"
+		// }
+	],
+	"settings": {
+		"julia.environmentPath": "/Users/Pereiro/.julia/dev/NutrientLimitedGEMs"
+	}
+}
