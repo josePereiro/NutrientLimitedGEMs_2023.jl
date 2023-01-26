@@ -134,7 +134,6 @@ function _to_COBREAXA_StandardModel(srcfile)
     
     matwrite(tempfile, Dict("model" => dict_model))
 
-    # global model = load_model(file)
     @info("Re-Loading")
     model = load_model(tempfile)
     for (k, val) in model.mat

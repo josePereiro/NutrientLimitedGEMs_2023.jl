@@ -24,9 +24,9 @@
 		{
 			"path": "../../MetNets"
 		},
-		// {
-		// 	"path": "../../COBREXA_Utils"
-		// }
+		{
+			"path": "../../Metabolic-EP"
+		}
 	],
 	"settings": {
 		"julia.environmentPath": "/Users/Pereiro/.julia/dev/NutrientLimitedGEMs"
