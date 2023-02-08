@@ -22,7 +22,7 @@ include("1_utils.jl")
 ## ------------------------------------------------------------------
 # Compute trajectories
 let
-    global net0 = _setup_ecoli()
+    net0 = _setup_ecoli()
     
     exchs_ids0 = ["EX_GLC", "EX_NH4"]
     exchs_ids = extras.([net0], exchs_ids0)
@@ -39,9 +39,9 @@ let
     biom_id = extras(net0, "BIOM")
 
     # ---------------------------------
-    for it in 1:150000
+    while true
 
-        global traj = _force_nut_limited(net0, 
+        traj = _force_nut_limited(net0, 
             glc_id, biom_id, exchs_ids; 
             biom_safe_factor = 0.1,
             protect_idxs,
@@ -50,12 +50,10 @@ let
             solver = LP_SOLVER
         )
         
-        # traj["status"] == :success || continue
-        traj["status"] == :success && break
-        traj_hash = hash(traj["status"])
-        sdat(NL, traj,
-            ["ECOLI", "trajs"], traj_hash, ".jls"
-        )
+        traj["status"] == :success || continue
+        traj_hash = hash(traj["traj_idxs"])
+        fn = procdir(NL, ["ECOLI_CORE", "trajs"], traj_hash, ".jls")
+        !isfile(fn) && sdat(traj, fn)
     end
     
 end

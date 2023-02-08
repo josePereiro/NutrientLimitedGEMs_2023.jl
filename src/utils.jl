@@ -103,12 +103,12 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
 
             lim_facs = _lb_biom_dual_prices(net, exchs_idxs, biom_idx; solver, npoints = 5)
             state["lim_facs"] = lim_facs
-            
+
             println("\n", "."^30)
             m_glc, max_m = 0.0, 0.0
             for (m, id) in zip(lim_facs, exchs_ids)
-                if id == glc_id; m_glc = abs(m)
-                    elseif (abs(m) > 1e-3) 
+                if (id == glc_id); m_glc = abs(m);
+                    elseif (abs(m) > 1e-3); nothing;
                     else; continue; 
                 end
                 max_m = max(max_m, abs(m))
@@ -125,11 +125,11 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
                 @info("Limited!!!")
                 return state
             end
-            
+
             println()
-            sen_idxs = _sensible_fluxs(net, glc_idx, biom_idx, biom1 * 0.99, biom1; solver, atol = 1e-3)
+            sen_idxs = _sensible_fluxs(net, glc_idx, biom_idx, biom0, biom1; solver, atol = 1e-3)
             sen_idxs = setdiff(sen_idxs, exchs_idxs, [biom_idx], protect_idxs)
-            
+
             println("\n", "."^30)
             rand_idx = rand(sen_idxs)
             @show length(sen_idxs)
@@ -147,13 +147,13 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
             opm = FBAFluxOpModel(net, solver)
             optimize!(opm)
             biom1 = solution(opm, biom_idx)
-            
+
             println("\n", "."^30)
             @show biom0
             @show biom1
             state["biom0"] = biom0
             state["biom1"] = biom1
-            
+
             # save state
             push!(traj_idxs, rand_idx)
             push!(traj_b0s, (l0, u0))
@@ -175,33 +175,148 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
 
         end # time
 
-        
     end
 
     state["status"] = :unsuccess
     return state
-    
+
 end 
 
-
-# ------------------------------------------------------------------
-function _colormap(p::Vector{RGB{Float64}}, xmin, xmax, x)
-    N = length(p)
-    r = range(xmin, xmax; length = N)
-    _, idx = findmin((y) -> abs(x - y), r)
-    return p[idx]
+## ------------------------------------------------------------------
+function _deletefirst!(f::Function, col::Vector)
+    idx = findfirst(f, col)
+    isnothing(idx) && return idx
+    deleteat!(col, idx)
+    return idx
 end
 
-function _colormap(xmin, xmax, x;
-        cname = "Grays", 
-        N = 1000, 
-        mid=0.5, 
-        logscale=false,
+## ------------------------------------------------------------------
+# Compute Entropy
+export _compute_entropy_data
+function _compute_entropy_data(traj_dir;
+        solver = Gurobi.Optimizer, 
+        frec = 5, 
+        alg_ver = "EP", 
+        niters = 15000
     )
-    cm = Plots.colormap(cname, N; mid, logscale)
-    _colormap(cm, xmin, xmax, x)
-end
 
+    done = Set{String}()
+    for _ in 1:niters
+        
+        # traj file
+        files = readdir(traj_dir; join = true)
+        isempty(files) && break
+        length(files) == length(done) && break
+        fn = rand(files)
+        fn ∈ done && continue
+        push!(done, fn)
+        endswith(fn, ".jls") || continue
+
+        traj = ldat(fn)
+        traj["status"] == :success || continue
+        
+        println("\n", "="^30)
+
+        ko_factor = traj["ko_factor"]
+        @show ko_factor
+        traj_idxs = traj["traj_idxs"]
+        L = length(traj_idxs) + 1
+        @show L
+        net0 = deepcopy(traj["net0"])
+        
+        dowrite = false
+        
+        # EP data
+        epdat = get!(traj, alg_ver, Dict()) 
+        Ss = get!(epdat, "Ss", zeros(L)) 
+        rxns_counts = get!(epdat, "rxns_counts", zeros(Int, L))
+        ep_statuses = get!(epdat, "ep_statuses", fill(:unset, L))
+        box_vols = get!(epdat, "box_vols", zeros(BigFloat, L))
+
+        # entropy net0
+        try
+            println("\n", "."^30)
+            @show 0
+            net = box(net0, solver; 
+                verbose = true, 
+                reduce = true,
+                eps = 1e-5
+            )
+            @show size(net)
+            epm = FluxEPModelT0(net)
+            converge!(epm; verbose = true, epsconv = 1e-8)
+            ep_status = convergence_status(epm)
+            @show ep_status
+            S = entropy(epm)
+            @show S
+
+            # Up state
+            Ss[1] = S
+            rxns_counts[1] = size(net, 2)
+            ep_statuses[1] = ep_status
+            box_vols[1] = prod(big.(net.ub .- net.lb))
+
+        catch err
+            (err isa InterruptException) && rethrow(err)
+            println("\n", "!"^30)
+            @error err
+            println()
+        end
+
+        # entropy traj
+        for (i, idx) in enumerate(traj_idxs)
+            try
+                println("\n", "."^30)
+                @show i
+                @show frec
+                
+                # add ko
+                l0, u0 = bounds(net0, idx)
+                @show net0.rxns[idx]
+                @show (l0, u0)
+                bounds!(net0, idx, l0 * ko_factor, u0 * ko_factor)
+                l1, u1 = bounds(net0, idx)
+                @show (l1, u1)
+
+                # skip
+                skip = (Ss[i + 1] != 0.0) # Already computed
+                skip |= !(i == 1 || (i + 1) == L || iszero(rem(i, frec)))
+                skip && continue
+
+                net = box(net0, solver; 
+                    verbose = true, 
+                    reduce = true,
+                    eps = 1e-5
+                )
+                @show size(net)
+                epm = FluxEPModelT0(net)
+                converge!(epm; verbose = true, epsconv = 1e-8)
+                ep_status = convergence_status(epm)
+                @show ep_status
+                S = entropy(epm)
+                @show S
+                
+                # Up state
+                Ss[i + 1] = S
+                rxns_counts[i + 1] = size(net, 2)
+                ep_statuses[i + 1] = ep_status
+                box_vols[i + 1] = prod(big.(net.ub .- net.lb))
+                
+            catch err
+                (err isa InterruptException) && rethrow(err)
+                println("\n", "!"^30)
+                @error err
+                println()
+            end
+            dowrite = true
+
+        end # for (i, idx)
+        
+        # save
+        dowrite && sdat(traj, fn)
+
+    end # for traj in trajs
+end
 
 ## ------------------------------------------------------------------
 nothing

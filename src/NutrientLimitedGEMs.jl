@@ -5,6 +5,8 @@ module NutrientLimitedGEMs
     using MetX
     using Plots
 
+    #! include .
+    include("plotutils.jl")
     include("utils.jl")
     
     @gen_top_proj()

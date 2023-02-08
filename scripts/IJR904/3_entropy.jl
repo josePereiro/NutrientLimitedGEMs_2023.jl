@@ -26,7 +26,7 @@ include("1_utils.jl")
 
 ## ------------------------------------------------------------------
 let
-    traj_dir = procdir(NL, ["HEK293", "trajs"])
+    traj_dir = procdir(NL, ["IJR904", "trajs"])
     frec = length(ARGS) > 0 ? parse(Int, ARGS[1]) : 5
     alg_ver = EP_ENTROPY_ALG_VERSION
     solver = LP_SOLVER
