@@ -2,7 +2,7 @@
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "909c657d25514b6be2febaff0eeacc47b36099c5"
+project_hash = "2cdc5f93dc1a1a0dc23a2bb6f65a05360bc6f938"
 
 [[deps.AMD]]
 deps = ["Libdl", "LinearAlgebra", "SparseArrays", "Test"]
@@ -1022,8 +1022,8 @@ uuid = "33338342-c6de-4489-9d80-13def6a0398d"
 version = "0.1.4"
 
 [[deps.MetXMC]]
-deps = ["Distributions", "GLPK", "JuMP", "LinearAlgebra", "MetXBase", "MetXOptim", "Mmap", "Random", "RunTestsEnv", "SparseArrays"]
-path = "../MetXMC"
+deps = ["Distributions", "GLPK", "JuMP", "LinearAlgebra", "MetXBase", "MetXEP", "MetXNetHub", "MetXOptim", "Random", "SparseArrays"]
+path = "/Users/Pereiro/.julia/dev/MetXMC"
 uuid = "d4a97fa3-1e77-4085-814f-98651929ce7d"
 version = "0.1.0"
 

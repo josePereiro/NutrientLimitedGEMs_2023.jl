@@ -192,12 +192,13 @@ end
 
 ## ------------------------------------------------------------------
 # Compute Entropy
-export _compute_entropy_data
-function _compute_entropy_data(traj_dir;
+export _compute_ep_entropy_data
+function _compute_ep_entropy_data(traj_dir;
         solver = Gurobi.Optimizer, 
         frec = 5, 
         alg_ver = "EP", 
-        niters = 15000
+        niters = 15000, 
+        recompute = false, 
     )
 
     done = Set{String}()
@@ -229,12 +230,15 @@ function _compute_entropy_data(traj_dir;
         # EP data
         epdat = get!(traj, alg_ver, Dict()) 
         Ss = get!(epdat, "Ss", zeros(L)) 
+        Fs = get!(epdat, "Fs", zeros(L)) 
+        log_ZQs = get!(epdat, "log_ZQs", zeros(L)) 
+        ∑logZ_Qns = get!(epdat, "∑logZ_Qns", zeros(L)) 
         rxns_counts = get!(epdat, "rxns_counts", zeros(Int, L))
         ep_statuses = get!(epdat, "ep_statuses", fill(:unset, L))
         box_vols = get!(epdat, "box_vols", zeros(BigFloat, L))
 
-        # entropy net0
-        try
+        # compute entropy
+        _compute_entropy = (i) -> let 
             println("\n", "."^30)
             @show 0
             net = box(net0, solver; 
@@ -244,24 +248,35 @@ function _compute_entropy_data(traj_dir;
             )
             @show size(net)
             epm = FluxEPModelT0(net)
-            converge!(epm; verbose = true, epsconv = 1e-8)
+            config!(epm; verbose = true, epsconv = 1e-8)
+            converge!(epm)
             ep_status = convergence_status(epm)
             @show ep_status
             S = entropy(epm)
             @show S
+            F, log_ZQ, ∑logZ_Qn = free_energy(epm)
+            @show F
 
             # Up state
-            Ss[1] = S
-            rxns_counts[1] = size(net, 2)
-            ep_statuses[1] = ep_status
-            box_vols[1] = prod(big.(net.ub .- net.lb))
+            Ss[i] = S
+            Fs[i] = F
+            log_ZQs[i] = log_ZQ
+            ∑logZ_Qns[i] = ∑logZ_Qn
+            rxns_counts[i] = size(net, 2)
+            ep_statuses[i] = ep_status
+            box_vols[i] = prod(big.(net.ub .- net.lb))
+        end
 
+        # entropy net0
+        try
+            _compute_entropy(1)
         catch err
             (err isa InterruptException) && rethrow(err)
             println("\n", "!"^30)
             @error err
             println()
         end
+
 
         # entropy traj
         for (i, idx) in enumerate(traj_idxs)
@@ -279,28 +294,11 @@ function _compute_entropy_data(traj_dir;
                 @show (l1, u1)
 
                 # skip
-                skip = (Ss[i + 1] != 0.0) # Already computed
+                skip = !recompute && (Ss[i + 1] != 0.0) # Already computed
                 skip |= !(i == 1 || (i + 1) == L || iszero(rem(i, frec)))
                 skip && continue
 
-                net = box(net0, solver; 
-                    verbose = true, 
-                    reduce = true,
-                    eps = 1e-5
-                )
-                @show size(net)
-                epm = FluxEPModelT0(net)
-                converge!(epm; verbose = true, epsconv = 1e-8)
-                ep_status = convergence_status(epm)
-                @show ep_status
-                S = entropy(epm)
-                @show S
-                
-                # Up state
-                Ss[i + 1] = S
-                rxns_counts[i + 1] = size(net, 2)
-                ep_statuses[i + 1] = ep_status
-                box_vols[i + 1] = prod(big.(net.ub .- net.lb))
+                _compute_entropy(i + 1)
                 
             catch err
                 (err isa InterruptException) && rethrow(err)
