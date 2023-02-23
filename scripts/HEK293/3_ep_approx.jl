@@ -30,5 +30,7 @@ let
     frec = length(ARGS) > 0 ? parse(Int, ARGS[1]) : 5
     alg_ver = EP_ENTROPY_ALG_VERSION
     solver = LP_SOLVER
-    _compute_ep_entropy_data(traj_dir; solver, frec, alg_ver)
+    recompute = false
+    _compute_ep_data(traj_dir; solver, frec, alg_ver, recompute)
 end
+

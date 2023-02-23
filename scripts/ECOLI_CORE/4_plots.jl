@@ -26,3 +26,5 @@ _plot_bash1("ECOLI_CORE", EP_ENTROPY_ALG_VERSION;
 _plot_bash2("ECOLI_CORE", EP_ENTROPY_ALG_VERSION;
     biom_lims = (0.0, 0.7),
 )
+
+## ------------------------------------------------------------------

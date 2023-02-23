@@ -6,8 +6,12 @@ module NutrientLimitedGEMs
     using Plots
 
     #! include .
-    include("plotutils.jl")
-    include("utils.jl")
+    
+    #! include Base
+    include("Base/ep_approx.jl")
+    include("Base/force_nut_lim.jl")
+    include("Base/plotutils.jl")
+    include("Base/utils.jl")
     
     @gen_top_proj()
 

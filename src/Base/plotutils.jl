@@ -119,7 +119,7 @@ function _plot_bash1(netid, ep_alg_version;
 end
 
 ## ------------------------------------------------------------------
-function _finad_vals(v, vs...)
+function _find_val_idxs(v, vs...)
     val_idxs = Int[]
     for (i, vals) in enumerate(zip(v, vs...))
         any(iszero.(vals)) && continue
@@ -165,15 +165,16 @@ function _plot_bash2(netid, ep_alg_version;
         # ep_status1
         ep_statuses = epdat["ep_statuses"]
         ep_status1 = last(ep_statuses)
-        # ep_status1 == :converged || continue
-        all(ep_statuses .== :converged) || continue
+        ep_status1 == :converged || continue
+        # all(ep_statuses .== :converged) || continue
 
         # traj_idxs
         traj_idxs = traj["traj_idxs"]
         isempty(traj_idxs) && continue
 
-        val_idxs = _finad_vals(Ss, Fs, log_ZQs, ∑logZ_Qns)
+        val_idxs = _find_val_idxs(Ss, Fs, log_ZQs, ∑logZ_Qns)
         isempty(val_idxs) && continue
+
         # @show val_idxs
 
         # bioms
@@ -285,10 +286,11 @@ function _plot_bash2(netid, ep_alg_version;
         xlabel = "ΔS", ylabel = "log_ZQ", 
         msc=:auto
     )
+    
     push!(ps, p_ΔS1s_log_ZQ1s)
     p_ΔS1s_∑logZ_Qn1s = scatter(ΔS1s, ∑logZ_Qn1s; 
         label = "", c, m = 6, alpha = 0.8,
-        xlabel = "ΔS", ylabel = "∑logZ_Qn", 
+        xlabel = "normalized ΔS", ylabel = "normalized ∑logZ_Qn", 
         msc=:auto
     )
     push!(ps, p_ΔS1s_∑logZ_Qn1s)
