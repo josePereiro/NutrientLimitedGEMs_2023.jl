@@ -3,7 +3,7 @@
     using NutrientLimitedGEMs
     const NL = NutrientLimitedGEMs
 
-    using ProjAssistant
+    using ProjFlows
     using MetXBase
     using MetXOptim
     using MetXNetHub
@@ -26,9 +26,11 @@ include("1_utils.jl")
 
 ## ------------------------------------------------------------------
 let
-    traj_dir = procdir(NL, ["IJR904", "trajs"])
+    traj_dir = procdir(NL, ["IJR904", "sims"])
     frec = length(ARGS) > 0 ? parse(Int, ARGS[1]) : 5
-    alg_ver = EP_ENTROPY_ALG_VERSION
+    alg_ver = SIM_ID
     solver = LP_SOLVER
-    _compute_ep_data(traj_dir; solver, frec, alg_ver)
+    recompute = false
+    epsconv = 1e-5
+    _compute_ep_data(traj_dir; solver, frec, alg_ver, recompute, epsconv)
 end

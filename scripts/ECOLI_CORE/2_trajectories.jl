@@ -3,16 +3,9 @@
     using NutrientLimitedGEMs
     const NL = NutrientLimitedGEMs
     
-    using ProjAssistant
-    using MetXBase, MetXOptim, MetXNetHub
-    using MetXEP, MetXCultureHub
+    using ProjFlows
+    using MetX
     using Gurobi
-    
-    using Plots
-    using MetXPlots
-    
-    # Pkg.add("https://github.com/josePereiro/ImgTools.jl")
-    using ImgTools
 end
 
 # ------------------------------------------------------------------
@@ -22,26 +15,24 @@ include("1_utils.jl")
 ## ------------------------------------------------------------------
 # Compute trajectories
 let
-    net0 = _setup_ecoli()
-    
+    global lep0 = _setup_ecoli()
     exchs_ids0 = ["EX_GLC", "EX_NH4"]
-    exchs_ids = extras.([net0], exchs_ids0)
-    exchs_idxs = rxnindex.([net0], exchs_ids)
-
-    protect_ids = filter(net0.rxns) do id
+    exchs_ids = extras.([lep0], exchs_ids0)
+    exchs_idxs = colindex.([lep0], exchs_ids)
+    
+    protect_ids = filter(lep0.colids) do id
         startswith(id, "BIOMASS_Ecoli_core_w_GAM") && return true
         startswith(id, "EX_") && return true
         return false
     end
-    protect_idxs = rxnindex.([net0], protect_ids)
-
-    glc_id = extras(net0, "EX_GLC")
-    biom_id = extras(net0, "BIOM")
-
+    protect_idxs = colindex.([lep0], protect_ids)
+    
+    glc_id, biom_id = extras.([lep0], ["EX_GLC", "BIOM"])
+    
     # ---------------------------------
     while true
 
-        traj = _force_nut_limited(net0, 
+        sim = _force_nut_limited(lep0, 
             glc_id, biom_id, exchs_ids; 
             biom_safe_factor = 0.1,
             protect_idxs,
@@ -49,11 +40,17 @@ let
             niters = 500,
             solver = LP_SOLVER
         )
-        
-        traj["status"] == :success || continue
-        traj_hash = hash(traj["traj_idxs"])
-        fn = procdir(NL, ["ECOLI_CORE", "trajs"], traj_hash, ".jls")
-        !isfile(fn) && sdat(traj, fn)
+
+        sim["status"] == :success || continue
+        sim_hash = hash(sim["traj_idxs"])
+        fn = procdir(PROJ, 
+            ["ECOLI_CORE", "sims"], 
+            (;hash = sim_hash), 
+            ".sim.jls"
+        )
+        !isfile(fn) && sdat(sim, fn; verbose = true)
+        println()
+
     end
     
 end

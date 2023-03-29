@@ -2,7 +2,7 @@
 @time begin
     using NutrientLimitedGEMs
 
-    using ProjAssistant
+    using ProjFlows
     using Gurobi
     using MetXBase
     
@@ -15,13 +15,13 @@ include("0_params.jl")
 
 ## ------------------------------------------------------------------
 # Trajectories
-_plot_bash1("HEK293", EP_ENTROPY_ALG_VERSION;
+_plot_bash1("HEK293", SIM_ID;
     biom_lims = (0.0, 0.4), 
     m_glcs_lims = (0.0, 0.30)
 )
 
 ## ------------------------------------------------------------------
 # Entropy
-_plot_bash2("HEK293", EP_ENTROPY_ALG_VERSION;
+_plot_bash2("HEK293", SIM_ID;
     biom_lims = (0.0, 0.4), 
-)
+) 

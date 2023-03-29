@@ -16,7 +16,7 @@ MetXNetHub = "be9415a8-24b2-49ae-ba75-41eeaa9f722f"
 MetXOptim = "672bf490-d3aa-44fe-a664-43445036b9de"
 MetXPlots = "676a91cf-954a-4bb3-908b-66d0e1d223f7"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-ProjAssistant = "df388e3e-013c-4f8d-ba67-f4afa1ff006b"
+ProjFlows = "cac8b402-4888-4912-9502-a4f91500dd77"
 
 [compat]
 julia = "1.6"

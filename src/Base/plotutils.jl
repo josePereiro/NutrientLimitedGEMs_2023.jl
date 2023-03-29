@@ -25,7 +25,7 @@ function _plot_bash1(netid, ep_alg_version;
         biom_lims = (0.0, 0.7), 
         m_glcs_lims = (0.0, 0.10)
     )
-    traj_dir = procdir(NutrientLimitedGEMs, [netid, "trajs"])
+    traj_dir = procdir(NutrientLimitedGEMs, [netid, "sims"])
     p = plot()
     traj_lens, boxs = [], []
     biom1s, m_glcs = [], []
@@ -119,16 +119,18 @@ function _plot_bash1(netid, ep_alg_version;
 end
 
 ## ------------------------------------------------------------------
-function _find_val_idxs(v, vs...)
+function _find_val_idxs(f::Function, v, vs...)
     val_idxs = Int[]
     for (i, vals) in enumerate(zip(v, vs...))
         any(iszero.(vals)) && continue
         any(isinf.(vals)) && continue
         any(isnan.(vals)) && continue
+        f(vals) || continue
         push!(val_idxs, i)
     end
     return val_idxs
 end
+_find_val_idxs(v, vs...) = _find_val_idxs((vals) -> true, v, vs...)
 
 # ------------------------------------------------------------------
 # Entropy
@@ -138,14 +140,13 @@ function _plot_bash2(netid, ep_alg_version;
     )
 
     ps = Plots.Plot[]
-    traj_dir = procdir(NutrientLimitedGEMs, [netid, "trajs"])
+    traj_dir = procdir(NutrientLimitedGEMs, [netid, "sims"])
     p_ΔS = plot(; xlabel = "ko steps", ylabel = "ΔS")
     p_ΔF = plot(; xlabel = "ko steps", ylabel = "ΔF")
     p_ΔV = plot(; xlabel = "ko steps", ylabel = "log vol box")
     p_log_ZQ = plot(; xlabel = "ko steps", ylabel = "log_ZQ")
     p_∑logZ_Qn = plot(; xlabel = "ko steps", ylabel = "∑logZ_Qn")
     last_val_idxs, biom1s, ΔS1s, ΔF1s, log_ZQ1s, ∑logZ_Qn1s, ΔV1s = [], [], [], [], [], [], []
-    ep_status1s = []
     files = readdir(traj_dir; join = true)
     @time for fn in files
         endswith(fn, ".jls") || continue
@@ -164,18 +165,15 @@ function _plot_bash2(netid, ep_alg_version;
         
         # ep_status1
         ep_statuses = epdat["ep_statuses"]
-        ep_status1 = last(ep_statuses)
-        ep_status1 == :converged || continue
-        # all(ep_statuses .== :converged) || continue
 
         # traj_idxs
         traj_idxs = traj["traj_idxs"]
         isempty(traj_idxs) && continue
 
-        val_idxs = _find_val_idxs(Ss, Fs, log_ZQs, ∑logZ_Qns)
+        val_idxs1 = findall(ep_statuses .== :converged)
+        val_idxs2 = _find_val_idxs(Ss, Fs, log_ZQs, ∑logZ_Qns)
+        val_idxs = intersect(val_idxs1, val_idxs2)
         isempty(val_idxs) && continue
-
-        # @show val_idxs
 
         # bioms
         biom1 = traj["biom1"]
@@ -218,7 +216,6 @@ function _plot_bash2(netid, ep_alg_version;
         push!(ΔV1s, last(ΔVs))
         push!(last_val_idxs, Int(last(val_idxs)))
         push!(biom1s, biom1)
-        push!(ep_status1s, ep_status1)
 
     end
 

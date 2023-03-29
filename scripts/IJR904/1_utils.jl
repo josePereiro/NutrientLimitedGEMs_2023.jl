@@ -31,7 +31,7 @@ function _setup_iJR904(;solver = LP_SOLVER)
     # end
 
     # max biom
-    opm = FBAFluxOpModel(net, solver)
+    opm = FBAOpModel(net, solver)
     optimize!(opm)
     biom_id = extras(net, "BIOM")
     biom0 = solution(opm, biom_id)

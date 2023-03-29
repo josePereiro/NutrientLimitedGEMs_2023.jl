@@ -35,7 +35,7 @@ function _setup_heknet(;solver = LP_SOLVER)
     lb!(net, "R_EX_hco3_LPAREN_e_RPAREN_", -1000.0)
 
     # max biom
-    opm = FBAFluxOpModel(net, solver)
+    opm = FBAOpModel(net, solver)
     optimize!(opm)
     biom_id = extras(net, "BIOM")
     biom0 = solution(opm, biom_id)

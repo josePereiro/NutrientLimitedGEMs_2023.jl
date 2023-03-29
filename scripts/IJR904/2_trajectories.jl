@@ -3,7 +3,7 @@
     using NutrientLimitedGEMs
     const NL = NutrientLimitedGEMs
     
-    using ProjAssistant
+    using ProjFlows
     using MetXBase, MetXOptim, MetXNetHub
     using MetXEP, MetXCultureHub
     using Gurobi
@@ -52,7 +52,7 @@ let
         
         traj["status"] == :success || continue
         traj_hash = hash(traj["traj_idxs"])
-        fn = procdir(NL, ["iJR904", "trajs"], traj_hash, ".jls")
+        fn = procdir(NL, ["iJR904", "sims"], traj_hash, ".jls")
         !isfile(fn) && sdat(traj, fn)
     end
     

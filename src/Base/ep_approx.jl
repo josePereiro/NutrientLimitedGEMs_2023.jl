@@ -6,6 +6,7 @@ function _compute_ep_data(traj_dir;
         frec = 5, 
         alg_ver = "EP", 
         niters = 15000, 
+        epsconv = 1e-8,
         recompute = false, 
     )
 
@@ -56,7 +57,7 @@ function _compute_ep_data(traj_dir;
             )
             @show size(net)
             epm = FluxEPModelT0(net)
-            config!(epm; verbose = true, epsconv = 1e-8)
+            config!(epm; verbose = true, epsconv)
             converge!(epm)
             ep_status = convergence_status(epm)
             @show ep_status

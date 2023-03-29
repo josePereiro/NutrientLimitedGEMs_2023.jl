@@ -17,7 +17,7 @@ function _setup_ecoli(;solver = LP_SOLVER)
     lb!(net, ex_glc, -q_glc)
 
     # max biom
-    opm = FBAFluxOpModel(net, solver)
+    opm = FBAOpModel(net, solver)
     optimize!(opm)
     biom_id = extras(net, "BIOM")
     biom0 = solution(opm, biom_id)

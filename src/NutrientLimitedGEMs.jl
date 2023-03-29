@@ -1,6 +1,6 @@
 module NutrientLimitedGEMs
 
-    using ProjAssistant
+    using ProjFlows
     using Gurobi
     using MetX
     using Plots
@@ -12,11 +12,5 @@ module NutrientLimitedGEMs
     include("Base/force_nut_lim.jl")
     include("Base/plotutils.jl")
     include("Base/utils.jl")
-    
-    @gen_top_proj()
-
-    function __init__()
-        @create_proj_dirs()
-    end
 
 end

@@ -1,25 +1,30 @@
 ## ------------------------------------------------------------------
 export _lb_biom_dual_prices
-function _lb_biom_dual_prices(net, 
-        exch_idxs::Vector{Int}, biom_idx::Int; 
+function _lb_biom_dual_prices(lep, 
+        exch_idxs::Vector{Int}; 
         npoints = 5, 
-        solver = Gurobi.Optimizer
+        solver = Gurobi.Optimizer, 
+        delta = 1e-2
     )
 
     lim_facs = Float64[]
-    opm = FBAFluxOpModel(net, solver)
+    opm = FBAOpModel(lep, solver)
     for idx in exch_idxs
-        v0 = lb(net, idx)
-        v1 = v0 * 0.9
-        # @show net.rxns[idx]
+        v0 = lb(lep, idx)
+        v1 = v0 * (1.0 - delta)
+        # @show lep.colids[idx]
         @assert v0 < 0 && v1 < 0
         test_points = range(v0, v1; length = npoints)
-        # @show test_points
         
-        # R2FBAFluxOpModel
-        _ms, _errs = lb_dual_prices(opm, idx, test_points)
-        m = getindex(_ms, biom_idx)
-        push!(lim_facs, m)
+        # R2FBAOpModel
+        obj_m, obj_err, vars_ms, vars_errs = lb_dual_prices(opm, idx, test_points)
+        push!(lim_facs, obj_m)
+        # println()
+        # println("-"^30)
+        # @show colids(lep, idx)
+        # @show test_points
+        # @show obj_m
+        # @show obj_err
     end
     return lim_facs
 end
@@ -30,13 +35,13 @@ export _sensible_fluxs
 function _sensible_fluxs(net, flx_idx::Int, biom_idx::Int, biom0, biom1; 
         atol = 1e-3, npoints = 5, solver = Gurobi.Optimizer
     )
-    opm = R2FBAFluxOpModel(net, solver)
+    opm = R2FBAOpModel(net, solver)
     # fix biom
     bounds!(opm, biom_idx, biom0, biom1)
     v0 = lb(net, flx_idx)
     test_points = range(v0, v0 * 0.9; length = npoints)
-    ms, errs = flux_dual_prices(opm, flx_idx, test_points)
-    return findall(abs.(ms) .> atol)
+    obj_m, obj_err, vars_ms, vars_errs = flux_dual_prices(opm, flx_idx, test_points)
+    return findall(abs.(vars_ms) .> atol)
 end
 
 ## ------------------------------------------------------------------
@@ -46,37 +51,36 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
         biom_safe_factor = 0.8,
         ko_factor = 0.5, 
         protect_idxs = [], 
-        oniter = (state) -> nothing,
-        onsuccess = (state) -> nothing,
+        oniter = (simdat) -> nothing,
+        onsuccess = (simdat) -> nothing,
         niters = 800, 
-        solver = Gurobi.Optimizer
+        solver = Gurobi.Optimizer, 
+        simdat = Dict()
     )
 
-    state = Dict()
-
-    net = state["net"] = deepcopy(net)
-    state["net0"] = deepcopy(net)
-    state["glc_id"] = glc_id
-    state["biom_id"] = biom_id
-    state["exchs_ids"] = exchs_ids
-    state["biom_safe_factor"] = biom_safe_factor
-    state["ko_factor"] = ko_factor
+    net = simdat["net"] = deepcopy(net)
+    simdat["net0"] = deepcopy(net)
+    simdat["glc_id"] = glc_id
+    simdat["biom_id"] = biom_id
+    simdat["exchs_ids"] = exchs_ids
+    simdat["biom_safe_factor"] = biom_safe_factor
+    simdat["ko_factor"] = ko_factor
     
-    exchs_idxs = rxnindex.([net], exchs_ids)
-    state["exchs_idxs"] = exchs_idxs
+    exchs_idxs = colindex.([net], exchs_ids)
+    simdat["exchs_idxs"] = exchs_idxs
 
-    glc_idx = rxnindex(net, glc_id)
-    biom_idx = rxnindex(net, biom_id)
+    glc_idx = colindex(net, glc_id)
+    biom_idx = colindex(net, biom_id)
 
     # max biom
-    opm = FBAFluxOpModel(net, solver)
+    opm = FBAOpModel(net, solver)
     optimize!(opm)
     biom1 = solution(opm, biom_idx)
     biom0 = biom1 * biom_safe_factor
     @show biom1
 
-    state["biom0"] = biom0
-    state["biom1"] = biom1
+    simdat["biom0"] = biom0
+    simdat["biom1"] = biom1
 
     # Protect biom
     bounds!(net, biom_idx, biom0, biom1)
@@ -90,19 +94,20 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
     traj_idxs, traj_b0s = [], []
     l0, u0 = nothing, nothing
 
+    
     for it in 1:niters
-
-        state["it"] = it
-
+        
+        simdat["it"] = it
+        
         @time try
-
+            
             println("\n", "="^50)
             @show it
-
-            oniter(state)
-
-            lim_facs = _lb_biom_dual_prices(net, exchs_idxs, biom_idx; solver, npoints = 5)
-            state["lim_facs"] = lim_facs
+            
+            oniter(simdat)
+            
+            lim_facs = _lb_biom_dual_prices(net, exchs_idxs; solver, npoints = 5)
+            simdat["lim_facs"] = lim_facs
 
             println("\n", "."^30)
             m_glc, max_m = 0.0, 0.0
@@ -115,15 +120,18 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
                 println(id, " :\t", round(m; digits = 3))
             end
             push!(m_glcs, m_glc)
-            state["m_glcs"] = m_glcs
+            simdat["m_glcs"] = m_glcs
             push!(max_ms, max_m)
-            state["max_ms"] = max_ms
+            simdat["max_ms"] = max_ms
+
             # success
             if (m_glc > 1e-3) && (max_m == m_glc)
-                onsuccess(state)
-                state["status"] = :success
-                @info("Limited!!!")
-                return state
+                onsuccess(simdat)
+                simdat["status"] = :success
+                println("\n", "-"^30)
+                @info("Limited :)")
+                println()
+                return simdat
             end
 
             println()
@@ -133,7 +141,7 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
             println("\n", "."^30)
             rand_idx = rand(sen_idxs)
             @show length(sen_idxs)
-            @show net.rxns[rand_idx]
+            @show net.colids[rand_idx]
 
             l0, u0 = bounds(net, rand_idx)
             @show ko_factor
@@ -144,21 +152,21 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
             println()
 
             # Check biom
-            opm = FBAFluxOpModel(net, solver)
+            opm = FBAOpModel(net, solver)
             optimize!(opm)
             biom1 = solution(opm, biom_idx)
 
             println("\n", "."^30)
             @show biom0
             @show biom1
-            state["biom0"] = biom0
-            state["biom1"] = biom1
+            simdat["biom0"] = biom0
+            simdat["biom1"] = biom1
 
-            # save state
+            # save simdat
             push!(traj_idxs, rand_idx)
             push!(traj_b0s, (l0, u0))
-            state["traj_idxs"] = traj_idxs
-            state["traj_b0s"] = traj_b0s
+            simdat["traj_idxs"] = traj_idxs
+            simdat["traj_b0s"] = traj_b0s
 
             println()
             
@@ -170,14 +178,16 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
             @error err
             println()
 
-            state["status"] = :error
-            return state
+            # rethrow(err)
+
+            simdat["status"] = :error
+            return simdat
 
         end # time
 
     end
 
-    state["status"] = :unsuccess
-    return state
+    simdat["status"] = :unsuccess
+    return simdat
 
 end 

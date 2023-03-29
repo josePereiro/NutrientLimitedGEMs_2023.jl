@@ -3,6 +3,6 @@ LP_SOLVER = Gurobi.Optimizer
 KO_FACTOR = 1e-2
 
 ## ------------------------------------------------------------------
-EP_ENTROPY_ALG_VERSION = "EPv9"
+SIM_ID = "EPv9"
 
 nothing
