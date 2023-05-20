@@ -22,22 +22,22 @@ function _compute_ep_data(traj_dir;
         push!(done, fn)
         endswith(fn, ".jls") || continue
 
-        traj = ldat(fn)
-        traj["status"] == :success || continue
+        _, sim = ldat(fn)
+        sim["status"] == :success || continue
         
         println("\n", "="^30)
 
-        ko_factor = traj["ko_factor"]
+        ko_factor = sim["ko_factor"]
         @show ko_factor
-        traj_idxs = traj["traj_idxs"]
+        traj_idxs = sim["traj_idxs"]
         L = length(traj_idxs) + 1
         @show L
-        net0 = deepcopy(traj["net0"])
+        lep0 = deepcopy(sim["lep0"])
         
         dowrite = false
         
         # EP data
-        epdat = get!(traj, alg_ver, Dict()) 
+        epdat = get!(sim, alg_ver, Dict()) 
         Ss = get!(epdat, "Ss", zeros(L)) 
         Fs = get!(epdat, "Fs", zeros(L)) 
         log_ZQs = get!(epdat, "log_ZQs", zeros(L)) 
@@ -45,18 +45,21 @@ function _compute_ep_data(traj_dir;
         rxns_counts = get!(epdat, "rxns_counts", zeros(Int, L))
         ep_statuses = get!(epdat, "ep_statuses", fill(:unset, L))
         box_vols = get!(epdat, "box_vols", zeros(BigFloat, L))
+        ep_avs = get!(epdat, "ep_avs", Vector{Vector{Float64}}(undef, L))
+        ep_vas = get!(epdat, "ep_vas", Vector{Vector{Float64}}(undef, L))
+        box_lbs = get!(epdat, "box_lbs", Vector{Vector{Float64}}(undef, L))
+        box_ubs = get!(epdat, "box_ubs", Vector{Vector{Float64}}(undef, L))
 
         # compute entropy
         _compute_entropy = (i) -> let 
-            println("\n", "."^30)
-            @show 0
-            net = box(net0, solver; 
+            
+            lep = box(lep0, solver; 
                 verbose = true, 
                 reduce = true,
-                eps = 1e-5
+                eps = 1e-5 # TODO: Test smaller
             )
-            @show size(net)
-            epm = FluxEPModelT0(net)
+            @show size(lep)
+            epm = FluxEPModelT0(lep)
             config!(epm; verbose = true, epsconv)
             converge!(epm)
             ep_status = convergence_status(epm)
@@ -71,14 +74,24 @@ function _compute_ep_data(traj_dir;
             Fs[i] = F
             log_ZQs[i] = log_ZQ
             ∑logZ_Qns[i] = ∑logZ_Qn
-            rxns_counts[i] = size(net, 2)
+            rxns_counts[i] = size(lep, 2)
             ep_statuses[i] = ep_status
-            box_vols[i] = prod(big.(net.ub .- net.lb))
+            box_vols[i] = prod(big.(lep.ub .- lep.lb))
+            ep_avs[i] = mean(epm)
+            ep_vas[i] = var(epm)
+            box_lbs[i] = lb(lep)
+            box_ubs[i] = ub(lep)
         end
 
-        # entropy net0
+        # entropy lep0
         try
+            i = 0
+            println("\n", "."^30)
+            @show i
+            @show frec
+
             _compute_entropy(1)
+            
         catch err
             (err isa InterruptException) && rethrow(err)
             println("\n", "!"^30)
@@ -87,7 +100,7 @@ function _compute_ep_data(traj_dir;
         end
 
 
-        # entropy traj
+        # entropy sim
         for (i, idx) in enumerate(traj_idxs)
             try
                 println("\n", "."^30)
@@ -95,11 +108,11 @@ function _compute_ep_data(traj_dir;
                 @show frec
                 
                 # add ko
-                l0, u0 = bounds(net0, idx)
-                @show net0.rxns[idx]
+                l0, u0 = bounds(lep0, idx)
+                @show colids(lep0, idx)
                 @show (l0, u0)
-                bounds!(net0, idx, l0 * ko_factor, u0 * ko_factor)
-                l1, u1 = bounds(net0, idx)
+                bounds!(lep0, idx, l0 * ko_factor, u0 * ko_factor)
+                l1, u1 = bounds(lep0, idx)
                 @show (l1, u1)
 
                 # skip
@@ -112,7 +125,8 @@ function _compute_ep_data(traj_dir;
             catch err
                 (err isa InterruptException) && rethrow(err)
                 println("\n", "!"^30)
-                @error err
+                # @error err
+                rethrow(err)
                 println()
             end
             dowrite = true
@@ -120,7 +134,11 @@ function _compute_ep_data(traj_dir;
         end # for (i, idx)
         
         # save
-        dowrite && sdat(traj, fn)
+        if dowrite 
+            println("\n", "-"^30)
+            sdat(sim, fn; verbose = true)
+            println()
+        end
 
-    end # for traj in trajs
+    end # for sim in trajs
 end

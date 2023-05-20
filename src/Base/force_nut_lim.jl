@@ -47,7 +47,7 @@ end
 ## ------------------------------------------------------------------
 # entropy driven contextualization
 export _force_nut_limited
-function _force_nut_limited(net, glc_id, biom_id, exchs_ids; 
+function _force_nut_limited(lep, glc_id, biom_id, exchs_ids; 
         biom_safe_factor = 0.8,
         ko_factor = 0.5, 
         protect_idxs = [], 
@@ -58,22 +58,22 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
         simdat = Dict()
     )
 
-    net = simdat["net"] = deepcopy(net)
-    simdat["net0"] = deepcopy(net)
+    lep = simdat["lep"] = deepcopy(lep)
+    simdat["lep0"] = deepcopy(lep)
     simdat["glc_id"] = glc_id
     simdat["biom_id"] = biom_id
     simdat["exchs_ids"] = exchs_ids
     simdat["biom_safe_factor"] = biom_safe_factor
     simdat["ko_factor"] = ko_factor
     
-    exchs_idxs = colindex.([net], exchs_ids)
+    exchs_idxs = colindex.([lep], exchs_ids)
     simdat["exchs_idxs"] = exchs_idxs
 
-    glc_idx = colindex(net, glc_id)
-    biom_idx = colindex(net, biom_id)
+    glc_idx = colindex(lep, glc_id)
+    biom_idx = colindex(lep, biom_id)
 
     # max biom
-    opm = FBAOpModel(net, solver)
+    opm = FBAOpModel(lep, solver)
     optimize!(opm)
     biom1 = solution(opm, biom_idx)
     biom0 = biom1 * biom_safe_factor
@@ -83,7 +83,7 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
     simdat["biom1"] = biom1
 
     # Protect biom
-    bounds!(net, biom_idx, biom0, biom1)
+    bounds!(lep, biom_idx, biom0, biom1)
 
     # ---------------------------------
     # double prices
@@ -106,7 +106,7 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
             
             oniter(simdat)
             
-            lim_facs = _lb_biom_dual_prices(net, exchs_idxs; solver, npoints = 5)
+            lim_facs = _lb_biom_dual_prices(lep, exchs_idxs; solver, npoints = 5)
             simdat["lim_facs"] = lim_facs
 
             println("\n", "."^30)
@@ -135,24 +135,24 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
             end
 
             println()
-            sen_idxs = _sensible_fluxs(net, glc_idx, biom_idx, biom0, biom1; solver, atol = 1e-3)
+            sen_idxs = _sensible_fluxs(lep, glc_idx, biom_idx, biom0, biom1; solver, atol = 1e-3)
             sen_idxs = setdiff(sen_idxs, exchs_idxs, [biom_idx], protect_idxs)
 
             println("\n", "."^30)
             rand_idx = rand(sen_idxs)
             @show length(sen_idxs)
-            @show net.colids[rand_idx]
+            @show lep.colids[rand_idx]
 
-            l0, u0 = bounds(net, rand_idx)
+            l0, u0 = bounds(lep, rand_idx)
             @show ko_factor
             @show l0, u0
-            bounds!(net, rand_idx, l0 * ko_factor, u0 * ko_factor)
-            l1, u1 = bounds(net, rand_idx)
+            bounds!(lep, rand_idx, l0 * ko_factor, u0 * ko_factor)
+            l1, u1 = bounds(lep, rand_idx)
             @show l1, u1
             println()
 
             # Check biom
-            opm = FBAOpModel(net, solver)
+            opm = FBAOpModel(lep, solver)
             optimize!(opm)
             biom1 = solution(opm, biom_idx)
 
@@ -171,15 +171,14 @@ function _force_nut_limited(net, glc_id, biom_id, exchs_ids;
             println()
             
         catch err
-            
+
             (err isa InterruptException) && rethrow(err)
             
+            # ignore
             println("\n", "!"^30)
             @error err
             println()
-
-            # rethrow(err)
-
+            
             simdat["status"] = :error
             return simdat
 

@@ -5,6 +5,7 @@ version = "0.1.0"
 
 [deps]
 ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"
+ContextDBs = "f7273666-c521-4805-9666-bf343237b2c9"
 Gurobi = "2e9cd046-0924-5485-92f1-d5272153d98b"
 ImgTools = "60a16571-0043-4368-b1b0-a5366d36b020"
 MetX = "01815447-a018-4668-9805-89f51b3fc6a1"
