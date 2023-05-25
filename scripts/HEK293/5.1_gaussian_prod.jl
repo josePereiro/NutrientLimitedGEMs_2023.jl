@@ -11,32 +11,44 @@
     using Distributions
 end
 
-# ------------------------------------------------------------------
+# -------------------------------------------------------------------
 include("0_params.jl")
 include("1_utils.jl")
 
 ## ------------------------------------------------------------------
-let
-    c1 = 100
+@time let
+
+    c1 = 5500
     c = 0
     biom1_th = 0.3
     traj_dir = procdir(PROJ, ["HEK293", "sims"])
     global nl_leps = LEPModel[]
-    @time for fn in readdir(traj_dir; join = true)
+
+    global fva_bins = Set{BitVector}()
+
+    for fn in readdir(traj_dir; join = true)
         endswith(fn, ".jls") || continue
         global _, sim = ldat(fn)
         sim["status"] == :success || continue
         haskey(sim, SIM_ID) || continue
-        @show fn
         
         # biom
         biom1 = sim["biom1"]
         biom1 > biom1_th || continue
         
-        # box vol
-        lep = sim["lep"]
+        println("-"^60)
+        @show fn
         
-        push!(nl_leps, lep)
+        # box network
+        blep = sim["fva_lep"]
+        
+        bounded = blep.lb .< 1e-4
+        bounded = bounded .& (blep.ub .< 1e-4)
+        (bounded in fva_bins) && continue
+        
+        push!(fva_bins, bounded)
+        push!(nl_leps, blep)
+        
         c += 1
         c == c1 && break
     end
@@ -47,24 +59,99 @@ let
 end
 
 ## ------------------------------------------------------------------
-let
+# Components
+@time let
     
-    global Qs = []
+    global Qs = MvNormal[]
     
-    for lep in nl_leps[1:99]
+    for lep in nl_leps
         # EP
         _, epm = withcachedat(PROJ, :get!, (:FluxEPModelT0, lep,)) do 
             epm_ = FluxEPModelT0(lep)
+            config!(epm_; verbose = true)
             converge!(epm_)
             return epm_
         end
 
-        Q = MultivariateNormal(epm)
+        Q = MvNormal(epm)
         push!(Qs, Q)
     end
+
+    # Original EP
+    _, epm0 = withcachedat(PROJ, :get!, (:FluxEPModelT0, lep0,)) do 
+        epm_ = FluxEPModelT0(lep0)
+        converge!(epm_)
+        return epm_
+    end
+    global Q0 = MultivariateNormal(epm0)
+
+    return nothing
 end
 
-# ------------------------------------------------------------------
+## ------------------------------------------------------------------
+# MixtureModel
+
+## ------------------------------------------------------------------
+@time let
+    
+    global _unif_mix = MixtureModel(Qs)
+    global _maxHu_mix = _max_mixture_H(
+        _unif_mix, _entropy_ub1, GradientDescent()
+    )
+    # global _maxHl_mix = _max_mixture_H(
+    #     _unif_mix, _entropy_lb1, GradientDescent()
+    # )
+end
+
+## ------------------------------------------------------------------
+let
+    n = round(Int, 1e6)
+    # @show _entropy_mcf(_unif_mix, n) # -15.290634234573337
+    # @show _entropy_mcf(_maxHu_mix, n) # -1.58129779186625
+    @show entropy(Q0)
+    return nothing
+end
+
+## ------------------------------------------------------------------
+let
+    rxni = rand(1:35)
+    p = plot(; xlabel = "flux [mmol/ gDW h]", ylabel = "pdf")
+    _plot!(p, _unif_mix, rxni; label = "unif mix", lw = 3, c = :red)
+    _plot!(p, _maxHu_mix, rxni; label = "maxHu mix", lw = 3, c = :blue)
+    _plot!(p, Q0, rxni; label = "original", lw = 3, c = :black)
+    # _plot!(p, _maxHl_mix, rxni; label = "maxHl mix", lw = 2)
+    p
+end
+
+## ------------------------------------------------------------------
+# marginal entropy
+let
+    idxs = 1:35
+    _maxHu_marg_H = _entropy_mcf.(_marginal.([_maxHu_mix], idxs), Int(1e5));
+    _unif_marg_H = _entropy_mcf.(_marginal.([_unif_mix], idxs), Int(1e5));
+    _Q0_marg_H = _entropy_mcf.(_marginal.([Q0], idxs), Int(1e5));
+
+    p = plot()
+    plot!(p, _maxHu_marg_H; label = "maxHu", lw = 2)
+    plot!(p, _unif_marg_H; label = "unif", lw = 2)
+    plot!(p, _Q0_marg_H; label = "Q0", lw = 2)
+    p
+end
+## ------------------------------------------------------------------
+# MC
+# let
+#     global _mix = MixtureModel(Qs)
+
+#     ns = 10.0.^[1:0.5:7;]
+#     Hmcf = zeros(length(ns))
+#     @threads :dynamic for (i, n) in collect(enumerate(ns))
+#         @show n
+#         Hmcf[i] = _entropy_mcf(_mix, round(Int, n))
+#     end
+#     plot(ns, Hmcf)
+# end
+
+## ------------------------------------------------------------------
 function _inv(Σ)
     invΣ = similar(Σ)
     MetXBase.inplaceinverse!(invΣ, Σ)
@@ -94,7 +181,7 @@ let
     nothing
 end
 
-# ------------------------------------------------------------------
+## ------------------------------------------------------------------
 function _plot_marginal!(p, Q0, i; 
         d = 3, kwargs...
     )

@@ -32,24 +32,24 @@ function _plot_bash1(PROJ::Project0, netid, ep_alg_version;
     biom1s, m_glcs = [], []
     @time for fn in readdir(traj_dir; join = true)
         endswith(fn, ".jls") || continue
-        _, traj = ldat(fn)
-        traj["status"] == :success || continue
-        haskey(traj, ep_alg_version) || continue
+        _, sim = ldat(fn)
+        sim["status"] == :success || continue
+        haskey(sim, ep_alg_version) || continue
         # @show fn
 
         # traj_lens
-        traj_idxs = traj["traj_idxs"]
+        traj_idxs = sim["traj_idxs"]
         
         # biom
-        biom1 = traj["biom1"]
+        biom1 = sim["biom1"]
         biom1 > biom1_th || continue
         
         # box vol
-        lep = traj["lep"]
+        lep = sim["lep"]
         vol = prod(big.(lep.ub .- lep.lb))
         
         # glc_m
-        _m_glcs = traj["m_glcs"]
+        _m_glcs = sim["m_glcs"]
         
         push!(m_glcs, last(_m_glcs))
         push!(box_vols, vol)
@@ -151,6 +151,7 @@ export _plot_bash2
 function _plot_bash2(PROJ, netid, ep_alg_version;
         biom_lims, 
         biom1_th = -Inf,
+        fvaunique = true,
     )
 
     ps = Plots.Plot[]
@@ -162,12 +163,16 @@ function _plot_bash2(PROJ, netid, ep_alg_version;
     p_∑logZ_Qn = plot(; xlabel = "ko steps", ylabel = "∑logZ_Qn")
     last_val_idxs, biom1s, ΔS1s, ΔF1s, log_ZQ1s, ∑logZ_Qn1s, ΔV1s = [], [], [], [], [], [], []
     files = readdir(traj_dir; join = true)
+    fvaunique_reg = Set{Vector{Bool}}()
     @time for fn in files
+        
         endswith(fn, ".jls") || continue
-        _, traj = ldat(fn)
-        traj["status"] == :success || continue
-        epdat = get(traj, ep_alg_version, nothing)
+        _, sim = ldat(fn)
+        sim["status"] == :success || continue
+        epdat = get(sim, ep_alg_version, nothing)
         isnothing(epdat) && continue
+
+        @show fn
         
         # stuff
         Fs = epdat["Fs"]
@@ -181,7 +186,7 @@ function _plot_bash2(PROJ, netid, ep_alg_version;
         # all(ep_statuses .== :converged) || continue
 
         # traj_idxs
-        traj_idxs = traj["traj_idxs"]
+        traj_idxs = sim["traj_idxs"]
         isempty(traj_idxs) && continue
 
         val_idxs1 = findall(ep_statuses .== :converged)
@@ -190,7 +195,7 @@ function _plot_bash2(PROJ, netid, ep_alg_version;
         isempty(val_idxs) && continue
 
         # bioms
-        biom1 = traj["biom1"]
+        biom1 = sim["biom1"]
         biom1 > biom1_th || continue
         
         # Δs
@@ -243,17 +248,17 @@ function _plot_bash2(PROJ, netid, ep_alg_version;
     )
     push!(ps, p_ΔF)
     
-    # scatter!(p_log_ZQ, last_val_idxs .- 1, log_ZQ1s; 
-    #     label = "", c, m = 6, alpha = 0.8, 
-    #     msc=:auto, xlim = (0, Inf)
-    # )
-    # push!(ps, p_log_ZQ)
+    scatter!(p_log_ZQ, last_val_idxs .- 1, log_ZQ1s; 
+        label = "", c, m = 6, alpha = 0.8, 
+        msc=:auto, xlim = (0, Inf)
+    )
+    push!(ps, p_log_ZQ)
 
-    # scatter!(p_∑logZ_Qn, last_val_idxs .- 1, ∑logZ_Qn1s; 
-    #     label = "", c, m = 6, alpha = 0.8, 
-    #     msc=:auto, xlim = (0, Inf)
-    # )
-    # push!(ps, p_∑logZ_Qn)
+    scatter!(p_∑logZ_Qn, last_val_idxs .- 1, ∑logZ_Qn1s; 
+        label = "", c, m = 6, alpha = 0.8, 
+        msc=:auto, xlim = (0, Inf)
+    )
+    push!(ps, p_∑logZ_Qn)
     
     scatter!(p_ΔV, last_val_idxs .- 1, log10.(ΔV1s); 
         label = "", c, m = 6, alpha = 0.8,
@@ -309,6 +314,20 @@ function _plot_bash2(PROJ, netid, ep_alg_version;
     # )
     # push!(ps, p_ΔS1s_∑logZ_Qn1s)
 
+    _bins, _hist = _histogram(ΔS1s, 20)
+    p_hist_ΔS1s = bar(_bins, _hist; 
+        label = "", c = :black,
+        xlabel = "normalized ΔS", ylabel = "count",
+    )
+    push!(ps, p_hist_ΔS1s)
+
+    _bins, _hist = _histogram(ΔF1s, 20)
+    p_hist_ΔF1s = bar(_bins, _hist; 
+        label = "", c = :black,
+        xlabel = "normalized ΔF", ylabel = "count",
+    )
+    push!(ps, p_hist_ΔF1s)
+
     p_ΔS1s_ΔV1s = scatter(ΔS1s, log.(ΔV1s); 
         label = "", c, m = 6, alpha = 0.8,
         xlabel = "ΔS", ylabel = "log vol box", 
@@ -323,14 +342,14 @@ function _plot_bash2(PROJ, netid, ep_alg_version;
     )
     push!(ps, p_ΔF1s_ΔV1s)
 
-    # p_last_val_idxs_biom1s = scatter(last_val_idxs, biom1s; 
-    #     label = "", c, m = 6, alpha = 0.8,
-    #     xlabel = "ok steps", ylabel = "max biom", 
-    #     msc=:auto, 
-    #     xlim = (0, Inf),
-    #     ylim = biom_lims
-    # )
-    # push!(ps, p_last_val_idxs_biom1s)
+    p_last_val_idxs_biom1s = scatter(last_val_idxs, biom1s; 
+        label = "", c, m = 6, alpha = 0.8,
+        xlabel = "ok steps", ylabel = "max biom", 
+        msc=:auto, 
+        xlim = (0, Inf),
+        ylim = biom_lims
+    )
+    push!(ps, p_last_val_idxs_biom1s)
 
     # write
     sfig(PROJ, ps, 

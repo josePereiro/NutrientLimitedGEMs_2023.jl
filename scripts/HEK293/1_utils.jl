@@ -1,4 +1,20 @@
 ## ------------------------------------------------------------------
+begin
+    using NutrientLimitedGEMs
+    using ProjFlows
+    using MetX
+    using MetXBase
+    using Gurobi
+    using DataFrames
+    using Plots
+    using Random
+    using Distributions
+    using Base.Threads
+    using Optim
+    using LinearAlgebra
+end
+
+## ------------------------------------------------------------------
 # Experimental data
 _, (CalDat, _) = lprocdat(PROJ,
     ["Calzadilla_et_al"], "Calzadilla.bundle", ".jls"; 
@@ -222,6 +238,263 @@ subSyst_colors = begin
     subs = unique(collect(values(subSyst_map)))
     colors = Plots.distinguishable_colors(length(subs))
     Dict(subs .=> colors)
+end
+
+
+# ------------------------------------------------------------------
+# ------------------------------------------------------------------
+# MixtureModel
+
+## ------------------------------------------------------------------
+function _rand_mixture(M::Int, D::Int = 1; 
+        ws = ones(M), 
+        μscale = 1.0, μ0 = 0.0,
+        σscale = 1.0, σ0 = 0.0,
+    )
+
+    # if D == 1
+    #     qs = Normal[]
+    #     for _ in 1:M
+    #         μ = μ0 .+ μscale .* randn()
+    #         σ = σ0 .+ σscale .* rand()
+    #         push!(qs, Normal(μ, σ))
+    #     end
+    # else
+        qs = MvNormal[]
+        for _ in 1:M
+            μ = μ0 .+ μscale .* randn(D)
+            Σ = σ0 .+ σscale .* rand(D, D)
+            Σ = Σ'Σ
+            push!(qs, MvNormal(μ, Σ))
+        end
+    # end
+
+    ws = abs.(ws)
+    ws ./= sum(ws)
+
+    return MixtureModel(qs, ws)
+end
+
+# ------------------------------------------------------------------
+# Ploting tools
+function _suggest_range(q::Normal, s)
+    return (q.μ - s * q.σ, q.μ + s * q.σ)
+end
+
+function _suggest_range(q::MvNormal, s)
+    return (q.μ .- s .* diag(q.Σ), q.μ .+ s .* diag(q.Σ))
+end
+
+function _suggest_range(nm::MixtureModel, s)
+    x0, x1 = Inf, -Inf
+    for q in nm.components
+        _x0, _x1 = _suggest_range(q, s)
+        x0 = min.(x0, _x0)
+        x1 = max.(x1, _x1)
+    end
+    return x0, x1
+end
+
+function _marginal(mv::MvNormal, k::Int)
+    return Normal(mean(mv)[k], sqrt(var(mv)[k]))
+end
+
+function _marginal(mm::MixtureModel, k::Int)
+    _mqs = Normal[_marginal(q, k) for q in components(mm)]
+    return MixtureModel(_mqs, probs(mm))
+end
+
+function _plot!(p::Plots.Plot, q::UnivariateDistribution, x0, x1; 
+        nsamples = 1000, norm = identity,
+        plot_kwargs...
+    )
+    xs = range(x0, x1; length = nsamples)
+    ys = [pdf(q, x) for x in xs]
+    plot!(p, xs, norm(ys); plot_kwargs...)
+end
+
+function _plot!(p::Plots.Plot, q::UnivariateDistribution; plot_kwargs...)
+    x0, x1 = _suggest_range(q, 4)
+    _plot!(p, q, x0, x1; plot_kwargs...)
+end
+
+_plot!(p::Plots.Plot, q::MultivariateDistribution, k::Int, args...; kwargs...) = 
+    _plot!(p, _marginal(q, k), args...; kwargs...)
+
+_plot(args...; kwargs...) = _plot!(plot(), args...; kwargs...)
+
+# ------------------------------------------------------------------
+# Entropy
+
+# ------------------------------------------------------------------
+# Bounds
+
+function _z_factor(di::Normal, dj::Normal)
+    nz = Normal(dj.μ, di.σ + dj.σ)
+    return pdf(nz, di.μ)
+end
+
+function _z_factor(di::MvNormal, dj::MvNormal)
+    nz = MvNormal(dj.μ, di.Σ + dj.Σ)
+    return pdf(nz, di.μ)
+end
+
+function _entropy_lb1(mm::MixtureModel)
+    
+    # Hl = - \sum_i w_i \log( \sum_j w_j z_ij )
+    # z_ij = N( μ_i | μ_j, C_i + C_j )
+
+    M = ncomponents(mm)
+    mix_qs = components(mm)
+    mix_ws = probs(mm)
+
+    # compute zij
+    z = zeros(M, M)
+    for i in 1:M, j in 1:M
+        z[i, j] = _z_factor(mix_qs[i], mix_qs[j])
+    end
+
+    Hl = 0.0
+    for i in 1:M
+        sum_j = 0
+        for j in 1:M
+            sum_j += mix_ws[j] * z[i, j]
+        end
+        Hl += mix_ws[i] * sum_j
+    end
+
+    return -Hl
+end
+
+function _entropy_ub1(mm::MixtureModel)
+
+    # Hu = \sum_i w_i ( - \log w_i + H(q))
+
+    M = ncomponents(mm)
+    mix_qs = components(mm)
+    mix_ws = probs(mm)
+
+    Hu = 0.0
+    for i in 1:M
+        Hu += mix_ws[i] * ( -log(mix_ws[i]) + entropy(mix_qs[i]))
+    end
+    return Hu
+end
+
+## ------------------------------------------------------------------
+# simple quadrature
+function _entropy_quad(
+        mm::MixtureModel{<:UnivariateDistribution}, 
+        ngrid = Int(1e5)
+    )
+
+    # H = \sum_{X} p(x) \log p(x)
+
+    x0, x1 = _suggest_range(mm, 5)
+    _xs = range(x0, x1; length = ngrid)
+    _dx = step(_xs)
+    _sum = 0.0
+    for x in _xs
+        p = pdf(mm, x)
+        _sum += p * log(p)
+    end
+    return -1 * _sum * _dx
+end
+
+## ------------------------------------------------------------------
+# Monte carlos
+using Random
+function _monte_carlo_integration_lazy(f, a, b, n)
+    dx = prod(b .- a)
+    # s = zeros(nthreads())
+    s = 0.0
+    box = Uniform.(a, b)
+    # @threads for _ in 1:n
+    for _ in 1:n
+        s[threadid()] += f(rand.(box))
+    end
+    # return (1/n) * sum(s) * dx
+    return (1/n) * s * dx
+end
+
+function _monte_carlo_integration_lazy(f, dist::Distribution, n::Int)
+    # integral = zeros(nthreads())
+    integral = 0.0
+    # @threads for i in 1:n
+    for i in 1:n
+        sample = rand(dist)
+        weight = pdf(dist, sample)
+        # integral[threadid()] += f(sample) / weight
+        integral += f(sample) / weight
+    end
+    # return sum(integral) / n
+    return integral / n
+end
+
+function _entropy_mcu(mm::Distribution, a, b, n)
+    H = _monte_carlo_integration_lazy(a, b, n) do x
+        p = pdf(mm, x)
+        return p * log(p)
+    end
+    return -H
+end
+function _entropy_mcu(mm::Distribution, n; s = 5)
+    a, b = _suggest_range(mm, s)
+    return _entropy_mcu(mm, a, b, n)
+end
+
+function _entropy_mcf(mm::Distribution, f::Distribution, n)
+    H = _monte_carlo_integration_lazy(f, n) do x
+        p = pdf(mm, x)
+        return p * log(p)
+    end
+    return -H
+end
+_entropy_mcf(mm::Distribution, n) = _entropy_mcf(mm, mm, n)
+
+## ------------------------------------------------------------------
+# W Entropy maximization
+function _max_mixture_H!(
+        mm::MixtureModel, 
+        Hfun::Function, 
+        solver::Optim.AbstractOptimizer
+    )
+
+    mix_ws = probs(mm)
+    
+    f = (_ws) -> let 
+        _ws .= abs.(_ws)
+        _ws ./= sum(_ws)
+        mix_ws .= _ws # update MixtureModel
+        return -1 * Hfun(mm)
+    end
+
+    # Set the initial guess
+    mix_ws .= abs.(mix_ws)
+    mix_ws ./= sum(mix_ws)
+    
+    # Minimize the function
+    result = optimize(f, mix_ws, solver)
+    # maxH_ws = result.minimizer
+    # maxH = result.minimum
+
+    mix_ws .= abs.(result.minimizer)
+    mix_ws ./= sum(mix_ws)
+    
+    return mm
+end
+
+_max_mixture_H(mm::MixtureModel, Hfun::Function, solver::Optim.AbstractOptimizer) = 
+    _max_mixture_H!(deepcopy(mm), Hfun, solver)
+
+## ------------------------------------------------------------------
+# Utils
+
+## ------------------------------------------------------------------
+function _rescale(v::Vector)
+    _v = v .- mean(v)
+    _v ./= sqrt(var(_v))
+    return _v
 end
 
 

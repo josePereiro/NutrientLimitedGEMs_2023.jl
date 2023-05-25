@@ -1,13 +1,11 @@
 ## ------------------------------------------------------------------
 @time begin
     using NutrientLimitedGEMs
-
     using ProjFlows
     using Gurobi
     using MetXBase
-    
+    using MetX
     using Plots
-    
 end
 
 # ------------------------------------------------------------------
@@ -28,4 +26,3 @@ _plot_bash2(PROJ, "HEK293", SIM_ID;
     # biom1_th = 0.25,
 ) 
 
-## ------------------------------------------------------------------

@@ -6,6 +6,7 @@ version = "0.1.0"
 [deps]
 ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"
 ContextDBs = "f7273666-c521-4805-9666-bf343237b2c9"
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 Gurobi = "2e9cd046-0924-5485-92f1-d5272153d98b"
 ImgTools = "60a16571-0043-4368-b1b0-a5366d36b020"
 MetX = "01815447-a018-4668-9805-89f51b3fc6a1"
@@ -16,8 +17,10 @@ MetXMC = "d4a97fa3-1e77-4085-814f-98651929ce7d"
 MetXNetHub = "be9415a8-24b2-49ae-ba75-41eeaa9f722f"
 MetXOptim = "672bf490-d3aa-44fe-a664-43445036b9de"
 MetXPlots = "676a91cf-954a-4bb3-908b-66d0e1d223f7"
+Optimization = "7f7a1694-90dd-40f0-9382-eb1efda571ba"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 ProjFlows = "cac8b402-4888-4912-9502-a4f91500dd77"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [compat]
 julia = "1.6"
