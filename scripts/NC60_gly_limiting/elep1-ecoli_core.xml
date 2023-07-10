@@ -1,0 +1,2041 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" xmlns:fbc="http://www.sbml.org/sbml/level3/version1/fbc/version2" level="3" version="2" fbc:required="false">
+  <model fbc:strict="true">
+    <listOfCompartments>
+      <compartment id="compartment" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species metaid="M_M37" id="M_M37" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M11" id="M_M11" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M18" id="M_M18" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M39" id="M_M39" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M6" id="M_M6" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M50" id="M_M50" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M63" id="M_M63" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M21" id="M_M21" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M51" id="M_M51" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M10" id="M_M10" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M46" id="M_M46" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M58" id="M_M58" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M4" id="M_M4" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M5" id="M_M5" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M30" id="M_M30" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M42" id="M_M42" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M61" id="M_M61" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M8" id="M_M8" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M36" id="M_M36" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M54" id="M_M54" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M67" id="M_M67" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M57" id="M_M57" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M14" id="M_M14" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M24" id="M_M24" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M26" id="M_M26" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M25" id="M_M25" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M49" id="M_M49" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M23" id="M_M23" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M15" id="M_M15" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M2" id="M_M2" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M34" id="M_M34" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M38" id="M_M38" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M40" id="M_M40" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M47" id="M_M47" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M17" id="M_M17" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M27" id="M_M27" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M28" id="M_M28" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M35" id="M_M35" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M41" id="M_M41" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M45" id="M_M45" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M52" id="M_M52" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M56" id="M_M56" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M3" id="M_M3" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M62" id="M_M62" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M9" id="M_M9" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M31" id="M_M31" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M53" id="M_M53" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M66" id="M_M66" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M64" id="M_M64" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M7" id="M_M7" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M32" id="M_M32" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M12" id="M_M12" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M19" id="M_M19" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M29" id="M_M29" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M43" id="M_M43" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M1" id="M_M1" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M65" id="M_M65" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M59" id="M_M59" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M16" id="M_M16" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M60" id="M_M60" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M13" id="M_M13" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M20" id="M_M20" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M55" id="M_M55" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M48" id="M_M48" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M22" id="M_M22" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M33" id="M_M33" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species metaid="M_M44" id="M_M44" compartment="compartment" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction metaid="R_EX_fum_e" id="R_EX_fum_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M48" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ACONTb" id="R_ACONTb" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M15" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_TPI" id="R_TPI" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M40" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_SUCOAS" id="R_SUCOAS" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M35" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_GLNS" id="R_GLNS" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M65" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_pi_e" id="R_EX_pi_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M58" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PPC" id="R_PPC" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M13" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_O2t" id="R_O2t" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M3" stoichiometry="4.60589549617833e-18" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="7.40706633025656e-18" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="4" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="7.40706633025656e-18" constant="true"/>
+          <speciesReference species="M_M20" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="1.61498423544049e-17" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="4.55400934306121e-33" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="1.61498423544049e-17" constant="true"/>
+          <speciesReference species="M_M30" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="3.36118032306479e-17" constant="true"/>
+          <speciesReference species="M_M34" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="4.01948636227467e-18" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="1.51381180900492e-16" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="4.01948636227467e-18" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="5.74501208962344e-18" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="4.10188695609045e-17" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1.49064752482658e-16" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="4.83141586711924e-18" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="5.75456089735978e-19" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="9.16118231135602e-17" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="3.36118032306479e-17" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="4.10188695609045e-17" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="4.01431877220579e-17" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1.36097752424484e-16" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="8.05866011932265e-17" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="7.40706633025656e-18" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="2.24677829081871e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1.49064752482658e-16" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M35" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="1.74743181568425e-18" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="5.75456089735945e-19" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="7.40706633025656e-18" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="4.83141586711924e-18" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="2.60565057026546e-16" constant="true"/>
+          <speciesReference species="M_M57" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="5.75456089735945e-19" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="5.74501208962344e-18" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_G6PDH2r" id="R_G6PDH2r" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M64" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_TALA" id="R_TALA" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M36" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PPCK" id="R_PPCK" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M13" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M16" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_lac__D_e" id="R_EX_lac__D_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M54" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PGL" id="R_PGL" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M5" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_H2Ot" id="R_H2Ot" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M1" stoichiometry="1.22006099408112e-16" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="1.84954788900197e-17" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="5.85622761501896e-18" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="1.58980065927327e-16" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="1.2387612106429e-17" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="1.25" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1.6038388108816e-16" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="1.74261668895974e-16" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.25" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="8.58999510037263e-18" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1.49064752482658e-16" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="7.06634240245392e-17" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="1.09837969455968e-17" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="4.31235391248289e-17" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="4.13737800915742e-33" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="1.09837969455968e-17" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="1.30477015259072e-16" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="2.27556513766982e-18" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M3" stoichiometry="4.60589549617831e-18" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="4.31235391248289e-17" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="2.27205454659042e-18" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="1.76503329648944e-32" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="2.27205454659042e-18" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="5.85622761501896e-18" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="2.28476288629786e-18" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="2.28476288629786e-18" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="5.19146208822298e-18" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="1.84954788900197e-17" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="1.30477015259072e-16" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="2.27556513766982e-18" constant="true"/>
+          <speciesReference species="M_M53" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="1.58980065927327e-16" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1.49064752482658e-16" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="4.13737800915742e-33" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_GLNabc" id="R_GLNabc" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M66" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_co2_e" id="R_EX_co2_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M44" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_gln__L_e" id="R_EX_gln__L_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M50" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_nh4_e" id="R_EX_nh4_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M56" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_MALt2_2" id="R_MALt2_2" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M1" stoichiometry="1.2229382745298e-16" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="1.65611712899965e-16" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="4.70363035182897e-18" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="1.25" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1.86799393876958e-16" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="2.14554969492587e-16" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.25" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="1.98238865544662e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="2.23597128723987e-16" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="3.53081208402161e-18" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="3.53081208402161e-18" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="3.28490220009149e-17" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="2.62114772352637e-18" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="1.12715249904648e-17" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="1.12715249904648e-17" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="1.41939095133327e-16" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="1.67862423052793e-18" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M3" stoichiometry="2.07866310520819e-17" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="3.28490220009149e-17" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="1.83865936809152e-32" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="2.55978259145839e-18" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="5.02716642570681e-18" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="2.55978259145839e-18" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="1.41939095133327e-16" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="1.67862423052793e-18" constant="true"/>
+          <speciesReference species="M_M55" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="1.65611712899965e-16" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="2.23597128723987e-16" constant="true"/>
+          <speciesReference species="M_M62" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ME2" id="R_ME2" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M3" stoichiometry="2.07866310520819e-17" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="6.06045976165438e-17" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="5.08075208794289e-17" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.5" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="4.30384969690719e-32" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="2.55978259145839e-18" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="2.55978259145839e-18" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="2.52961397595842e-16" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="8.61751813443516e-18" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="3.87656317824996e-16" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M62" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="2.33316129915496e-16" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="3.87656317824996e-16" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="0.500000000000004" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="4.0884399880199e-16" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="5.47621876880134e-16" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="1.98238865544662e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="1.74085998918361e-17" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="1.74085998918361e-17" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="6.06045976165438e-17" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="2.62114772352637e-18" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="1.12715249904648e-17" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="1.12715249904648e-17" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="2.52961397595842e-16" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="8.61751813443516e-18" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_GAPD" id="R_GAPD" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M1" stoichiometry="0.5" constant="true"/>
+          <speciesReference species="M_M2" stoichiometry="1.11022302462516e-16" constant="true"/>
+          <speciesReference species="M_M3" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="1.75" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.249999999999999" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="1.23259516440783e-32" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="0.5" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="8.32667268468867e-17" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="1.11022302462516e-16" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="0.5" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="0.5" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="2.77555756156289e-17" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M4" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="4.9960036108132e-16" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="8.32667268468867e-17" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="1.11022302462516e-16" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="0.5" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="0.5" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="2.08166817117217e-17" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="2.08166817117217e-17" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="1.73472347597681e-18" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="1.73472347597681e-18" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="0.5" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="2.77555756156289e-17" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_akg_e" id="R_EX_akg_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M43" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_CS" id="R_CS" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M27" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ETOHt2r" id="R_ETOHt2r" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M33" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ACKr" id="R_ACKr" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M12" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PGK" id="R_PGK" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M4" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_pyr_e" id="R_EX_pyr_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_SUCCt2_2" id="R_SUCCt2_2" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M29" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_D_LACt2" id="R_D_LACt2" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M31" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_FORt2" id="R_FORt2" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="0.249999999999998" constant="true"/>
+          <speciesReference species="M_M20" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.25" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M30" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M34" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="3.46944695195361e-18" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="3.46944695195361e-18" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="4.93038065763132e-32" constant="true"/>
+          <speciesReference species="M_M2" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1.11022302462516e-16" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="1.11022302462516e-16" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M35" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M46" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="2.22044604925031e-16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_GLUDy" id="R_GLUDy" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M3" stoichiometry="0.0829724369611846" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="0.666815072651473" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="0.0366697697008938" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="0.883433844659408" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="33.4792872465293" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="0.883433844659408" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="5.76270894888088" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="0.29092969603756" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="0.29092969603756" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="0.605496418019185" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="0.072408629133444" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="0.072408629133444" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="0.218521066904116" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="0.723155381066095" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="2.43700165944874" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="0.53796494920468" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="1.10349293722427" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="1.48893026267859" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="2.6853118549399" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="7.4532376241329e-17" constant="true"/>
+          <speciesReference species="M_M65" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="0.135366495325212" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="2.40033188974785" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="0.605496418019185" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="1.48893026267859" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="2.43700165944874" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="0.723155381066095" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="2.07671914841948" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="2.07671914841948" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="0.883433844659408" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="0.40474359493261" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="2.6853118549399" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="0.723155381066095" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="1.22898772507784e-18" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="2.43700165944874" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="6.27295908042255" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="0.135366495325212" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="0.883433844659408" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="0.0366697697008938" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="0.666815072651473" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="7.4532376241329e-17" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="5.44392277492209" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="0.135366495325212" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="0.53796494920468" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="1.10349293722427" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ATPM" id="R_ATPM" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M16" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="8.39"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_FRD7" id="R_FRD7" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M34" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_mal__L_e" id="R_EX_mal__L_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M55" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PDH" id="R_PDH" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M1" stoichiometry="6.93889390390734e-18" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="8.32667268468867e-17" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="1.2490009027033e-16" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="1.11022302462516e-16" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1.73472347597681e-16" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="2.84494650060196e-16" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="4.16333634234434e-17" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="4.44089209850063e-16" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="4.16333634234434e-17" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="3.05311331771918e-16" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="9.71445146547012e-17" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="6.24500451351651e-17" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="8.32667268468868e-17" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="2.08166817117217e-17" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M3" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="3.05311331771918e-16" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="9.71445146547012e-17" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="4.16333634234434e-17" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="2.4980018054066e-16" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="4.16333634234434e-17" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="3.05311331771918e-16" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="1.15555796663234e-33" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="1.38666955995881e-32" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="1.15555796663234e-33" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="8.32667268468867e-17" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="9.71445146547012e-17" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="6.24500451351651e-17" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="8.32667268468868e-17" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="2.08166817117217e-17" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="1.2490009027033e-16" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PYK" id="R_PYK" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M18" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M16" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ENO" id="R_ENO" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M32" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_AKGDH" id="R_AKGDH" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M20" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ICL" id="R_ICL" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M67" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PPS" id="R_PPS" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M18" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ACALDt" id="R_ACALDt" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M11" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_FBP" id="R_FBP" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M1" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M16" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_FBA" id="R_FBA" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M60" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_LDH_D" id="R_LDH_D" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M1" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M2" stoichiometry="1.11022302462516e-16" constant="true"/>
+          <speciesReference species="M_M3" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="4.66457473072944e-34" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="0.249999999999998" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.25" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="5.04396118150584e-34" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M31" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="9.80652004386175e-34" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="1.27876307342804e-34" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M6" stoichiometry="4.30211422042248e-16" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="1.54074395550979e-33" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="4.66457473072944e-34" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="1.28003951746573e-34" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="1.28003951746573e-34" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="1.68342506492034e-34" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="1.27876307342804e-34" constant="true"/>
+          <speciesReference species="M_M54" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="1.38777878078145e-17" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_TKT1" id="R_TKT1" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M38" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_fru_e" id="R_EX_fru_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M47" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_glu__L_e" id="R_EX_glu__L_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M51" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PFL" id="R_PFL" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M2" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PFK" id="R_PFK" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_ac_e" id="R_EX_ac_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M41" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ADK1" id="R_ADK1" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M19" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_RPE" id="R_RPE" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M26" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_h_e" id="R_EX_h_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M52" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_NH4t" id="R_NH4t" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M3" stoichiometry="0.0414862184805923" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="0.833407536325737" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="1.51833488485045" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="17.4896436232647" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="2.63135447444044" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="0.558283077670296" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="0.14546484801878" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="8.26522329843478e-17" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="0.14546484801878" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="0.302748209009592" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="0.036204314566722" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="0.036204314566722" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="0.109260533452058" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="0.558283077670296" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="0.361577690533048" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="1.71850082972437" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="0.26898247460234" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="1.05174646861213" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="0.744465131339296" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1.34265592746995" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="3.72661881206645e-17" constant="true"/>
+          <speciesReference species="M_M65" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="0.067683247662606" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="0.200165944873923" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="0.302748209009592" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="0.744465131339296" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="1.71850082972437" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="0.558283077670296" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="0.361577690533047" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="0.558283077670296" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1.03835957420974" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="1.03835957420974" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="0.202371797466305" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1.34265592746995" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="0.361577690533048" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="1.71850082972437" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="2.63647954021128" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="0.0676832476626058" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="1.51833488485045" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="0.833407536325737" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="3.72661881206645e-17" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="1.72196138746105" constant="true"/>
+          <speciesReference species="M_M56" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="0.0676832476626058" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="0.26898247460234" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="1.05174646861213" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_GLCpts" id="R_GLCpts" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M3" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M49" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ATPS4r" id="R_ATPS4r" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M21" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_FUMt2_2" id="R_FUMt2_2" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M63" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_FORt" id="R_FORt" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="0.499999999999998" constant="true"/>
+          <speciesReference species="M_M20" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.5" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M30" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M34" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="3.46944695195361e-18" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="3.46944695195361e-18" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="4.93038065763132e-32" constant="true"/>
+          <speciesReference species="M_M2" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1.11022302462516e-16" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="1.11022302462516e-16" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M35" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M46" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="2.22044604925031e-16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="0"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_GND" id="R_GND" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M5" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="2.86828210162498e-16" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="2.6992794385896e-17" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="6.61754843886288e-17" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="0.0833333333333329" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="0.166666666666666" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="0.166666666666666" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="1.25" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="0.666666666666667" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="0.333333333333333" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="0.333333333333333" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="0.333333333333333" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="8.88178419700125e-16" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="7.42363632015137e-18" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="6.66133814775094e-16" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="3.8653966901446e-16" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="0.166666666666666" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="1.0728631011771e-32" constant="true"/>
+          <speciesReference species="M_M64" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="0.166666666666667" constant="true"/>
+          <speciesReference species="M_M3" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="6.66133814775094e-16" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="8.88178419700125e-16" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="4.22916694626533e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="3.8653966901446e-16" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="0.333333333333333" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="2.6992794385896e-17" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="0.166666666666667" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="2.86828210162498e-16" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="0.166666666666666" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="1.0728631011771e-32" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="0.166666666666667" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="7.42363632015137e-18" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_SUCDi" id="R_SUCDi" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M34" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_succ_e" id="R_EX_succ_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M7" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="1.6043120385591e-17" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="0.249999999999999" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M20" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.25" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="4.54410909318083e-18" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="3.89005577142916e-33" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="4.54410909318083e-18" constant="true"/>
+          <speciesReference species="M_M30" stoichiometry="8.27475601831485e-33" constant="true"/>
+          <speciesReference species="M_M34" stoichiometry="8.27475601831485e-33" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="4.56952577259572e-18" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="8.07177568759529e-17" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="4.56952577259572e-18" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="3.52255236532998e-16" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="3.50385074453176e-17" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="2.98129504965316e-16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="1.11022302462516e-16" constant="true"/>
+          <speciesReference species="M_M3" stoichiometry="1.04874555364263e-16" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="3.50385074453176e-17" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="3.52255236532998e-16" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="2.47752242128579e-17" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1.15324882889434e-16" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="1.15324882889434e-16" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="3.10577780085597e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="2.98129504965316e-16" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M29" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="1.6043120385591e-17" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="3.52255236532998e-16" constant="true"/>
+          <speciesReference species="M_M35" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="3.4948636313685e-18" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_GLUt2r" id="R_GLUt2r" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M1" stoichiometry="0.0676832476626061" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="1.20016594487392" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="0.302748209009592" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="0.744465131339296" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="0.71850082972437" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="0.481665115149553" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="0.361577690533047" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1.03835957420974" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="1.03835957420974" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="0.441716922329704" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="0.202371797466305" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1.34265592746995" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="0.361577690533047" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="0.71850082972437" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="2.63647954021128" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="0.0676832476626058" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="0.441716922329704" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="0.833407536325737" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="3.72661881206645e-17" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="2.72196138746105" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="0.0676832476626058" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="0.26898247460234" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="0.0517464686121342" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M3" stoichiometry="0.0414862184805923" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="0.833407536325737" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="0.441716922329704" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="16.4896436232647" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="0.441716922329704" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="2.63135447444044" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="0.14546484801878" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="8.26522329843478e-17" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="0.14546484801878" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="0.302748209009592" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="0.036204314566722" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="0.036204314566722" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="0.109260533452058" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="0.481665115149553" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="0.361577690533047" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="0.71850082972437" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="0.26898247460234" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="0.0517464686121342" constant="true"/>
+          <speciesReference species="M_M51" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="0.744465131339296" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1.34265592746995" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="3.72661881206645e-17" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_MALS" id="R_MALS" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M1" stoichiometry="3.65155114089734e-16" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="4.84800832479698e-16" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="3" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M14" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M15" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="4.95896827916192e-16" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="4.75794621700951e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="3.5308120840216e-18" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="3.5308120840216e-18" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="3.28490220009149e-17" constant="true"/>
+          <speciesReference species="M_M35" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="2.62114772352637e-18" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="3.20882067021865e-17" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="4.95896827916192e-16" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="3" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="3.20882067021865e-17" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="3.8480038177008e-16" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="1.55564120383424e-17" constant="true"/>
+          <speciesReference species="M_M67" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M3" stoichiometry="2.07866310520819e-17" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="3.28490220009149e-17" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="4.95896827916192e-16" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="3" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="4.95896827916192e-16" constant="true"/>
+          <speciesReference species="M_M20" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="3.33066907387547e-16" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="1.64375703992728e-17" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="5.02716642570676e-18" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="1.64375703992728e-17" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="3" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="3.8480038177008e-16" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="1.55564120383424e-17" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="4.84800832479698e-16" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M62" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_CYTBD" id="R_CYTBD" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M30" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_NADTRHD" id="R_NADTRHD" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M37" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M16" stoichiometry="0.5" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.5" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_acald_e" id="R_EX_acald_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M42" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_for_e" id="R_EX_for_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M46" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_NADH16" id="R_NADH16" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M1" stoichiometry="1.22869283542716e-16" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="7.62781229732953e-19" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="2.0663058246087e-16" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="9.99200722162641e-16" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="2.94646998614547e-16" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="0.249999999999999" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="4.89430599995216e-16" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="5.17186175610845e-16" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.25" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="1.45360938470243e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="3.72661881206645e-16" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="1.66533453693773e-16" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M35" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="4.36857953921062e-18" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="1.18469810802007e-17" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="1.18469810802007e-17" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="1.37107679266207e-16" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="3.95418936819775e-18" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M3" stoichiometry="2.53925265482603e-17" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M20" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="1.26190302703833e-17" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="1.26190302703833e-17" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="7.62781229732953e-19" constant="true"/>
+          <speciesReference species="M_M34" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="8.31399242970987e-18" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="1.56408347326199e-16" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="8.31399242970987e-18" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="9.99200722162641e-16" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="1.37107679266207e-16" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="3.95418936819775e-18" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="2.0663058246087e-16" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="3.72661881206645e-16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PTAr" id="R_PTAr" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M22" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PGM" id="R_PGM" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M8" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_etoh_e" id="R_EX_etoh_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M45" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_TKT2" id="R_TKT2" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M39" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ACALD" id="R_ACALD" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_RPI" id="R_RPI" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M28" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_glc__D_e" id="R_EX_glc__D_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M49" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-10"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_FUM" id="R_FUM" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M62" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PGI" id="R_PGI" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M3" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_MDH" id="R_MDH" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M3" stoichiometry="4.85422066677109e-17" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="5.09344638528601e-18" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="0.999999999999999" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="5.55111512312579e-17" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="9.49867649536562e-18" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="5.02716642570677e-18" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="9.49867649536562e-18" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="2.94594761019286e-16" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="8.61751813443516e-18" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="3.87656317824996e-16" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M62" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="2.47193917723311e-16" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="3.87656317824996e-16" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="4.75794621700951e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="3.53081208402161e-18" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="3.53081208402161e-18" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="5.09344638528601e-18" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="2.62114772352637e-18" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="2.51493127982792e-17" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="2.51493127982792e-17" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="2.94594761019286e-16" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="8.61751813443516e-18" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ICDHyr" id="R_ICDHyr" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M3" stoichiometry="4.16333634234434e-17" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M14" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M15" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.500000000000001" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="3.85185988877447e-34" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="3.85185988877447e-34" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="1.38777878078145e-16" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="2.77555756156289e-17" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="1.38777878078145e-17" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M6" stoichiometry="1.15555796663234e-33" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="2.5" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="1.38777878078145e-16" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="6.93889390390723e-18" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="1.38777878078145e-17" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="4.44089209850063e-16" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="5.55111512312578e-17" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="2.77555756156289e-17" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_AKGt2r" id="R_AKGt2r" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M7" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ACt2r" id="R_ACt2r" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M17" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_BIOMASS_Ecoli_core_w_GAM" id="R_BIOMASS_Ecoli_core_w_GAM" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M23" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PYRt2" id="R_PYRt2" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_SUCCt3" id="R_SUCCt3" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M29" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M16" stoichiometry="0.75" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="0.75" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_CO2t" id="R_CO2t" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M25" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ACONTa" id="R_ACONTa" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M14" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_THD2" id="R_THD2" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M37" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_h2o_e" id="R_EX_h2o_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M53" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_GLUSy" id="R_GLUSy" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M1" stoichiometry="0.135366495325212" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="2.40033188974785" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="0.605496418019185" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="1.48893026267859" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="2.43700165944874" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="0.723155381066095" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="2.07671914841948" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="2.07671914841948" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="0.883433844659408" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="0.40474359493261" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="2.6853118549399" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="0.723155381066095" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="2.43700165944874" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="6.27295908042255" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="0.135366495325212" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="0.883433844659408" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="0.036669769700894" constant="true"/>
+          <speciesReference species="M_M43" stoichiometry="0.666815072651474" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="7.45323762413291e-17" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="5.44392277492209" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="0.135366495325212" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="0.53796494920468" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="1.10349293722427" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M3" stoichiometry="0.0829724369611847" constant="true"/>
+          <speciesReference species="M_M7" stoichiometry="0.666815072651474" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="0.036669769700894" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="0.883433844659408" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="34.4792872465293" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="0.883433844659408" constant="true"/>
+          <speciesReference species="M_M21" stoichiometry="5.76270894888089" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="0.29092969603756" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="1.09793314737438e-16" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="0.29092969603756" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="0.605496418019185" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="0.072408629133444" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="0.072408629133444" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="0.218521066904116" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="0.723155381066095" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="2.43700165944874" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="0.53796494920468" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="1.10349293722427" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="1.48893026267859" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="2.6853118549399" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="7.45323762413291e-17" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ME1" id="R_ME1" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M3" stoichiometry="4.85422066677109e-17" constant="true"/>
+          <speciesReference species="M_M8" stoichiometry="5.09344638528601e-18" constant="true"/>
+          <speciesReference species="M_M10" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M12" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M17" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M27" stoichiometry="5.55111512312579e-17" constant="true"/>
+          <speciesReference species="M_M33" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M36" stoichiometry="9.49867649536562e-18" constant="true"/>
+          <speciesReference species="M_M37" stoichiometry="5.02716642570677e-18" constant="true"/>
+          <speciesReference species="M_M38" stoichiometry="9.49867649536562e-18" constant="true"/>
+          <speciesReference species="M_M42" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M44" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M47" stoichiometry="2.94594761019286e-16" constant="true"/>
+          <speciesReference species="M_M50" stoichiometry="8.61751813443516e-18" constant="true"/>
+          <speciesReference species="M_M58" stoichiometry="3.87656317824996e-16" constant="true"/>
+          <speciesReference species="M_M59" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M62" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M63" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M1" stoichiometry="2.47193917723311e-16" constant="true"/>
+          <speciesReference species="M_M6" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M9" stoichiometry="3.87656317824996e-16" constant="true"/>
+          <speciesReference species="M_M11" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M13" stoichiometry="4.70363035182896e-18" constant="true"/>
+          <speciesReference species="M_M16" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M18" stoichiometry="5.61499664687949e-16" constant="true"/>
+          <speciesReference species="M_M19" stoichiometry="4.78232937841062e-16" constant="true"/>
+          <speciesReference species="M_M22" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M23" stoichiometry="4.75794621700951e-17" constant="true"/>
+          <speciesReference species="M_M24" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M25" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M26" stoichiometry="3.53081208402161e-18" constant="true"/>
+          <speciesReference species="M_M28" stoichiometry="3.53081208402161e-18" constant="true"/>
+          <speciesReference species="M_M32" stoichiometry="5.09344638528601e-18" constant="true"/>
+          <speciesReference species="M_M39" stoichiometry="2.62114772352637e-18" constant="true"/>
+          <speciesReference species="M_M40" stoichiometry="2.51493127982792e-17" constant="true"/>
+          <speciesReference species="M_M41" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M45" stoichiometry="2.22044604925031e-16" constant="true"/>
+          <speciesReference species="M_M48" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_M52" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_M60" stoichiometry="2.51493127982792e-17" constant="true"/>
+          <speciesReference species="M_M61" stoichiometry="2.94594761019286e-16" constant="true"/>
+          <speciesReference species="M_M66" stoichiometry="8.61751813443516e-18" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_GLUN" id="R_GLUN" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfReactants>
+          <speciesReference species="M_M65" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_M16" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_EX_o2_e" id="R_EX_o2_e" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M57" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_FRUpts2" id="R_FRUpts2" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M61" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="0"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_ALCD2x" id="R_ALCD2x" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M10" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="R_PIt2r" id="R_PIt2r" reversible="true" fbc:lowerFluxBound="LOWER_BOUND" fbc:upperFluxBound="UPPER_BOUND">
+        <listOfProducts>
+          <speciesReference species="M_M9" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <listOfLocalParameters>
+            <localParameter id="LOWER_BOUND" value="-1000"/>
+            <localParameter id="UPPER_BOUND" value="1000"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+    <fbc:listOfObjectives fbc:activeObjective="objective">
+      <fbc:objective fbc:id="objective" fbc:type="maximize">
+        <fbc:listOfFluxObjectives>
+          <fbc:fluxObjective fbc:reaction="BIOMASS_Ecoli_core_w_GAM" fbc:coefficient="1"/>
+        </fbc:listOfFluxObjectives>
+      </fbc:objective>
+    </fbc:listOfObjectives>
+  </model>
+</sbml>
