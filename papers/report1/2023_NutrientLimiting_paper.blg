@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2019)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: 2023_NutrientLimiting_paper.aux
+The style file: plain.bst
+Database file #1: 2023_NutrientLimiting_paper.bib
+Warning--I didn't find a database entry for "vriezenEffectsGlutamineSupply1997"
+Warning--I didn't find a database entry for "wuGlobalAnalysisNutrient2004"
+Warning--I didn't find a database entry for ""
+Warning--empty publisher in palssonSystemBiologyConstraintbased2015
+You've used 12 entries,
+            2118 wiz_defined-function locations,
+            603 strings with 8570 characters,
+and the built_in function-call counts, 5023 in all, are:
+= -- 479
+> -- 300
+< -- 2
++ -- 119
+- -- 106
+* -- 453
+:= -- 848
+add.period$ -- 37
+call.type$ -- 12
+change.case$ -- 88
+chr.to.int$ -- 0
+cite$ -- 13
+duplicate$ -- 146
+empty$ -- 340
+format.name$ -- 106
+if$ -- 997
+int.to.chr$ -- 0
+int.to.str$ -- 12
+missing$ -- 13
+newline$ -- 63
+num.names$ -- 24
+pop$ -- 76
+preamble$ -- 1
+purify$ -- 77
+quote$ -- 0
+skip$ -- 94
+stack$ -- 0
+substring$ -- 353
+swap$ -- 22
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 46
+warning$ -- 1
+while$ -- 45
+width$ -- 14
+write$ -- 134
+(There were 4 warnings)

@@ -11,76 +11,27 @@
     using Random
     using ProgressMeter
     using Plots
-    using UnicodePlots
+    # using UnicodePlots
+    using MetXGEMs.MAT
 end
 
-## ------------------------------------------------------------
-let
-    println()
-    println("="^60)
-    println("IO TEST")
-    println("."^60)
-    println()
-
-    # setup
-    test_dir = tempdir()
-    mkpath(test_dir)
-    
-    # net0
-    lep0 = MetXGEMs.toy_model() |> lepmodel
-    
-    for ext in [".mat", 
-        # ".xml", # TODO: Check why this error (COBREXA related)
-        ".json"]
-        
-        fn = joinpath(test_dir, string("test_net", ext))
-        @show basename(fn)
-        try
-            rm(fn; force = true)
-            # save
-            save_net(lep0, fn)
-            @assert isfile(fn)
-            
-            # load
-            lep1 = load_net(fn)
-
-            # Test LEP fields
-            @assert all(colids(lep0) .== colids(lep1))
-            @assert all(rowids(lep0) .== rowids(lep1))
-            @assert all(cost_matrix(lep0) .== cost_matrix(lep1))
-            @assert all(balance(lep0) .== balance(lep1))
-            @assert all(lb(lep0) .== lb(lep1))
-            @assert all(ub(lep0) .== ub(lep1))
-        finally
-            rm(fn; force = true)
-        end
-
-    end
-
-
-    println()
-end
 
 ## ------------------------------------------------------------
 # Prepare network
 # TODO: Do this and store it at MetXNetHub (document the source version)
 let
-    # netid = "ecoli_core"
-    # netid = "iJR904"
-    netid = "SysBioChalmers_Human_GEM"
+    netid = "ecoli_core"
+    netid = "iJR904"
+    # netid = "SysBioChalmers_Human_GEM"
     net0 = pull_net(netid)
     lep0 = lepmodel(net0)
-    # lep1 = box(lep0, Clp.Optimizer)
-    lep1 = lep0
-    # @time global elep1 = EchelonLEPModel(lep1; verbose = true)
-    @time global elep1 = lep1
-    # @show length(elep1.idxi)
-    @show size(lep1, 2)
+    @time global elep0 = EchelonLEPModel(lep0; verbose = true)
+    @show size(lep0, 2)
 
     for ext in [".xml", ".mat"]
-        fn = joinpath(@__DIR__, string("elep1-",netid, ext))
+        fn = joinpath(@__DIR__, string("elep0-",netid, ext))
         @show fn
-        save_net(elep1, fn)
+        save_net(elep0, fn)
     end
     nothing
 end

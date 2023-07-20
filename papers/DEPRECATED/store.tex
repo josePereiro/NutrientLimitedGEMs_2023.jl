@@ -1,0 +1,230 @@
+
+
+% \subsection{Reaction list}
+
+% \begin{itemize}
+%     \item ferm: $(-1.0) G \Rightarrow (2.0) E + (2.0) P$
+%     \item resp: $(-1.0) P + (-3.0) O_2 \Rightarrow (19.0) E$
+%     \item ldh: $(-1.0) P \Leftrightarrow (1.0) L$
+%     \item o2t: $(-1.0) O_2 \Leftarrow$
+%     \item gt: $(-1.0) G \Leftarrow$
+%     \item lt: $(-1.0) L \Leftrightarrow$
+%     \item atpm: $(-1.0) E \Rightarrow$
+% \end{itemize}
+
+% \subsection{Cell internal bounds}
+
+% All reactions are unbounded in the direction suggested by the arrows except by:
+
+% \begin{itemize}
+%    \item $0 \le resp \le ubcell_{resp}$
+%    \item $0 \le gt \le ubcell_{gt}$
+%    \item $lbcell_{atpm} \le atpm \le \infty$
+% \end{itemize}
+
+% Where $\infty = 1000$. For $resp$ and $o2t$ we are using within $1-5x$ the reported bulk limits as hard internal bounds.
+% At the moment, $ubcell_{resp} = 0.5 * 4 = 2$, $ubcell_{gt} = 0.5 * 1 = 0.5$ and $lbcell_{atpm} = 7$.
+
+% \section{CULTURE MODEL}
+
+% In addition to the internal single-cell balance constraints, we will impose some external culture level restrictions
+
+% \subsection{Diffusion constraints with mean field correction}
+
+% The transport fluxes are further constraint by considerations related to diffusion, for each cell $k$ we have:
+
+% \begin{itemize}
+%    \item $lbdiff_{gt} \le gt_k + \sum_{j \in \text{vis. field}} gt_j (R/d_{kj} + C) \le ubdiff_{gt}$
+%    \item $lbdiff_{o2t} \le o2t_k + \sum_{j \in \text{vis. field}} o2t_j (R/d_{kj} + C) \le ubdiff_{o2t}$
+%    \item $lbdiff_{lt} \le lt_k + \sum_{j \in \text{vis. field}} lt_j (R/d_{kj} + C) \le ubdiff_{lt}$
+% \end{itemize}
+
+% Where:
+
+% \begin{itemize}
+%    \item $C = 0.2$ is the mean field correction constant.
+%    \item $lbdiff_{gt}, \, lbdiff_{o2t} = -900$ and $lbdiff_{lt} = 0$  (note that positive $t_j$ means production).
+%    \item The $ubdiff$ bounds are set to $\infty = 1e6$.
+% \end{itemize}
+
+% \subsection{Balance constraints}
+% \label{sec:sum_cons}
+
+% To enforce simple mass balances or fitting experimental observables, we impose further intercellular constraints on the total culture fluxes.
+% In particular, we limit the lactate exchange as:
+
+% \begin{itemize}
+%    \item $lbsum_{lt} \le \sum_{j \in \text{cells}} lt_j \le ubsum_{lt}$
+% \end{itemize}
+
+% At minimum $lbsum_{lt} = 0$, as lactate is missing in the fresh medium.
+% The rest of the sum limits are unbounded to $\pm \infty = \pm 1e6$.
+
+% \section{STANDARD FORM}
+
+% All described restrictions can be summarized in a standard form:
+
+% \begin{align}
+%    Ax = b \nonumber \\
+%    lb \le \, x \, \le ub \nonumber
+% \end{align}
+
+% \begin{figure}[tb]
+%    \centering
+%    \includegraphics[width=0.7\columnwidth]{Ax_b}
+%    \caption[]{Culture model in standard form. See main text for details.}
+%    \label{fig:Ax_b}
+% \end{figure}
+
+% Figure \ref{fig:Ax_b} shows a scheme of the standard form $Ax = b$ layout.
+% If we have a system of $K$ cells, each with a network with $M$ metabolites and $N$ reactions, the full coefficient matrix $A$ will have dimensions $(M*K + K*N + N)$ times $(N*K + K*N + N)$.
+% In $A$ we have one row per constraint, which we grouped in three main regions for clarity.
+% The first set of rows come from the cell's internal balance, where $S^k \in R^{M \times N}$ is the stoichiometric matrix of cell $k$ (at the moment all cells have the same matrix as described in section \ref{sec:cell_lep}).
+% The middle group of rows models the diffusion intercellular constraints, where $I$ is the identity matrix and $J^{ij} \in R^{N \times N}$ is a diagonal matrix (one per each pair of cells $(i, j)$) with all elements equal to $(R/d_{ij} + C)$.
+% Finally, the last row models the total balance constraints, as discussed in section \ref{sec:sum_cons}.
+
+% Also in Figure \ref{fig:Ax_b} we showed the variable vector.
+% The first set of variables are the cell network reactions $r^k \in R^N$, one per each cell $k$.
+% The second group is a set of helper reactions $d^k \in R^{N}$, one set per each cell $k$.
+% These constraints can be used to control the diffusion constraints, for instance, disabling them for internal reactions.
+% Similarly, we have a single set of helper variables $s \in R^N$ for controlling the balance constraints.
+
+% The last element of the standard form is the balance vector $b \in R^{(M*K + K*N + N)}$. In general, it will be a vector of zeros.
+
+
+
+
+
+% \section{MAXENT-EP}
+
+
+
+ 
+% %----------------------------------------------------------------------------------------
+% %	METHODS
+% %----------------------------------------------------------------------------------------
+
+% \section{Methods}
+
+% \lipsum[5] % Dummy text
+
+% \begin{enumerate}[noitemsep] % [noitemsep] removes whitespace between the items for a compact look
+% \item First item in a list
+% \item Second item in a list
+% \item Third item in a list
+% \end{enumerate}
+
+% %------------------------------------------------
+
+% \subsection{Paragraphs}
+
+% \lipsum[6] % Dummy text
+
+% \paragraph{Paragraph Description} \lipsum[7] % Dummy text
+
+% \paragraph{Different Paragraph Description} \lipsum[8] % Dummy text
+
+% %------------------------------------------------
+
+% \subsection{Math}
+
+% \lipsum[4] % Dummy text
+
+% \begin{equation}
+% \cos^3 \theta =\frac{1}{4}\cos\theta+\frac{3}{4}\cos 3\theta
+% \label{eq:refname2}
+% \end{equation}
+
+% \lipsum[5] % Dummy text
+
+% \begin{definition}[Gauss] 
+% To a mathematician it is obvious that
+% $\int_{-\infty}^{+\infty}
+% e^{-x^2}\,dx=\sqrt{\pi}$. 
+% \end{definition} 
+
+% \begin{theorem}[Pythagoras]
+% The square of the hypotenuse (the side opposite the right angle) is equal to the sum of the squares of the other two sides.
+% \end{theorem}
+
+% \begin{proof} 
+% We have that $\log(1)^2 = 2\log(1)$.
+% But we also have that $\log(-1)^2=\log(1)=0$.
+% Then $2\log(-1)=0$, from which the proof.
+% \end{proof}
+
+% %----------------------------------------------------------------------------------------
+% %	RESULTS AND DISCUSSION
+% %----------------------------------------------------------------------------------------
+
+% \section{Results and Discussion}
+
+% Reference to Figure~\vref{fig:gallery}. % The \vref command specifies the location of the reference
+
+
+
+% \lipsum[10] % Dummy text
+
+% %------------------------------------------------
+
+% \subsection{Subsection}
+
+% \lipsum[11] % Dummy text
+
+% \subsubsection{Subsubsection}
+
+% \lipsum[12] % Dummy text
+
+% \begin{description}
+% \item[Word] Definition
+% \item[Concept] Explanation
+% \item[Idea] Text
+% \end{description}
+
+% \lipsum[12] % Dummy text
+
+% \begin{itemize}[noitemsep] % [noitemsep] removes whitespace between the items for a compact look
+% \item First item in a list
+% \item Second item in a list
+% \item Third item in a list
+% \end{itemize}
+
+% \subsubsection{Table}
+
+% \lipsum[13] % Dummy text
+
+% \begin{table}[hbt]
+% \caption{Table of Grades}
+% \centering
+% \begin{tabular}{llr}
+% \toprule
+% \multicolumn{2}{c}{Name} \\
+% \cmidrule(r){1-2}
+% First name & Last Name & Grade \\
+% \midrule
+% John & Doe & $7.5$ \\
+% Richard & Miles & $2$ \\
+% \bottomrule
+% \end{tabular}
+% \label{tab:label}
+% \end{table}
+
+% Reference to Table~\vref{tab:label}. % The \vref command specifies the location of the reference
+
+% %------------------------------------------------
+
+% \subsection{Figure Composed of Subfigures}
+
+% Reference the figure composed of multiple subfigures as Figure~\vref{fig:esempio}. Reference one of the subfigures as Figure~\vref{fig:ipsum}. % The \vref command specifies the location of the reference
+
+% \lipsum[15-18] % Dummy text
+
+% \begin{figure}[tb]
+% \centering
+% \subfloat[A city market.]{\includegraphics[width=.45\columnwidth]{Lorem}} \quad
+% \subfloat[Forest landscape.]{\includegraphics[width=.45\columnwidth]{Ipsum}\label{fig:ipsum}} \\
+% \subfloat[Mountain landscape.]{\includegraphics[width=.45\columnwidth]{Dolor}} \quad
+% \subfloat[A tile decoration.]{\includegraphics[width=.45\columnwidth]{Sit}}
+% \caption[A number of pictures.]{A number of pictures with no common theme.} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+% \label{fig:esempio}
+% \end{figure}

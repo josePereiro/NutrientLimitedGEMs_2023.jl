@@ -1,0 +1,93 @@
+\documentclass[11pt, letterpaper]{article}
+
+% -------------------------------------------------------------------------
+% Commands
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{vmargin}
+\usepackage{amsmath}
+
+\setmargins{2.5cm}                 % margen izquierdo
+{1.5cm}                            % margen superior
+{16.5cm}                           % anchura del texto
+{23.42cm}                          % altura del texto
+{10pt}                             % altura de los encabezados
+{1cm}                              % espacio entre el texto y los encabezados
+{0pt}                              % altura del pie de página
+{2cm}                              % espacio entre el texto y el pie de página
+
+% \hyphenation{}
+
+% \hypersetup{colorlinks,%
+% 	citecolor=blue,%s
+% 	filecolor=blue,%
+% 	linkcolor=blue,%
+% 	urlcolor=blue%
+% }
+
+
+% -------------------------------------------------------------------------
+\title{\textbf{Entropy maximization of the nutrient-limited cloud join}}
+
+% -------------------------------------------------------------------------
+
+\date{}
+
+% -------------------------------------------------------------------------
+% opening
+\begin{document}
+
+\maketitle
+
+% -------------------------------------------------------------------------
+Let $g_i(v)$ be the MaxEnt distribution constrained by the ith nutrient-limited network.
+We will define the cloud mixture density distribution as:
+\begin{align}
+    p(v) = \sum_i^n \alpha_i g_i(v)
+\end{align}
+
+where $n$ is the number of nutrient-limited networks and $\alpha_i$ is the weight associated with network $i$.
+This distribution aim to containt all the information provided by the network cloud.
+The $\alpha$ weights must satisfy the normalization constraint $\sum_i^n \alpha_i = 1$ and we will select them so the entropy of $p(v)$ is maximized.
+Note that we have two levels of entropy maximization, one at network level and other at cloud level. 
+
+We can write the entropy as:
+
+\begin{align}
+    S_p &= - \int_{\{v\}} p(v) \log{p(v)} dv \\
+    S_p &= - \int_{\{v\}} \sum_i^n \alpha_i g_i(v) \log{ \sum_i^n \alpha_i g_i(v) } dv \nonumber
+\end{align}
+
+\subsection{Lower bound}
+
+\subsection{Upper bound}
+
+There are not a close form for $S_p$ and approximations are need it to represented. 
+It can be prove that an upper bound of $S_p$ is [huberEntropyApproximationGaussian2008]:
+
+\begin{align}
+    S_p^U &= - \sum_i^n \alpha_i \log \alpha_i + \sum_i^n \alpha_i S_i
+\end{align}
+
+We can easily find the mixture $\alpha^*$ which maximized $S_p^U$: 
+
+\begin{align}
+    \frac{\partial{S_p^U}}{\partial{\alpha_k}} &= - \log \alpha_k^* - 1 + S_k = 0 \\
+    \alpha_k^* &\sim \exp (S_k)
+\end{align}
+
+% \begin{align}
+%     L &= S_p - \lambda (\sum_i^n \alpha_i - 1)
+% \end{align}
+
+
+% \begin{align}
+% \frac{\partial{L}}{\partial{\alpha_k}} 
+%     &= - \int_{\{v\}} \Big[ g_k(v) \log \sum_i^n \alpha_i g_i(v) + \sum_i^n \alpha_i g_i(v) [\sum_i^n \alpha_i g_i(v)]^{-1} g_k(x) \Big] dv - \lambda \\
+%     &= - \int_{\{v\}} \Big[ g_k(v) \log \sum_i^n \alpha_i g_i(v) + g_k(x) \Big] dv - \lambda \\
+%     &= - \int_{\{v\}} g_k(v) \log \sum_i^n \alpha_i g_i(v) dv - 1 - \lambda \\
+% \end{align}
+
+\end{document}

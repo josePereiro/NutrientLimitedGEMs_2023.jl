@@ -1,0 +1,87 @@
+\begin{thebibliography}{10}
+
+\bibitem{daran-lapujadeChemostatBasedMicroArrayAnalysis2008}
+Pascale { Daran-Lapujade }, Jean-Marc Daran, Antonius~J.A. { van Maris },
+  Johannes~H. { de Winde }, and Jack~T. Pronk.
+\newblock Chemostat- { { Based Micro-Array Analysis } } in { { Baker } } 's { {
+  Yeast } }.
+\newblock In {\em Advances in { { Microbial Physiology } }}, volume~54, pages
+  257--417. { Elsevier }, 2008.
+
+\bibitem{daran-lapujadeRoleTranscriptionalRegulation2004}
+Pascale { Daran-Lapujade }, Mickel L.~A. Jansen, Jean-Marc Daran, Walter { van
+  Gulik }, Johannes~H. { de Winde }, and Jack~T. Pronk.
+\newblock Role of { { Transcriptional Regulation } } in { { Controlling Fluxes
+  } } in { { Central Carbon Metabolism } } of { { Saccharomyces } } cerevisiae:
+  { { A CHEMOSTAT CULTURE STUDY } } *.
+\newblock {\em Journal of Biological Chemistry}, 279(10):9125--9138, mar 2004.
+
+\bibitem{pereiro-morejonInferenceMetabolicFluxes2022}
+Jos { \'e }~Antonio { Pereiro-Morej { \'o } n }, Jorge {
+  Fernandez-de-Cossio-Diaz }, and Roberto Mulet.
+\newblock Inference of metabolic fluxes in nutrient-limited continuous
+  cultures: { { A Maximum Entropy } } approach with the minimum information.
+\newblock {\em iScience}, 25(12):105450, dec 2022.
+
+\bibitem{bezansonJuliaFreshApproach2017}
+Jeff Bezanson, Alan Edelman, Stefan Karpinski, and Viral~B. Shah.
+\newblock Julia: { { A Fresh Approach } } to { { Numerical Computing } }.
+\newblock {\em SIAM Review}, 59(1):65--98, jan 2017.
+
+\bibitem{boerGrowthlimitingIntracellularMetabolites2010}
+Viktor~M. Boer, Christopher~A. Crutchfield, Patrick~H. Bradley, David Botstein,
+  and Joshua~D. Rabinowitz.
+\newblock Growth-limiting { { Intracellular Metabolites } } in { { Yeast
+  Growing } } under { { Diverse Nutrient Limitations } }.
+\newblock {\em Molecular Biology of the Cell}, 21(1):198--211, jan 2010.
+
+\bibitem{folsomPhysiologicalProteomicAnalysis2014}
+James~Patrick Folsom, Albert~E. Parker, and Ross~P. Carlson.
+\newblock Physiological and { { Proteomic Analysis } } of { { Escherichia } }
+  coli { { Iron-Limited Chemostat Growth } }.
+\newblock {\em Journal of Bacteriology}, 196(15):2748--2761, aug 2014.
+
+\bibitem{hazelwoodIdentityGrowthLimitingNutrient2009}
+Lucie~A. Hazelwood, Michael~C. Walsh, Marijke A.~H. Luttik, Pascale {
+  Daran-Lapujade }, Jack~T. Pronk, and Jean-Marc Daran.
+\newblock Identity of the { { Growth-Limiting Nutrient Strongly Affects Storage
+  Carbohydrate Accumulation } } in { { Anaerobic Chemostat Cultures } } of { {
+  { \emph { Saccharomyces } } } } { \emph { Cerevisiae } }.
+\newblock {\em Applied and Environmental Microbiology}, 75(21):6876--6885, nov
+  2009.
+
+\bibitem{herbertContinuousCultureBacteria1956}
+D.~Herbert, R.~Elsworth, and R.~C. Telling.
+\newblock The { { Continuous Culture } } of { { Bacteria } } ; a { {
+  Theoretical } } and { { Experimental Study } }.
+\newblock {\em Microbiology ,}, 14(3):601--622, 1956.
+
+\bibitem{natarajanTranscriptionalProfilingShows2001}
+Krishnamurthy Natarajan, Michael~R. Meyer, Belinda~M. Jackson, David Slade,
+  Christopher Roberts, Alan~G. Hinnebusch, and Matthew~J. Marton.
+\newblock Transcriptional { { Profiling Shows } } that { { Gcn4p Is } } a { {
+  Master Regulator } } of { { Gene Expression } } during { { Amino Acid
+  Starvation } } in { { Yeast } }.
+\newblock {\em Molecular and Cellular Biology}, 21(13):4347--4368, jul 2001.
+
+\bibitem{palssonSystemBiologyConstraintbased2015}
+Bernhard~{ \O } Palsson.
+\newblock {\em System { { Biology } } - { { Constraint-based Reconstruction } }
+  and { { Analysis } }}.
+\newblock 2015.
+
+\bibitem{reznikFluxImbalanceAnalysis2013}
+Ed~Reznik, Pankaj Mehta, and Daniel Segr~{ \`e }.
+\newblock Flux { { Imbalance Analysis } } and the { { Sensitivity } } of { {
+  Cellular Growth } } to { { Changes } } in { { Metabolite Pools } }.
+\newblock {\em PLoS Computational Biology}, 9(8):e1003195, aug 2013.
+
+\bibitem{taiTwodimensionalTranscriptomeAnalysis2005}
+Siew~Leng Tai, Viktor~M. Boer, Pascale { Daran-Lapujade }, Michael~C. Walsh,
+  Johannes~H. { de Winde }, Jean-Marc Daran, and Jack~T. Pronk.
+\newblock Two-dimensional transcriptome analysis in chemostat cultures. { {
+  Combinatorial } } effects of oxygen availability and macronutrient limitation
+  in { { Saccharomyces } } cerevisiae.
+\newblock {\em The Journal of Biological Chemistry}, 280(1):437--447, jan 2005.
+
+\end{thebibliography}
