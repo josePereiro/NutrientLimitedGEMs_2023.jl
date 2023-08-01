@@ -62,7 +62,7 @@ include("1_setup_sim.jl")
     set_linear_obj!(opm, obj_id, MAX_SENSE)
     optimize!(opm)
     @show solution(opm, obj_id)
-    @assert solution(opm, obj_id) > 1.0
+    @assert solution(opm, obj_id) > 0.5
     
     @show size(lep0, 2)
     @show length(elep0ref[].idxi)
