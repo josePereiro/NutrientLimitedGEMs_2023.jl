@@ -1,6 +1,5 @@
 ## ------------------------------------------------------------
 @time begin
-    using Gurobi
     using Random
     using MetXGEMs
     using MetXBase

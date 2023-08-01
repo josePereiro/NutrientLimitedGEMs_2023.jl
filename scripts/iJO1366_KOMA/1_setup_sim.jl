@@ -1,4 +1,4 @@
-using Gurobi
+using Clp
 using ProjFlows
 using ContextDBs
 using NutrientLimitedGEMs
@@ -53,7 +53,7 @@ cacherefs_dir!(cachedir(PROJ))
 # ------------------------------------------------------------------
 @tempcontext ["GLOBALS"] begin
     @stage! NET_ID = "iJO1366"
-    @stage! LP_SOLVER = Gurobi.Optimizer
+    @stage! LP_SOLVER = Clp.Optimizer
 end
 
 

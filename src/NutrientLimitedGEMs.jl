@@ -1,9 +1,9 @@
 module NutrientLimitedGEMs
 
-    using ProjFlows
-    using Gurobi
-    using MetX
-    using Plots
+    # using ProjFlows
+    # using Gurobi
+    # using MetX
+    # using Plots
 
     #! include .
     

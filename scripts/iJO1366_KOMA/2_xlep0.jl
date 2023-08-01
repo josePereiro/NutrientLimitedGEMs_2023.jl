@@ -1,6 +1,5 @@
 ## ------------------------------------------------------------
 @time begin
-    using Gurobi
     using MetXGEMs
     using MetXBase
     using MetXOptim
