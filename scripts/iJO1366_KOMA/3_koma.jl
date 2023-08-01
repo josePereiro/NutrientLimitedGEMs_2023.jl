@@ -63,7 +63,7 @@ include("1_setup_sim.jl")
         set_linear_obj!(th_opm, obj_idx, MAX_SENSE)
         
         
-        for ko in 1:Int(1e5)
+        for ko in 1:Int(1e7)
             
             # init
             bounds!(th_opm, :, lb0, ub0) 
