@@ -9,7 +9,6 @@
     using Clp
     using Random
     using ProgressMeter
-    # using Plots
     using UnicodePlots
 end
 
@@ -103,7 +102,7 @@ let
                     (:th, th), 
                     (:status, status), 
                     (:koset, join(koset, ", ")),
-                    (:hist, strip(string(UnicodePlots.histogram(length.(keys(koma)); ylabel = "ko count", xlabel = "frec")))), 
+                    # (:hist, strip(string(UnicodePlots.histogram(length.(keys(koma)); ylabel = "ko count", xlabel = "frec")))), 
                 ])
 
                 if effitiency < effitiency_th 
@@ -126,8 +125,6 @@ let
     str = string(UnicodePlots.histogram(lens; xlabel = "ko count", ylabel = "frec"))
     println(str)
 end
-
-## ------------------------------------------------------------
 
 ## ------------------------------------------------------------
 function haspattern(set::Vector{Bool}, pattern::Vector{Bool})

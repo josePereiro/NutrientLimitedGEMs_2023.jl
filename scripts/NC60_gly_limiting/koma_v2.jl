@@ -151,24 +151,24 @@ let
 end
 
 ## ------------------------------------------------------------
-let
-    lens = length.(keys(koma))
-    str = string(UnicodePlots.histogram(lens; xlabel = "ko count", ylabel = "frec"))
-    println(str)
-end
-
-## ------------------------------------------------------------
-
-## ------------------------------------------------------------
-function haspattern(set::Vector{Bool}, pattern::Vector{Bool})
-    @inbounds for (ti, si) in zip(set, pattern)
-        si && !ti && return false
-    end
-    return true
-end
+# let
+#     lens = length.(keys(koma))
+#     str = string(UnicodePlots.histogram(lens; xlabel = "ko count", ylabel = "frec"))
+#     println(str)
+# end
 
 # ## ------------------------------------------------------------
-# let
-#     fn = "/Users/Pereiro/.julia/dev/NutrientLimitedGEMs/data/raw/jain_et_al_2012/CORE_data.tsv"
-#     df = CSV.read(fn, DataFrame)
+
+# ## ------------------------------------------------------------
+# function haspattern(set::Vector{Bool}, pattern::Vector{Bool})
+#     @inbounds for (ti, si) in zip(set, pattern)
+#         si && !ti && return false
+#     end
+#     return true
 # end
+
+# # ## ------------------------------------------------------------
+# # let
+# #     fn = "/Users/Pereiro/.julia/dev/NutrientLimitedGEMs/data/raw/jain_et_al_2012/CORE_data.tsv"
+# #     df = CSV.read(fn, DataFrame)
+# # end
