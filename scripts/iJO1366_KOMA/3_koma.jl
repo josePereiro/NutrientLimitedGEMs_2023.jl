@@ -25,8 +25,8 @@ include("1_setup_sim.jl")
     
     # xlep
     xlep_db = query(["ROOT", "XLEP"])
-    global elep0 = xlep_db["elep0"][]
-    global lep0 = lepmodel(elep0)
+    elep0 = xlep_db["elep0"][]
+    lep0 = lepmodel(elep0)
     lb0, ub0 = bounds(lep0, :)
     M, N = size(lep0)
     obj_id = extras(lep0, "BIOM")
@@ -39,14 +39,13 @@ include("1_setup_sim.jl")
     _, _koma_hashs = lprocdat(PROJ, [SIMVER], "koma_hashs", ".jls") do 
         UInt64[]
     end
-    global koma_hashs = _koma_hashs
-    global koma_reg = Dict{Vector{Int16}, Symbol}()
-    save_frec = 5000
+    koma_hashs = _koma_hashs
+    koma_reg = Dict{Vector{Int16}, Symbol}()
+    save_frec = 50000
     roll_count = 0
-    batch_size = 1
+    batch_size = 5
     effitiency = 1.0
     effitiency_th = 0.5 # stop if "effitiency < effitiency_th"
-    opt_time = 0.0
     lk = ReentrantLock()
     prog = ProgressUnknown(; dt = 1.0, desc="Progress: ", showspeed = true)
 
@@ -55,11 +54,16 @@ include("1_setup_sim.jl")
     @threads for _ in 1:NTHREADS
     # for _ in 1:1
         
+        opt_time = 0.0
+        tot_time = 0.0
+        time0 = time()
+        
         th = threadid()
         th_opm = FBAOpModel(lep0, LP_SOLVER)
         set_linear_obj!(th_opm, obj_idx, MAX_SENSE)
         
-        for ko in 1:50
+        
+        for ko in 1:Int(1e5)
             
             # init
             bounds!(th_opm, :, lb0, ub0) 
@@ -94,7 +98,7 @@ include("1_setup_sim.jl")
                         _break = true;
                     else
                         # Test biomass
-                        opt_time = @elapsed optimize!(th_opm)
+                        opt_time += @elapsed optimize!(th_opm)
                         obj_val = objective_value(th_opm)
                         if obj_val > obj_val_th
                             status = :FEASIBLE
@@ -121,12 +125,14 @@ include("1_setup_sim.jl")
                     i = searchsortedfirst(koma_hashs, koset_hash)
                     insert!(koma_hashs, i, koset_hash)
                 end
-                effitiency = length(koma_reg) / roll_count
                 
+                
+                tot_time = time() - time0
+                effitiency = length(koma_reg) / roll_count
                 next!(prog; showvalues = () -> [
                     (:th, th), 
-                    (:opt_time, opt_time),
                     (:effitiency, effitiency),
+                    (:opt_reltime, opt_time / tot_time),
                     (:roll_count, roll_count),
                     (:koma_hashs_len, length(koma_hashs)),
                     (:koma_reg_len, length(koma_reg)),
