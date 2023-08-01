@@ -58,6 +58,5 @@ cacherefs_dir!(cachedir(PROJ))
     @stage! NTHREADS = max(nthreads() - 2, 1)
 end
 
-
 # ------------------------------------------------------------------
 return nothing
