@@ -53,6 +53,16 @@ include("1_setup_sim.jl")
     @stage! "lep0" => CacheRef(lep0)
     @stage! "blep0" => blep0ref
     @stage! "elep0" => elep0ref
+
+    # Test FBA
+    lep = lepmodel(elep0ref[])
+    obj_id = extras(lep, "BIOM")
+    @show obj_id
+    opm = FBAOpModel(lep, LP_SOLVER)
+    set_linear_obj!(opm, obj_id, MAX_SENSE)
+    optimize!(opm)
+    @show solution(opm, obj_id)
+    @assert solution(opm, obj_id) > 1.0
     
     @show size(lep0, 2)
     @show length(elep0ref[].idxi)

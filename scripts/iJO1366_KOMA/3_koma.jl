@@ -21,6 +21,7 @@ include("1_setup_sim.jl")
     glob_db = query(["ROOT", "GLOBALS"])
     LP_SOLVER = glob_db["LP_SOLVER"]
     NET_ID = glob_db["NET_ID"]
+    NTHREADS = glob_db["NTHREADS"]
     
     # xlep
     xlep_db = query(["ROOT", "XLEP"])
@@ -41,8 +42,8 @@ include("1_setup_sim.jl")
     global koma_hashs = _koma_hashs
     global koma_reg = Dict{Vector{Int16}, Symbol}()
     save_frec = 5000
-    stop_count = 0
-    batch_size = 5
+    roll_count = 0
+    batch_size = 1
     effitiency = 1.0
     effitiency_th = 0.5 # stop if "effitiency < effitiency_th"
     opt_time = 0.0
@@ -51,13 +52,14 @@ include("1_setup_sim.jl")
 
 
     # koma
-    for _ in 1:1
+    @threads for _ in 1:NTHREADS
+    # for _ in 1:1
         
         th = threadid()
         th_opm = FBAOpModel(lep0, LP_SOLVER)
         set_linear_obj!(th_opm, obj_idx, MAX_SENSE)
         
-        for ko in 1:1500
+        for ko in 1:50
             
             # init
             bounds!(th_opm, :, lb0, ub0) 
@@ -112,21 +114,23 @@ include("1_setup_sim.jl")
             # up new koma
             _break = false
             lock(lk) do
-                stop_count += 1
+                roll_count += 1
                 if status != :REVISED
                     koma_reg[koset] = status
                     # insert hash
                     i = searchsortedfirst(koma_hashs, koset_hash)
                     insert!(koma_hashs, i, koset_hash)
                 end
-                effitiency = length(koma_reg) / stop_count
+                effitiency = length(koma_reg) / roll_count
                 
                 next!(prog; showvalues = () -> [
                     (:th, th), 
                     (:opt_time, opt_time),
                     (:effitiency, effitiency),
+                    (:roll_count, roll_count),
                     (:koma_hashs_len, length(koma_hashs)),
                     (:koma_reg_len, length(koma_reg)),
+                    (:obj_val, obj_val),
                     (:batch_size, batch_size),
                     (:koma_hashs_size, Base.summarysize(koma_hashs)),
                     (:koma_reg_size, Base.summarysize(koma_reg)),
@@ -144,7 +148,7 @@ include("1_setup_sim.jl")
                     )
                     # empty to save memmory
                     empty!(koma_reg)
-                    stop_count = 0
+                    roll_count = 0
                     GC.gc()
                 end
 
