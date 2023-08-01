@@ -51,7 +51,6 @@ include("1_setup_sim.jl")
 
 
     # koma
-    # @threads for _ in 1:nthreads()
     for _ in 1:1
         
         th = threadid()
@@ -64,6 +63,7 @@ include("1_setup_sim.jl")
             bounds!(th_opm, :, lb0, ub0) 
             th_target_rxn0is = shuffle(target_rxn0is)
             koset = Int16[]
+            koset_hash = hash(0)
             
             status = :INIT
             obj_val = 0.0
@@ -76,17 +76,17 @@ include("1_setup_sim.jl")
                     status = :EMPTY_TARGETS
                     break
                 end
-                for r in 1:rand(1:batch_size)
+                for r in 1:batch_size
                     isempty(th_target_rxn0is) && break # for r
                     toko = pop!(th_target_rxn0is)
                     bounds!(th_opm, toko, 0.0, 0.0)
                     push!(koset, toko)
                 end
+                koset_hash = hash(koset)
 
                 _break = false
                 try
                     # Test koma
-                    koset_hash = hash(koset)
                     if insorted(koset_hash, koma_hashs)
                         status = :REVISED
                         _break = true;
@@ -99,10 +99,6 @@ include("1_setup_sim.jl")
                         else
                             status = :UNFEASIBLE
                             _break = true;
-
-                            # insert hash
-                            i = searchsortedfirst(koma_hashs, koset_hash)
-                            insert!(koma_hashs, i, koset_hash)
                         end
                     end
                 catch e
@@ -119,6 +115,9 @@ include("1_setup_sim.jl")
                 stop_count += 1
                 if status != :REVISED
                     koma_reg[koset] = status
+                    # insert hash
+                    i = searchsortedfirst(koma_hashs, koset_hash)
+                    insert!(koma_hashs, i, koset_hash)
                 end
                 effitiency = length(koma_reg) / stop_count
                 

@@ -2,6 +2,7 @@ using Clp
 using ProjFlows
 using ContextDBs
 using NutrientLimitedGEMs
+using Base.Threads
 
 # ------------------------------------------------------------------
 # GLOBALS
@@ -54,6 +55,7 @@ cacherefs_dir!(cachedir(PROJ))
 @tempcontext ["GLOBALS"] begin
     @stage! NET_ID = "iJO1366"
     @stage! LP_SOLVER = Clp.Optimizer
+    @stage! NTHREADS = max(nthreads() - 2, 1)
 end
 
 

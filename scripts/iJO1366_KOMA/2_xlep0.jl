@@ -18,6 +18,7 @@ include("1_setup_sim.jl")
     glob_db = query(["ROOT", "GLOBALS"])
     LP_SOLVER = glob_db["LP_SOLVER"]
     NET_ID = glob_db["NET_ID"]
+    NTHREADS = glob_db["NTHREADS"]
 
     # net
     net0 = pull_net(NET_ID)
@@ -36,7 +37,7 @@ include("1_setup_sim.jl")
     # blep
     cid = (:BOX, hash(lep0))
     _, blep0ref = withcachedat(PROJ, :get!, cid) do 
-        blep0 = box(lep0, LP_SOLVER; nths = 3, verbose = true)
+        blep0 = box(lep0, LP_SOLVER; nths = NTHREADS, verbose = true)
         return CacheRef(blep0)
     end
 
