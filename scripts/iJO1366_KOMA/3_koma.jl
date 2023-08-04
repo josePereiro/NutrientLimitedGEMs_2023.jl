@@ -109,7 +109,7 @@ include("1_setup_sim.jl")
                     end
                 catch e
                     status = :ERROR
-                    showerror(stdout, e); println(); flush(stdout);
+                    # showerror(stdout, e); println(); flush(stdout);
                     _break = true;
                 end 
                 _break && break # for toss
@@ -126,11 +126,11 @@ include("1_setup_sim.jl")
                     insert!(koma_hashs, i, koset_hash)
                 end
                 
-                
                 tot_time = time() - time0
                 effitiency = length(koma_reg) / roll_count
                 next!(prog; showvalues = () -> [
                     (:th, th), 
+                    (:pid, getpid()), 
                     (:effitiency, effitiency),
                     (:opt_reltime, opt_time / tot_time),
                     (:roll_count, roll_count),
