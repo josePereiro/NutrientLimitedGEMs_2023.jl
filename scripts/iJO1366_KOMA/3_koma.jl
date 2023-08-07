@@ -56,6 +56,9 @@ end
 # Prepare network
 @tempcontext ["KOMA" => v"0.1.0"] let
 
+    # Hi
+    _log("HELLO")
+
     # globals
     glob_db = query(["ROOT", "GLOBALS"])
     LP_SOLVER = glob_db["LP_SOLVER"]
