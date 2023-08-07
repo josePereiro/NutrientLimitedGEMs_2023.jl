@@ -1,5 +1,6 @@
 ## ------------------------------------------------------------
 @time begin
+    using Dates
     using Random
     using MetXGEMs
     using MetXBase
@@ -7,6 +8,7 @@
     using MetXNetHub
     using Base.Threads
     using ProgressMeter
+    using SimpleLockFiles
     using NutrientLimitedGEMs
 end
 
@@ -14,6 +16,43 @@ end
 include("1_setup_sim.jl")
 
 ## ------------------------------------------------------------
+function _log(msg; loginfo...)
+
+    # format log info
+    ks = collect(keys(loginfo))
+    # sort!(ks)
+    loginfo = [string(k, "=", loginfo[k]) for k in ks]
+    loginfo = string("[", getpid(), ".", threadid(), "] ", now(), " ", msg, " | ", join(loginfo, ", "))
+    
+    # log!
+    logfn = procdir(PROJ, [SIMVER], "koma.log")
+    mkpath(dirname(logfn))
+    try; open((io) -> println(io, loginfo), logfn, "a"); catch ignored end
+    return logfn
+end
+
+# ------------------------------------------------------------
+function _sync_state!(koma_hashs, koma_reg; loginfo...)
+    # save state
+    _, _koma_hashs = lprocdat(PROJ, [SIMVER], "koma_hashs", ".jls") do 
+        UInt64[]
+    end
+    push!(koma_hashs, setdiff(_koma_hashs, koma_hashs)...)
+    unique!(koma_hashs)
+    sort!(koma_hashs)
+    
+    sprocdat(PROJ, koma_hashs, 
+        [SIMVER], "koma_hashs", ".jls"
+    )
+    sprocdat(PROJ, koma_reg, 
+        [SIMVER], "koma_reg", (;h = hash(koma_hashs)), ".jls"
+    )
+
+    # log
+    _log("SYNC"; h=hash(koma_hashs), loginfo...)
+end
+
+# ------------------------------------------------------------
 # Prepare network
 @tempcontext ["KOMA" => v"0.1.0"] let
 
@@ -35,33 +74,35 @@ include("1_setup_sim.jl")
     
     target_rxn0s = colids(lep0, elep0.idxi)
     target_rxn0is = Int16.(colindex(lep0, target_rxn0s))
+    koma_hashs = UInt64[]
     # koma_idxs => status
-    _, _koma_hashs = lprocdat(PROJ, [SIMVER], "koma_hashs", ".jls") do 
-        UInt64[]
-    end
-    koma_hashs = _koma_hashs
     koma_reg = Dict{Vector{Int16}, Symbol}()
-    save_frec = 50000
+    _sync_state!(koma_hashs, koma_reg)
+    
+    sync_frec = 5000 # iters
+    log_frec = 30.0 # seconds
     roll_count = 0
-    batch_size = 5
+    batch_size = 5 # kos per roll
     effitiency = 1.0
     effitiency_th = 0.5 # stop if "effitiency < effitiency_th"
-    lk = ReentrantLock()
-    prog = ProgressUnknown(; dt = 1.0, desc="Progress: ", showspeed = true)
-
+    
+    # locks
+    lkpath = procdir(PROJ, [SIMVER], "koma_sync.lk")
+    thlk = ReentrantLock()
+    proclk = SimpleLockFile(lkpath)
+    proclk_ops = (;tout = 10.0, ctime=0.1, wtime=0.5, vtime = 160.0, force = true)
 
     # koma
     @threads for _ in 1:NTHREADS
-    # for _ in 1:1
         
         opt_time = 0.0
         tot_time = 0.0
-        time0 = time()
+        init_time = time()
+        last_log = 0.0
         
         th = threadid()
         th_opm = FBAOpModel(lep0, LP_SOLVER)
         set_linear_obj!(th_opm, obj_idx, MAX_SENSE)
-        
         
         for ko in 1:Int(1e7)
             
@@ -102,6 +143,7 @@ include("1_setup_sim.jl")
                         obj_val = objective_value(th_opm)
                         if obj_val > obj_val_th
                             status = :FEASIBLE
+                            sort!(koset) # FEASIBLE are sorted (reduce duplication)
                         else
                             status = :UNFEASIBLE
                             _break = true;
@@ -109,7 +151,7 @@ include("1_setup_sim.jl")
                     end
                 catch e
                     status = :ERROR
-                    # showerror(stdout, e); println(); flush(stdout);
+                    _log("ERROR"; err = err_str(e))
                     _break = true;
                 end 
                 _break && break # for toss
@@ -117,7 +159,7 @@ include("1_setup_sim.jl")
 
             # up new koma
             _break = false
-            lock(lk) do
+            lock(thlk) do
                 roll_count += 1
                 if status != :REVISED
                     koma_reg[koset] = status
@@ -126,56 +168,54 @@ include("1_setup_sim.jl")
                     insert!(koma_hashs, i, koset_hash)
                 end
                 
-                tot_time = time() - time0
+                tot_time = time() - init_time
                 effitiency = length(koma_reg) / roll_count
-                next!(prog; showvalues = () -> [
-                    (:th, th), 
-                    (:pid, getpid()), 
-                    (:effitiency, effitiency),
-                    (:opt_reltime, opt_time / tot_time),
-                    (:roll_count, roll_count),
-                    (:koma_hashs_len, length(koma_hashs)),
-                    (:koma_reg_len, length(koma_reg)),
-                    (:obj_val, obj_val),
-                    (:batch_size, batch_size),
-                    (:koma_hashs_size, Base.summarysize(koma_hashs)),
-                    (:koma_reg_size, Base.summarysize(koma_reg)),
-                    (:status, status), 
-                    (:koset, join(koset, ", ")),
-                ])
 
-                # save state
-                if length(koma_reg) > save_frec
-                    sprocdat(PROJ, koma_hashs, 
-                        [SIMVER], "koma_hashs", ".jls"
-                    )
-                    sprocdat(PROJ, koma_reg, 
-                        [SIMVER], "koma_reg", (;h = hash(koma_hashs)), ".jls"
-                    )
+                # sync state
+                if length(koma_reg) > sync_frec
+                    
+                    lock(proclk; proclk_ops...) do
+                        _sync_state!(koma_hashs, koma_reg)
+                    end
+                    
                     # empty to save memmory
                     empty!(koma_reg)
                     roll_count = 0
                     GC.gc()
                 end
 
-                if length(koma_reg) > 0.1 * save_frec && effitiency < effitiency_th 
-                    _break = true;
+                # LOG
+                if time() - last_log > log_frec
+                    lock(proclk; proclk_ops...) do
+                        _log("INFO" ;
+                            effitiency = effitiency,
+                            opt_reltime = opt_time / tot_time,
+                            roll_count = roll_count,
+                            koma_hashs_len = length(koma_hashs),
+                            koma_reg_len = length(koma_reg),
+                            koset_len = length(koset),
+                            obj_val = obj_val,
+                            batch_size = batch_size,
+                            koma_hashs_size = Base.summarysize(koma_hashs),
+                            koma_reg_size = Base.summarysize(koma_reg),
+                            status = status, 
+                        )
+                    end
+                    last_log = time()
                 end
+
+                # if length(koma_reg) > 0.1 * sync_frec && effitiency < effitiency_th 
+                #     _break = true;
+                # end
             end # lock(lk) do
             _break && break # for ko
         end # for ko
     end # for _
 
-
     # save state
-    sprocdat(PROJ, koma_hashs, 
-        [SIMVER], "koma_hashs", ".jls"
-    )
-    sprocdat(PROJ, koma_reg, 
-        [SIMVER], "koma_reg", (;h = hash(koma_hashs)), ".jls"
-    )
-
-    
-    finish!(prog)
+    lock(proclk; proclk_ops...) do
+        _sync_state!(koma_hashs, koma_reg)
+        _log("FINISHED")
+    end
 
 end # @tempcontext
