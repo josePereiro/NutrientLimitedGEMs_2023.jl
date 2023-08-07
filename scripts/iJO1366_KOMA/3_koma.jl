@@ -151,7 +151,7 @@ end
                     end
                 catch e
                     status = :ERROR
-                    _log("ERROR"; err = err_str(e))
+                    _log("ERROR"; err = err_str(e; max_len = 400))
                     _break = true;
                 end 
                 _break && break # for toss
