@@ -14,43 +14,7 @@ end
 
 # ------------------------------------------------------------
 include("1_setup_sim.jl")
-
-## ------------------------------------------------------------
-function _log(msg; loginfo...)
-
-    # format log info
-    ks = collect(keys(loginfo))
-    # sort!(ks)
-    loginfo = [string(k, "=", loginfo[k]) for k in ks]
-    loginfo = string("[", getpid(), ".", threadid(), "] ", now(), " ", msg, " | ", join(loginfo, ", "))
-    
-    # log!
-    logfn = procdir(PROJ, [SIMVER], "koma.log")
-    mkpath(dirname(logfn))
-    try; open((io) -> println(io, loginfo), logfn, "a"); catch ignored end
-    return logfn
-end
-
-# ------------------------------------------------------------
-function _sync_state!(koma_hashs, koma_reg; loginfo...)
-    # save state
-    _, _koma_hashs = lprocdat(PROJ, [SIMVER], "koma_hashs", ".jls") do 
-        UInt64[]
-    end
-    push!(koma_hashs, setdiff(_koma_hashs, koma_hashs)...)
-    unique!(koma_hashs)
-    sort!(koma_hashs)
-    
-    sprocdat(PROJ, koma_hashs, 
-        [SIMVER], "koma_hashs", ".jls"
-    )
-    sprocdat(PROJ, koma_reg, 
-        [SIMVER], "koma_reg", (;h = hash(koma_hashs)), ".jls"
-    )
-
-    # log
-    _log("SYNC"; h=hash(koma_hashs), loginfo...)
-end
+include("1.1_utils.jl")
 
 # ------------------------------------------------------------
 # Prepare network
@@ -79,15 +43,15 @@ end
     target_rxn0is = Int16.(colindex(lep0, target_rxn0s))
     koma_hashs = UInt64[]
     # koma_idxs => status
-    koma_reg = Dict{Vector{Int16}, Symbol}()
-    _sync_state!(koma_hashs, koma_reg)
+    obj_reg = Dict{String, Any}[]
+    _sync_state!(koma_hashs, obj_reg)
     
     sync_frec = 5000 # iters
     log_frec = 10.0 # seconds
     roll_count = 0
     batch_size = 3 # kos per roll
     effitiency = 1.0
-    effitiency_th = 0.5 # stop if "effitiency < effitiency_th"
+    effitiency_th = 0.3 # stop if "effitiency < effitiency_th"
     
     # locks
     lkpath = procdir(PROJ, [SIMVER], "koma_sync.lk")
@@ -110,7 +74,7 @@ end
         for ko in 1:Int(1e7)
             
             # init
-            bounds!(th_opm, :, lb0, ub0) 
+            bounds!(th_opm, :, lb0, ub0) # reset bounds
             th_target_rxn0is = shuffle(target_rxn0is)
             koset = Int16[]
             koset_hash = hash(0)
@@ -165,24 +129,26 @@ end
             lock(thlk) do
                 roll_count += 1
                 if status != :REVISED
-                    koma_reg[koset] = status
+                    # push object
+                    obj = Dict{String, Any}("koset" => koset, "koma_status" => status)
+                    push!(obj_reg, obj)
                     # insert hash
                     i = searchsortedfirst(koma_hashs, koset_hash)
                     insert!(koma_hashs, i, koset_hash)
                 end
                 
                 tot_time = time() - init_time
-                effitiency = length(koma_reg) / roll_count
+                effitiency = length(obj_reg) / roll_count
 
                 # sync state
-                if length(koma_reg) > sync_frec
+                if length(obj_reg) > sync_frec
                     
                     lock(proclk; proclk_ops...) do
-                        _sync_state!(koma_hashs, koma_reg)
+                        _sync_state!(koma_hashs, obj_reg)
                     end
                     
                     # empty to save memmory
-                    empty!(koma_reg)
+                    empty!(obj_reg)
                     roll_count = 0
                     GC.gc()
                 end
@@ -195,12 +161,12 @@ end
                             opt_reltime = opt_time / tot_time,
                             roll_count = roll_count,
                             koma_hashs_len = length(koma_hashs),
-                            koma_reg_len = length(koma_reg),
+                            obj_reg_len = length(obj_reg),
                             koset_len = length(koset),
                             obj_val = obj_val,
                             batch_size = batch_size,
                             koma_hashs_size = Base.summarysize(koma_hashs),
-                            koma_reg_size = Base.summarysize(koma_reg),
+                            obj_reg_size = Base.summarysize(obj_reg),
                             status = status, 
                         )
                     end
@@ -217,7 +183,7 @@ end
 
     # save state
     lock(proclk; proclk_ops...) do
-        _sync_state!(koma_hashs, koma_reg)
+        _sync_state!(koma_hashs, obj_reg)
         _log("FINISHED")
     end
 
