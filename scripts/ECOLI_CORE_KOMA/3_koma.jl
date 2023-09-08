@@ -71,7 +71,7 @@ include("1.1_utils.jl")
         th_opm = FBAOpModel(lep0, LP_SOLVER)
         set_linear_obj!(th_opm, obj_idx, MAX_SENSE)
         
-        for ko in 1:Int(1e7)
+        for ko in 1:Int(1e8)
             
             # init
             bounds!(th_opm, :, lb0, ub0) # reset bounds
@@ -173,9 +173,9 @@ include("1.1_utils.jl")
                     last_log = time()
                 end
 
-                if roll_count > (0.1 * sync_frec) && effitiency < effitiency_th
-                    _break = true;
-                end
+                # if roll_count > (0.1 * sync_frec) && effitiency < effitiency_th
+                #     _break = true;
+                # end
             end # lock(lk) do
             _break && break # for ko
         end # for ko

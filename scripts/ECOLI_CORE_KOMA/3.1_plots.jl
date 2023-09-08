@@ -1,12 +1,12 @@
 ## ------------------------------------------------------------
 @time begin
-    using Plots
     using Random
     using MetXGEMs
     using MetXBase
     using MetXOptim
     using Statistics
     using MetXNetHub
+    using CairoMakie
     using Base.Threads
     using ProgressMeter
     using Combinatorics
@@ -22,8 +22,8 @@ include("1.1_utils.jl")
 # KOMA KO length distribution
 let
     n = Inf
-    cid = (:LENGHT, n)
-    _, h0 = withcachedat(PROJ, :get!, cid) do
+    cid = (@__FILE__, :LENGHT, n)
+    _, h0 = withcachedat(PROJ, :set!, cid) do
         _h0 = identity_histogram(Int)
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
         @time _foreach_obj_reg(;n) do fn, obj_reg
@@ -36,12 +36,20 @@ let
         return _h0
     end
 
-    # plot
-    xs = sort(collect(keys(h0)))
+    # Plots
+    xs = collect(bins(h0))
     ws = counts(h0, xs)
+    @show length(ws) / sum(ws)
 
-    p = plot(; xlabel = "koset length", ylabel = "count")
-    bar!(p, xs, ws; label = "", c = :black)
+    sidxs = sortperm(xs)
+    f = Figure()
+    ax = Axis(f[1,1]; 
+        title = basename(@__DIR__),
+        xlabel = "koset length", ylabel = "count", 
+        # yscale = Makie.pseudolog10
+    )
+    barplot!(ax, xs[sidxs], ws[sidxs]; label = "", color = :black)
+    f
 end
 
 ## ------------------------------------------------------------

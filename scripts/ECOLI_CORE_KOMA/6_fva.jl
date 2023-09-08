@@ -19,7 +19,7 @@ include("1_setup_sim.jl")
 include("1.1_utils.jl")
 
 ## ------------------------------------------------------------
-@tempcontext ["FVA" => v"0.2.0"] let
+@tempcontext ["FVA" => v"0.3.0"] let
     
     # dbs
     glob_db = query(["ROOT", "GLOBALS"])
@@ -30,7 +30,7 @@ include("1.1_utils.jl")
     objfiles = readdir(procdir(PROJ, [SIMVER]); join = true)
     @threads for fn in shuffle(objfiles)
         contains(basename(fn), "obj_reg") || continue
-        @show fn
+        println("[", getpid(), ".", threadid(), "] ", fn)
 
         # deserialize
         _, obj_reg = ldat(fn)
@@ -44,6 +44,7 @@ include("1.1_utils.jl")
         M, N = size(lep0)
         
         # run
+        do_save = false
         alg_ver = context("FVA")
         for obj in obj_reg
 
@@ -55,6 +56,7 @@ include("1.1_utils.jl")
             
             if isempty(feaset) 
                 obj["fva_ver"] = alg_ver
+                do_save = true
                 continue
             end
 
@@ -62,13 +64,16 @@ include("1.1_utils.jl")
             ko_th = 1e-5
             _with_kos(lep0, feaset) do
                 fvalb, fvaub = fva(lep0, LP_SOLVER; verbose = false)
+                obj["fva.fvalb"] = fvalb
+                obj["fva.fvaub"] = fvaub
                 obj["fva.kos"] = findall((abs.(fvalb) .+ abs.(fvaub)) .< ko_th)
+                do_save = true
             end 
             obj["fva_ver"] = alg_ver
             
         end # for reg in obj_reg
         
         # serialize
-        sdat(obj_reg, fn)
+        do_save && sdat(obj_reg, fn)
     end # for fn 
 end

@@ -18,10 +18,11 @@ include("1_setup_sim.jl")
 include("1.1_utils.jl")
 
 # ------------------------------------------------------------
+# TODO: make cross script (not manual)
 FVA_ALG_VER = v"0.2.0"
 
 ## ------------------------------------------------------------
-# Net histogram
+# Net redundancy
 let
     n = Inf
     cid = (:NET_HIST, n, FVA_ALG_VER)
