@@ -336,7 +336,7 @@ weakdeps = ["IntervalSets", "StaticArrays"]
 
 [[deps.ContextDBs]]
 deps = ["Dates", "OrderedCollections", "Random", "Serialization"]
-path = "/Users/Pereiro/.julia/dev/ContextDBs"
+path = "/home/pereiro/.julia/dev/ContextDBs"
 uuid = "f7273666-c521-4805-9666-bf343237b2c9"
 version = "0.1.0"
 
@@ -368,7 +368,7 @@ version = "1.15.0"
 
 [[deps.DataFileNames]]
 deps = ["Printf", "RegexTools"]
-path = "/Users/Pereiro/.julia/dev/DataFileNames"
+path = "/home/pereiro/.julia/dev/DataFileNames"
 uuid = "82dba31a-8ab6-430f-a22d-9cbb81344561"
 version = "0.4.0"
 
@@ -920,7 +920,7 @@ version = "3.1.7+0"
 
 [[deps.ImgTools]]
 deps = ["CairoMakie", "Colors", "DataFileNames", "FileIO", "FixedPointNumbers", "Images", "Plots"]
-path = "/Users/Pereiro/.julia/dev/ImgTools"
+path = "/home/pereiro/.julia/dev/ImgTools"
 uuid = "60a16571-0043-4368-b1b0-a5366d36b020"
 version = "0.2.0"
 
@@ -1374,49 +1374,49 @@ version = "0.3.2"
 
 [[deps.MetX]]
 deps = ["Distributions", "MetXBase", "MetXCultureHub", "MetXEP", "MetXGEMs", "MetXMC", "MetXNetHub", "MetXOptim", "Pkg", "Reexport"]
-path = "/Users/Pereiro/.julia/dev/MetX"
+path = "/home/pereiro/.julia/dev/MetX"
 uuid = "01815447-a018-4668-9805-89f51b3fc6a1"
 version = "0.1.5"
 
 [[deps.MetXBase]]
 deps = ["LinearAlgebra", "MAT", "Printf", "ProgressMeter", "RunTestsEnv", "SparseArrays", "SpecialFunctions", "Statistics", "StringRepFilter", "UnicodePlots"]
-path = "/Users/Pereiro/.julia/dev/MetXBase"
+path = "/home/pereiro/.julia/dev/MetXBase"
 uuid = "0b8c4419-604a-4c8e-9eed-0f79de4a140e"
 version = "0.1.10"
 
 [[deps.MetXCultureHub]]
 deps = ["ContextDBs", "Scratch", "Serialization"]
-path = "/Users/Pereiro/.julia/dev/MetXCultureHub"
+path = "/home/pereiro/.julia/dev/MetXCultureHub"
 uuid = "c8a5ff98-18da-494d-98cc-f2d3bae7da4c"
 version = "0.1.1"
 
 [[deps.MetXEP]]
 deps = ["Distributions", "ExtractMacro", "LinearAlgebra", "Measurements", "MetXBase", "MetXOptim", "Optim", "Printf", "ProgressMeter", "Reexport", "RunTestsEnv", "SparseArrays", "SpecialFunctions", "Statistics"]
-path = "/Users/Pereiro/.julia/dev/MetXEP"
+path = "/home/pereiro/.julia/dev/MetXEP"
 uuid = "3facea42-c6d8-46ab-8896-2657a92d9f87"
 version = "0.1.3"
 
 [[deps.MetXGEMs]]
 deps = ["COBREXA", "LinearAlgebra", "MAT", "MetXBase", "RunTestsEnv", "Serialization", "SparseArrays", "Statistics", "StringRepFilter"]
-path = "../MetXGEMs"
+path = "/home/pereiro/.julia/dev/MetXGEMs"
 uuid = "f53f3d78-cab5-4f57-a3bb-d62de48011ec"
 version = "0.1.0"
 
 [[deps.MetXMC]]
 deps = ["Distributions", "GLPK", "JuMP", "LinearAlgebra", "MetXBase", "MetXEP", "MetXGEMs", "MetXNetHub", "MetXOptim", "Random", "SparseArrays"]
-path = "/Users/Pereiro/.julia/dev/MetXMC"
+path = "/home/pereiro/.julia/dev/MetXMC"
 uuid = "d4a97fa3-1e77-4085-814f-98651929ce7d"
 version = "0.1.0"
 
 [[deps.MetXNetHub]]
 deps = ["MetXBase", "MetXCultureHub", "MetXGEMs", "RunTestsEnv", "Scratch", "Serialization", "SparseArrays"]
-path = "/Users/Pereiro/.julia/dev/MetXNetHub"
+path = "/home/pereiro/.julia/dev/MetXNetHub"
 uuid = "be9415a8-24b2-49ae-ba75-41eeaa9f722f"
 version = "0.1.6"
 
 [[deps.MetXOptim]]
 deps = ["Clp", "GLPK", "Ipopt", "JuMP", "MetXBase", "ProgressMeter", "RunTestsEnv", "SparseArrays", "Tulip"]
-path = "/Users/Pereiro/.julia/dev/MetXOptim"
+path = "/home/pereiro/.julia/dev/MetXOptim"
 uuid = "672bf490-d3aa-44fe-a664-43445036b9de"
 version = "0.1.8"
 
@@ -1782,7 +1782,7 @@ version = "1.7.2"
 
 [[deps.ProjFlows]]
 deps = ["ContextDBs", "DataFileNames", "DrWatson", "ExtractMacro", "FileIO", "FilesTreeTools", "ImgTools", "Logging", "Pkg", "Requires", "Serialization"]
-path = "/Users/Pereiro/.julia/dev/ProjFlows"
+path = "/home/pereiro/.julia/dev/ProjFlows"
 uuid = "cac8b402-4888-4912-9502-a4f91500dd77"
 version = "0.1.0"
 
@@ -1932,7 +1932,7 @@ version = "0.2.1"
 
 [[deps.RunTestsEnv]]
 deps = ["Pkg"]
-path = "../RunTestsEnv"
+path = "/home/pereiro/.julia/dev/RunTestsEnv"
 uuid = "aeeda050-7d39-4c85-b6eb-65567cadcf4d"
 version = "0.1.5"
 
@@ -2031,7 +2031,7 @@ version = "0.8.4"
 
 [[deps.SimpleLockFiles]]
 deps = ["Random"]
-path = "/Users/Pereiro/.julia/dev/SimpleLockFiles"
+path = "/home/pereiro/.julia/dev/SimpleLockFiles"
 uuid = "0c975e61-21d9-4454-8de5-ff08fd2c478f"
 version = "0.5.0"
 
