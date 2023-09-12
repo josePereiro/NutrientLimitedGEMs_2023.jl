@@ -44,12 +44,13 @@ end
 SIMVER = "CORE_TO_GEM-ECOLI-0.1.0"
 
 _load_contextdb(SIMVER)
-cacherefs_dir!(cachedir(PROJ))
+cacherefs_dir!(cachedir(PROJ, SIMVER))
 @context! "ROOT" SIMVER
 @commit! ["META"] "DESC" => """
+    Reproducing the enviroment of phase 1 (only glc) from Beg 2007
     1. Using the core model (reduced)
         1.1. I'll impose fractional KO (flux reduction) batches to the network and evaluate:
-            i) feasibility 
+            i) feasibility
             ii) shadow price for several nutrients
             iii) etc
     2. Using the GEM (iJO1366)

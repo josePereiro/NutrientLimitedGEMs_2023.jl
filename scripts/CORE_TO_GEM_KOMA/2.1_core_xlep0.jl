@@ -1,35 +1,43 @@
+## ------------------------------------------------------------
 @time begin
-    using MetXBase
     using MetXGEMs
+    using MetXBase
     using MetXOptim
     using MetXNetHub
     using NutrientLimitedGEMs
-    using Clp
-    # using COBREXA
 end
 
+# ------------------------------------------------------------
+include("1_setup_sim.jl")
+include("1.1_utils.jl")
+
 ## ------------------------------------------------------------
-# From Beg
-# TODO: use the culture phase separation for analysis (Fig 2).
-# TODO: Try to close the loop by using the transcriptomic analysis (Fig 4).
+# Prepare network
+@tempcontext ["CORE_XLEP" => v"0.1.0"] let
 
-# TODO: add a disscusion folder to projects.
+    # -------------------------------------------
+    # globals
+    glob_db = query(["ROOT", "GLOBALS"])
+    LP_SOLVER = glob_db["LP_SOLVER"]
+    CORE_NET_ID = glob_db["CORE_NET_ID"]
+    GEM_NET_ID = glob_db["GEM_NET_ID"]
+    NTHREADS = glob_db["NTHREADS"]
 
-# TODO: Oba> Maybe, just maybe... separate the note part from automatization part of the work flow. 
-# The note part is done primarily on Obsidian and the developing on vscode.
-# The note will be just input, no code on it. 
-# The Obsidian extenssion must have an Open on vscode functionality, the vscode Extention the other way around. 
-let
-    global core_net0 = pull_net("ecoli_core")
-    global core_net0 = resize(core_net0; 
+    # -------------------------------------------
+    # nets
+    core_net0 = pull_net("ecoli_core")
+    gem_net0 = pull_net("iJO1366")
+
+    # -------------------------------------------
+    # Add nutrient uptake reations
+    core_net0 = resize(core_net0; 
         nmets = size(core_net0, 1) + 20,
         nrxns = size(core_net0, 2) + 20,
     )
-    global gem_net0 = pull_net("iJO1366")
 
     # -------------------------------------------
     # Galactose
-    # -------------------------------------------
+
     println("-"^40)
     println("Galactose")
     println("-"^40)
@@ -158,7 +166,7 @@ let
 
     # -------------------------------------------
     # Maltose
-    # -------------------------------------------
+
     println()
     println("-"^40)
     println("Maltose")
@@ -235,7 +243,7 @@ let
 
     # -------------------------------------------
     # Glycerol
-    # -------------------------------------------
+
     println()
     println("-"^40)
     println("Glycerol")
@@ -323,41 +331,83 @@ let
     println(colid, ": ", col_str(core_net0, colid))
 
     # -------------------------------------------
-    # FBA TEST
+    # open complex medium
+    core_net0 = emptyless_model(core_net0)
+
+    # Bounds from Beg et al, 2007, fig 3
+    # We just need the maximum rates. 
+    # Original in (mmol/ min g)
+    # 1 [mmol/ min g] * 60 = 1 [mmol/ h g]
+    # adjustment growth factor (I aim to adjust the maximum growth to match glucose only regime ~0.8 1/h (Fig2, a))
+    # At least I keep the relation between maximal nutrient intakes
+    @stage! gf = 0.18 
+    lb!(core_net0, "EX_glc__D_e", -0.9 * 60 * gf)
+    lb!(core_net0, "EX_lac__D_e", -1.0 * 60 * gf)
+    lb!(core_net0, "EX_malt_e", -0.1 * 60 * gf)
+    lb!(core_net0, "EX_gal_e", -0.2 * 60 * gf)
+    lb!(core_net0, "EX_glyc_e", -0.6 * 60 * gf)
+    lb!(core_net0, "EX_ac_e", -1.5 * 60 * gf)
+    ub!(core_net0, "EX_ac_e", 2.0 * 60 * gf)
+
     # -------------------------------------------
+    # Post processing
+    core_lep0 = lepmodel(core_net0)
+    
+    # blep
+    cid = (:BOX, CORE_NET_ID, hash(core_lep0))
+    _, core_blep0ref = withcachedat(PROJ, :get!, cid) do 
+        core_blep0 = box(core_lep0, LP_SOLVER; nths = NTHREADS, verbose = true)
+        return CacheRef(core_blep0)
+    end
+
+    # elep
+    cid = (:ELEP, CORE_NET_ID, hash(core_blep0ref))
+    _, core_elep0ref = withcachedat(PROJ, :get!, cid) do 
+        core_blep0 = core_blep0ref[]
+        core_elep0 = EchelonLEPModel(core_blep0; verbose = true)
+        return CacheRef(core_elep0)
+    end
+
+    # stage nets
+    core_lep0ref = CacheRef(core_lep0)
+    core_net0ref = CacheRef(core_net0)
+    @stage! "core_net0" => core_net0ref
+    @stage! "core_lep0" => core_lep0ref
+    @stage! "core_blep0" => core_blep0ref
+    @stage! "core_elep0" => core_elep0ref
+
+    # -------------------------------------------
+    # FBA TEST
+
     println()
     println("="^40)
-    println("FBA TEST")
+    println("LEP FBA TEST")
     println()
     
     # EX_gal_e
-    let net = emptyless_model(core_net0)
-        biom_id = "BIOMASS_Ecoli_core_w_GAM"
-        linear_weights!(net, biom_id, 1.0)
-        lb!(net, "EX_glc__D_e", 0.0)
+    let 
+        _core_net0 = deepcopy(core_net0)
+        biom_id = extras(_core_net0, "BIOM")
+        linear_weights!(_core_net0, biom_id, 1.0)
+        exchs = ["EX_glc__D_e", "EX_lac__D_e", "EX_malt_e", "EX_gal_e", "EX_glyc_e", "EX_ac_e"]
+        lb!(_core_net0, exchs, 0.0)
         
-        for nut_id in [
-                "EX_glc__D_e", 
-                "EX_lac__D_e", 
-                "EX_malt_e", 
-                "EX_gal_e", 
-                "EX_glyc_e",
-                "EX_ac_e"
-            ]
+        for nut_id in exchs
+
             println("-"^40)
             println(nut_id)
 
-            lb!(net, nut_id, -10.0)
-            opm = fba(net, Clp.Optimizer)
+            lb!(_core_net0, nut_id, -10.0)
+            opm = fba(_core_net0, Clp.Optimizer)
             println(biom_id, ": ", solution(opm, biom_id))
             # println(nut_id, ": ", solution(opm, nut_id))
             @assert solution(opm, biom_id) > 1e-2
-            lb!(net, nut_id, 0.0)
+            lb!(_core_net0, nut_id, 0.0)
         end    
 
         # -------------------------------------------
         # EXP
-        # -------------------------------------------
+
         println()
         println("="^40)
         println("EXPERIMENTS")
@@ -365,108 +415,65 @@ let
         
         # -------------------------------------------
         println("-"^40)
-        println("Glc regime")
-        gf = 0.18
-        lb!(net, "EX_glc__D_e", -0.9 * 60 * gf)
-        opm = fba(net, Clp.Optimizer)
+        println("Glc phase")
+        lb!(_core_net0, exchs, 0.0)
+        exch = "EX_glc__D_e"
+        lb!(_core_net0, exch, lb(core_net0, exch))
+        opm = fba(_core_net0, Clp.Optimizer)
         println(biom_id, ": ", solution(opm, biom_id))
-        lb!(net, "EX_glc__D_e", 0.0)
+        lb!(_core_net0, exchs, 0.0)
         
         # -------------------------------------------
         println("-"^40)
-        println("Lac-Mal-Gal regime")
-        gf = 0.18
-        lb!(net, "EX_lac__D_e", -1.0 * 60 * gf)
-        lb!(net, "EX_malt_e", -0.1 * 60 * gf)
-        lb!(net, "EX_gal_e",-0.2 * 60 * gf)
-        opm = fba(net, Clp.Optimizer)
+        println("Lac-Mal-Gal phase")
+        lb!(_core_net0, exchs, 0.0)
+        exch = "EX_lac__D_e"
+        lb!(_core_net0, exch, lb(core_net0, exch))
+        exch = "EX_malt_e"
+        lb!(_core_net0, exch, lb(core_net0, exch))
+        exch = "EX_gal_e"
+        lb!(_core_net0, exch, lb(core_net0, exch))
+        opm = fba(_core_net0, Clp.Optimizer)
         println(biom_id, ": ", solution(opm, biom_id))
-        lb!(net, "EX_lac__D_e", 0.0)
-        lb!(net, "EX_malt_e", 0.0)
-        lb!(net, "EX_gal_e", 0.0)
+        lb!(_core_net0, exchs, 0.0)
 
         # -------------------------------------------
         println("-"^40)
-        println("Glyc-Ac regime")
-        gf = 0.18
-        lb!(net, "EX_glyc_e", -0.1 * 60 * gf)
-        lb!(net, "EX_ac_e", -0.6 * 60 * gf)
-        opm = fba(net, Clp.Optimizer)
+        println("Glyc-Ac phase")
+        lb!(_core_net0, exchs, 0.0)
+        exch = "EX_glyc_e"
+        lb!(_core_net0, exch, lb(core_net0, exch))
+        exch = "EX_ac_e"
+        lb!(_core_net0, exch, lb(core_net0, exch))
+        opm = fba(_core_net0, Clp.Optimizer)
         println(biom_id, ": ", solution(opm, biom_id))
-        lb!(net, "EX_glyc_e", 0.0)
-        lb!(net, "EX_ac_e", 0.0)
+        lb!(_core_net0, exchs, 0.0)
     end
 
-    global core_net0 = emptyless_model(core_net0)
-
-end
-
-
-
-
-
-
-
-## ------------------------------------------------------------
-## ------------------------------------------------------------
-## ------------------------------------------------------------
-## ------------------------------------------------------------
-## ------------------------------------------------------------
-let
-    # net
-    global core_net0 = pull_net("iJO1366")
+    # Test FBA
+    println()
+    println("="^40)
+    println("ELEP FBA TEST")
+    println()
     
-    #  open complex medium
-    # Bounds from Beg et al, 2007, fig 3
-    # We just need the maximum rates. 
-    # Original in (mmol/ min g)
-    # 1 [mmol/ min g] * 60 = 1 [mmol/ h g]
-    # adjustment growth factor (I aim to adjust the maximum growth to match glucose only regime (Fig2, a))
-    gf = 0.18 
-    lb!(core_net0, "EX_glc__D_e", -0.9 * 60 * gf)
-    # lb!(core_net0, "EX_lac__L_e", -1.0 * 60 * gf)
-    # lb!(core_net0, "EX_malt_e", -0.1 * 60 * gf)
-    # lb!(core_net0, "EX_gal_e", -0.2 * 60 * gf)
-    # lb!(core_net0, "EX_glyc_e", -0.6 * 60 * gf)
-    # lb!(core_net0, "EX_ac_e", -1.5 * 60 * gf)
-    # ub!(core_net0, "EX_ac_e", 2.0 * 60 * gf)
-
-    opm = fba(core_net0, Clp.Optimizer)
-    rxnid = "BIOMASS_Ecoli_core_w_GAM"
-    println(rxnid, ": ", solution(opm, rxnid))
-
-end
-
-## ------------------------------------------------------------
-let
-    for id in reactions(core_net0)
-        contains(id, "EX") || continue
-        summary(core_net0, id)
+    let 
+        _core_lep0 = core_lep0ref[]
+        _core_elep0 = core_elep0ref[]
+        obj_id = extras(_core_lep0, "BIOM")
+        _opm = FBAOpModel(_core_lep0, LP_SOLVER)
+        set_linear_obj!(_opm, obj_id, MAX_SENSE)
+        optimize!(_opm)
+        @show solution(_opm, obj_id)
+        @assert solution(_opm, obj_id) > 0.5
+        
+        @show size(_core_lep0, 2)
+        @show length(_core_elep0.idxi)
+        @show length(_core_elep0.idxi) / size(_core_lep0, 2)
     end
+
+    nothing
 end
 
 ## ------------------------------------------------------------
-let
-    # net
-    global core_net0 = pull_net("ecoli_core")
-    
-    #  open complex medium
-    # Bounds from Beg et al, 2007, fig 3
-    # We just need the maximum rates. 
-    # Original in (mmol/ min g)
-    # 1 [mmol/ min g] * 60 = 1 [mmol/ h g]
-    # adjustment growth factor (I aim to adjust the maximum growth to match glucose only regime (Fig2, a))
-    gf = 0.18 
-    lb!(core_net0, "EX_glc__D_e", -0.9 * 60 * gf)
-    lb!(core_net0, "EX_lac__D_e", -1.0 * 60 * gf)
-    # # lb!(core_net0, "EX_malt_e", -0.1 * 60 * gf)
-    # # lb!(core_net0, "EX_gal_e", -0.2 * 60 * gf)
-    # # lb!(core_net0, "EX_glyc_e", -0.6 * 60 * gf)
-    # lb!(core_net0, "EX_ac_e", -1.5 * 60 * gf)
-    # ub!(core_net0, "EX_ac_e", 2.0 * 60 * gf)
-
-    opm = fba(core_net0, Clp.Optimizer)
-    @show solution(opm, "BIOMASS_Ecoli_core_w_GAM")
-    @show solution(opm, extras(core_net0, "EX_GLC"))
-
-end
+# save
+_save_contextdb(SIMVER)

@@ -1,3 +1,28 @@
+## ------------------------------------------------------------
+function _merge_metinfo!(dest_net1, id1, src_net2, id2)
+    meti1 = metindex(dest_net1, id1)
+    meti2 = metindex(src_net2, id2)
+    
+    for f in [:metNames, :metFormulas]
+        val2 = _getindex_or_nothing(getfield(src_net2, f), meti2)
+        isnothing(val2) || _setindex_or_nothing!(
+            getfield(dest_net1, f), meti1, val2
+        )
+    end
+end
+
+function _merge_rxninfo!(dest_net1, id1, src_net2, id2)
+    rxni1 = rxnindex(dest_net1, id1)
+    rxni2 = rxnindex(src_net2, id2)
+    
+    for f in [:subSystems, :rxnNames]
+        val2 = _getindex_or_nothing(getfield(src_net2, f), rxni2)
+        isnothing(val2) || _setindex_or_nothing!(
+            getfield(dest_net1, f), rxni1, val2
+        )
+    end
+end
+
 # ------------------------------------------------------------
 function _log(msg; loginfo...)
 
