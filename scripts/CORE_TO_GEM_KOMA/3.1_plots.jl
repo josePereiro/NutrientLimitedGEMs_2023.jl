@@ -2,6 +2,7 @@
 @time begin
     using Random
     using MetXBase
+    using ProjFlows
     using Statistics
     using CairoMakie
     using Base.Threads

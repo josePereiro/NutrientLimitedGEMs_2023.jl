@@ -167,12 +167,12 @@ include("1.1_utils.jl")
                     lock(proclk; proclk_ops...) do
                         _log("INFO" ;
                             koma_hashs_len = length(koma_hashs),
+                            koset_len = length(koset),
                             effitiency = effitiency,
                             downreg_factor = downreg_factor,
                             opt_reltime = opt_time / tot_time,
                             roll_count = roll_count,
                             obj_reg_len = length(obj_reg),
-                            koset_len = length(koset),
                             obj_val = obj_val,
                             batch_size = batch_size,
                             # koma_hashs_size = Base.summarysize(koma_hashs),
