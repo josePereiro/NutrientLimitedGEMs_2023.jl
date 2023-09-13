@@ -1,8 +1,8 @@
 ## ------------------------------------------------------------
 @time begin
     using Random
-    using MetXBase
     using MetXGEMs
+    using MetXBase
     using ProjFlows
     using Statistics
     using CairoMakie
@@ -43,8 +43,7 @@ let
     f = Figure()
     ax = Axis(f[1,1]; 
         title = basename(@__DIR__),
-        xlabel = "core_koma.koset length", ylabel = "count", 
-        # yscale = Makie.pseudolog10
+        xlabel = "core_koma.koset length", ylabel = "count",
     )
     barplot!(ax, xs[sidxs], ws[sidxs]; label = "", color = :black)
     f
@@ -58,7 +57,7 @@ let
     
     # build histogram
     lk = ReentrantLock()
-    c = 4 # combinatiric dimension
+    c = 1 # combinatiric dimension
     n = Inf # n files
     cid = (:COMB, c, n)
     _, len_h_pool = withcachedat(PROJ, :get!, cid) do
@@ -67,7 +66,7 @@ let
         @time _foreach_obj_reg(;n) do fn, obj_reg
             @show fn
             @threads for obj in obj_reg
-                koset = obj["koset"]
+                koset = obj["core_koma.koset"]
                 h = lock(lk) do
                     get!(h_pool, (threadid(), length(koset))) do
                         deepcopy(h0)
@@ -91,42 +90,45 @@ let
     end
 
     # plot
-    p = plot(; 
+    f = Figure()
+    ax = Axis(f[1,1]; 
         title = string("comb: ", c),
         xlabel = "comb index (sorted)", 
         ylabel = "count"
     )
 
     # lens = 1:41
-    lens = keys(len_h_pool)
-    colors = colormap("Grays", maximum(lens))
+    lens = len_h_pool |> keys |> collect |> sort
+    lens = lens[1:5:end]
+    # colors = colormap("Grays", maximum(lens))
     sidxs = nothing
     for l in sort(collect(lens))
         haskey(len_h_pool, l) || continue
 
         h0 = len_h_pool[l]
         ws = collect(counts(h0))
-        @show length(ws)
+        # @show length(ws)
         all(iszero, ws) && continue
 
         lock(lk) do
             # if isnothing(sidxs)
                 sidxs = sortperm(ws)
-                st = max(div(length(sidxs), 1000), 1)
-                sidxs = sidxs[1:st:end]
+                # st = max(div(length(sidxs), 1000), 1)
+                # sidxs = sidxs[1:st:end]
             # end
 
             xs = range(0.0, 1.0; length = length(sidxs))
-            plot!(p, ws[sidxs]; 
+            lines!(ax, ws[sidxs]; 
                 label = string("len: ", l), 
-                lw = 3, c = colors[l], 
+                # lw = 3, 
+                # color = colors[l], 
                 # alpha = 0.9, 
                 # ylim = [0, maximum(ws)]
             )
         end
     end
 
-    p
+    f
 end
 
 ## ------------------------------------------------------------
