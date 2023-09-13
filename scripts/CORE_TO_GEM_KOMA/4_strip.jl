@@ -4,12 +4,7 @@
     using MetXGEMs
     using MetXBase
     using MetXOptim
-    using Statistics
-    using MetXNetHub
-    using CairoMakie
     using Base.Threads
-    using ProgressMeter
-    using Combinatorics
     using NutrientLimitedGEMs
 end
 
@@ -28,71 +23,83 @@ include("1.1_utils.jl")
 
 # IDEA: Add obj renamer cli
 
-@tempcontext ["STRIP" => v"0.1.0"] let
+@tempcontext ["CORE_STRIP" => v"0.1.0"] let
     
     # dbs
     glob_db = query(["ROOT", "GLOBALS"])
-    xlep_db = query(["ROOT", "XLEP"])
+    xlep_db = query(["ROOT", "CORE_XLEP"])
 
     # koma files
     objfiles = readdir(procdir(PROJ, [SIMVER]); join = true)
     @threads for fn in shuffle(objfiles)
         contains(basename(fn), "obj_reg") || continue
-        println("[", getpid(), ".", threadid(), "] ", fn)
 
         # deserialize
         _, obj_reg = ldat(fn)
+        isempty(obj_reg) && continue
 
         # globals
         LP_SOLVER = glob_db["LP_SOLVER"]
         
         # lep
-        lep0 = lepmodel(xlep_db["elep0"][])
-        obj_id = extras(lep0, "BIOM")
-        obj_idx = colindex(lep0, obj_id)
+        core_elep0 = xlep_db["core_elep0"][]
+        core_lep0 = lepmodel(core_elep0)
+        core_elep0 = nothing
+        obj_id = extras(core_lep0, "BIOM")
+        obj_idx = colindex(core_lep0, obj_id)
+
+        # opm
+        opm = FBAOpModel(core_lep0, LP_SOLVER)
         
         # run
         do_save = false
-        alg_ver = context("STRIP")
-        for obj in obj_reg
+        ALG_VER = context("CORE_STRIP")
+        info_frec = 100
+        for (obji, obj) in enumerate(obj_reg)
 
             # check done
-            get(obj, "strip_ver", :NONE) == alg_ver && break
+            get(obj, "core_strip.ver", :NONE) == ALG_VER && continue
             do_save = true
+
+            # info
+            info_flag = obji == 1 || obji == lastindex(obj_reg) || iszero(rem(obji, info_frec)) 
+            info_flag && println("[", getpid(), ".", threadid(), "] ", 
+                "obji ", obji, "\\", length(obj_reg), " ",
+                basename(fn)
+            )
             
-            koset = obj["koset"]
-            
+            # koset
+            koset = obj["core_koma.koset"]
             if isempty(koset) 
-                obj["strip_ver"] = alg_ver
+                obj["core_strip.ver"] = ALG_VER
                 continue
             end
 
             # strip
-            obj["strip.koset"] = Int16[]
-            for koi in reverse(eachindex(koset))
-                
-                ko_th = 1e-5
+            obj["core_strip.koset"] = Int16[]
+            downreg_factor = 0.3 # TOSYNC
+            obj_val_th = 0.01 # TOSYNC
+            for downi in reverse(eachindex(koset))
                 feasible = true
-                _with_kos(lep0, koset[1:koi]) do
-                    opm = FBAOpModel(lep0, LP_SOLVER)
+                subdown = koset[1:downi]
+                _with_downreg(opm, subdown, downreg_factor) do
                     set_linear_obj!(opm, obj_idx, MAX_SENSE)
                     sol = 0.0
                     try; optimize!(opm)
                         sol = solution(opm, obj_idx)
                     catch e; end
-                    feasible = sol > ko_th
+                    feasible = sol > obj_val_th
                 end
                 
                 if feasible 
-                    obj["strip.koset"] = koset[1:koi+1]
+                    obj["core_strip.koset"] = koset[1:downi+1]
                     break
-                end
-                
-            end
-            obj["strip_ver"] = alg_ver
+                end 
+            end # for downi 
+            obj["core_strip.ver"] = ALG_VER
         end # for reg in obj_reg
         
-        # serialize
+        # save
         do_save && sdat(obj_reg, fn)
         
     end # for fn 

@@ -142,6 +142,23 @@ function _with_kos(f::Function, model, kos::Vector; zero = 0.0)
     end
 end
 
+function _apply_downreg!(model, todown, downreg_factor)
+    l, u = bounds(model, todown)
+    bounds!(model, todown, l * downreg_factor, u * downreg_factor)
+end
+function _apply_downreg!(model, todownv::Vector, downreg_factor) 
+    foreach(todownv) do todown    
+        _apply_downreg!(model, todown, downreg_factor)
+    end
+end
+
+function _with_downreg(f::Function, model, todownv::Vector, downreg_factor)
+    todownv = colindex(model, todownv)
+    lb0, ub0 = bounds(model, todownv)
+    try; _apply_downreg!(model, todownv, downreg_factor); f()
+    finally; bounds!(model, todownv, lb0, ub0)
+    end
+end
 
 # ------------------------------------------------------------
 nothing
