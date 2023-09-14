@@ -9,6 +9,7 @@ while true; do
     echo;
     echo "------------------------------------";
     # ls data/processed/ECOLI-CORE-0.1.0 -hll | head -n4;
+    ls data/processed/CORE_TO_GEM-ECOLI-0.1.0 -1 | wc -l
     ls data/processed/CORE_TO_GEM-ECOLI-0.1.0 -hll | head -n4;
 
     echo;
