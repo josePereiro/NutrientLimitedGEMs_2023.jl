@@ -14,16 +14,25 @@ include("1_setup_sim.jl")
 include("1.1_utils.jl")
 
 ## ------------------------------------------------------------
-@tempcontext ["CORE_FVA" => v"0.1.0"] let
+# IDEA: ProjFlows, save all variables except the one with a given naming convention 
+# Ex: var (yes), _var (yes), __var (no)
+# Also, have a gitignore kind of configuration
+# All computation/saving happends at a @commit like macro
+
+# TODO: Add file lock to 'sdat'...
+
+# IDEA: Add obj renamer cli
+
+@tempcontext ["CORE_FEASETS" => v"0.1.0"] let
     
     # dbs
     glob_db = query(["ROOT", "GLOBALS"])
     xlep_db = query(["ROOT", "CORE_XLEP"])
 
     # koma files
-    downreg_factor = 0.3 # TOSYNC
-    obj_val_th = 0.01 # TOSYNC
     objfiles = readdir(procdir(PROJ, [SIMVER]); join = true)
+
+
     @threads for fn in shuffle(objfiles)
         contains(basename(fn), "obj_reg") || continue
 
@@ -38,47 +47,42 @@ include("1.1_utils.jl")
         core_elep0 = xlep_db["core_elep0"][]
         core_lep0 = lepmodel(core_elep0)
         core_elep0 = nothing
-        M, N = size(core_lep0)
-        
+        obj_id = extras(core_lep0, "BIOM")
+        obj_idx = colindex(core_lep0, obj_id)
+
         # run
         do_save = false
-        ALG_VER = context("CORE_FVA")
-        info_frec = 25
+        ALG_VER = context("CORE_FEASETS")
+        info_frec = 100
         for (obji, obj) in enumerate(obj_reg)
-            
+
             # check done
-            get(obj, "core_fva.ver", :NONE) == ALG_VER && continue
+            get(obj, "core_feasets.ver", :NONE) == ALG_VER && continue
             haskey(obj, "core_strip.koset") || continue
             do_save = true
 
             # info
-            show_flag = obji == 1 || obji == lastindex(obj_reg) || iszero(rem(obji, info_frec)) 
-            show_flag && println("[", getpid(), ".", threadid(), "] ", 
+            info_flag = obji == 1 || obji == lastindex(obj_reg) || iszero(rem(obji, info_frec)) 
+            info_flag && println("[", getpid(), ".", threadid(), "] ", 
                 "obji ", obji, "\\", length(obj_reg), " ",
                 basename(fn)
             )
             
+            # gen feasets
             koset = obj["core_strip.koset"]
-            feaset = koset[1:(end-1)]
-            
-            if isempty(feaset) 
-                obj["core_fva.ver"] = ALG_VER
-                continue
+            feaset_gen_step = 3 # TOSYNC
+            idxs = range(firstindex(koset), lastindex(koset) - 1; step = feaset_gen_step)
+            obj["core_feasets"] = Dict{Int16, Any}()
+            for lasti in idxs
+                obj["core_feasets"][lasti] = Dict{String, Any}()
             end
-
-            # fva
-            _with_downreg(core_lep0, feaset, downreg_factor) do
-                fvalb, fvaub = fva(core_lep0, LP_SOLVER; verbose = false)
-                obj["core_fva.fvalb"] = fvalb
-                obj["core_fva.fvaub"] = fvaub
-                obj["core_fva.kos"] = findall((abs.(fvalb) .+ abs.(fvaub)) .< obj_val_th)
-            end 
-            obj["core_fva.ver"] = ALG_VER
             
+            obj["core_feasets.ver"] = ALG_VER
+
         end # for reg in obj_reg
         
-        # serialize
+        # save
         do_save && sdat(obj_reg, fn)
-
+        
     end # for fn 
 end

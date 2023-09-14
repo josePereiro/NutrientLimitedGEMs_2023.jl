@@ -15,15 +15,7 @@ include("1_setup_sim.jl")
 include("1.1_utils.jl")
 
 ## ------------------------------------------------------------
-let
-    net0 = pull_net()
-end
-
-## ------------------------------------------------------------
-## ------------------------------------------------------------
-## ------------------------------------------------------------
-## ------------------------------------------------------------
-@tempcontext ["CORE_NUT_SP" => v"0.1.0"] let
+@tempcontext ["CORE_BIOMASS" => v"0.1.0"] let
     
     # dbs
     glob_db = query(["ROOT", "GLOBALS"])
@@ -31,9 +23,9 @@ end
 
     # koma files
     downreg_factor = 0.3 # TOSYNC
-    obj_val_th = 0.01 # TOSYNC
     objfiles = readdir(procdir(PROJ, [SIMVER]); join = true)
-    @threads for fn in shuffle(objfiles)
+    # @threads 
+    for fn in shuffle(objfiles)
         contains(basename(fn), "obj_reg") || continue
 
         # deserialize
@@ -46,18 +38,22 @@ end
         # lep
         core_elep0 = xlep_db["core_elep0"][]
         core_lep0 = lepmodel(core_elep0)
+        biom_id = extras(core_lep0, "BIOM")
         core_elep0 = nothing
-        M, N = size(core_lep0)
+
+        # opm
+        opm = FBAOpModel(core_lep0, LP_SOLVER)
         
         # run
         do_save = false
-        ALG_VER = context("CORE_NUT_SP")
+        ALG_VER = context("CORE_BIOMASS")
         info_frec = 100
         for (obji, obj) in enumerate(obj_reg)
             
             # check done
-            get(obj, "core_fva.ver", :NONE) == ALG_VER && continue
+            get(obj, "core_biomass.ver", :NONE) == ALG_VER && continue
             haskey(obj, "core_strip.koset") || continue
+            haskey(obj, "core_fva.ver") || continue
             do_save = true
 
             # info
@@ -71,23 +67,24 @@ end
             feaset = koset[1:(end-1)]
             
             if isempty(feaset) 
-                obj["core_fva.ver"] = ALG_VER
+                obj["core_biomass.ver"] = ALG_VER
                 continue
             end
 
-            # fva
-            _with_downreg(core_lep0, feaset, downreg_factor) do
-                fvalb, fvaub = fva(core_lep0, LP_SOLVER; verbose = false)
-                obj["core_fva.fvalb"] = fvalb
-                obj["core_fva.fvaub"] = fvaub
-                obj["core_fva.kos"] = findall((abs.(fvalb) .+ abs.(fvaub)) .< obj_val_th)
-            end 
-            obj["core_fva.ver"] = ALG_VER
+            # compute
+            _with_downreg(opm, feaset, downreg_factor) do
+                optimize!(opm)
+                obj["core_biomass.biom"] = solution(opm, biom_id)
+            end  # _with_downreg
+
+            obj["core_biomass.ver"] = ALG_VER
+
             
         end # for reg in obj_reg
         
+        return obj_reg
         # serialize
-        do_save && sdat(obj_reg, fn)
+        # do_save && sdat(obj_reg, fn)
 
     end # for fn 
 end
