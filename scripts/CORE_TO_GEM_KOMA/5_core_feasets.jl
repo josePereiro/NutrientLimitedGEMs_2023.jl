@@ -32,28 +32,18 @@ include("1.1_utils.jl")
     # koma files
     objfiles = readdir(procdir(PROJ, [SIMVER]); join = true)
 
+    ALG_VER = context("CORE_FEASETS")
 
-    @threads for fn in shuffle(objfiles)
+    @threads for fn in objfiles
         contains(basename(fn), "obj_reg") || continue
 
         # deserialize
-        _, obj_reg = ldat(fn)
+        obj_reg = try_ldat(fn)
         isempty(obj_reg) && continue
-
-        # globals
-        LP_SOLVER = glob_db["LP_SOLVER"]
-        
-        # lep
-        core_elep0 = xlep_db["core_elep0"][]
-        core_lep0 = lepmodel(core_elep0)
-        core_elep0 = nothing
-        obj_id = extras(core_lep0, "BIOM")
-        obj_idx = colindex(core_lep0, obj_id)
 
         # run
         do_save = false
-        ALG_VER = context("CORE_FEASETS")
-        info_frec = 100
+        info_frec = 1000
         for (obji, obj) in enumerate(obj_reg)
 
             # check done

@@ -1,4 +1,8 @@
 ## ------------------------------------------------------------
+# Create first a identity histogram and then a property (ej: sp) histogram.
+# finally, normalize the property histogram with the weights of the identity histogram...
+
+## ------------------------------------------------------------
 let
     len = Float64[]
     col = Float64[]

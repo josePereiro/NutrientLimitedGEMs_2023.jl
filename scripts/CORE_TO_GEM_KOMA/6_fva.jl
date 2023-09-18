@@ -27,7 +27,7 @@ include("1.1_utils.jl")
         contains(basename(fn), "obj_reg") || continue
 
         # deserialize
-        _, obj_reg = ldat(fn)
+        obj_reg = try_ldat(fn)
         isempty(obj_reg) && continue
 
         # globals

@@ -29,7 +29,7 @@ include("1.1_utils.jl")
         contains(basename(fn), "obj_reg") || continue
 
         # deserialize
-        _, obj_reg = ldat(fn)
+        @time obj_reg = try_ldat(fn)
         isempty(obj_reg) && continue
 
         # globals
@@ -48,12 +48,14 @@ include("1.1_utils.jl")
         do_save = false
         ALG_VER = context("CORE_BIOMASS")
         info_frec = 100
+        gc_frec = 10
         for (obji, obj) in enumerate(obj_reg)
             
             # check done
             get(obj, "core_biomass.ver", :NONE) == ALG_VER && continue
             haskey(obj, "core_strip.koset") || continue
-            haskey(obj, "core_fva.ver") || continue
+            haskey(obj, "core_feasets") || continue
+            haskey(obj, "core_nut_sp.ver") || continue
             do_save = true
 
             # info
@@ -63,28 +65,31 @@ include("1.1_utils.jl")
                 basename(fn)
             )
             
-            koset = obj["core_strip.koset"]
-            feaset = koset[1:(end-1)]
-            
-            if isempty(feaset) 
-                obj["core_biomass.ver"] = ALG_VER
-                continue
-            end
-
             # compute
-            _with_downreg(opm, feaset, downreg_factor) do
-                optimize!(opm)
-                obj["core_biomass.biom"] = solution(opm, biom_id)
-            end  # _with_downreg
+            koset = obj["core_strip.koset"]
+            feasets = obj["core_feasets"]
+            for (li, feaobj) in feasets
+                feaset = koset[1:li]
+                _with_downreg(opm, feaset, downreg_factor) do
+                    optimize!(opm)
+                    feaobj["core_biomass.biom"] = solution(opm, biom_id)
+                end  # _with_downreg
+            end # for feasets
 
+            # ALG_VER
             obj["core_biomass.ver"] = ALG_VER
 
-            
+            # GC (TEST)
+            gc_flag = iszero(rem(obji, gc_frec))
+            gc_flag && GC.gc()
+
         end # for reg in obj_reg
         
-        return obj_reg
         # serialize
-        # do_save && sdat(obj_reg, fn)
+        do_save && sdat(obj_reg, fn)
+
+        # TEST
+        do_save && exit()
 
     end # for fn 
 end

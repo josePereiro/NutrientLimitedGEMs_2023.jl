@@ -15,8 +15,13 @@ while true; do
     echo;
     echo "------------------------------------";
     echo;
+    du -hsx data/processed/CORE_TO_GEM-ECOLI-0.1.0/* | sort -rh | head -3
+
+    # echo;
+    # echo "------------------------------------";
+    # echo;
     # tail -n2 data/processed/ECOLI-CORE-0.1.0/koma.log
-    tail -n2 data/processed/CORE_TO_GEM-ECOLI-0.1.0/koma.log
+    # tail -n2 data/processed/CORE_TO_GEM-ECOLI-0.1.0/koma.log
 
     # echo;
 

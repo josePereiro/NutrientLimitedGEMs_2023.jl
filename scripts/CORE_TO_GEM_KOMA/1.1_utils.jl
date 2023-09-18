@@ -81,6 +81,17 @@ function _foreach_obj_reg(f::Function; n = Inf)
 end
 
 # ------------------------------------------------------------
+# deserialize
+function try_ldat(fn)
+    try
+        _, obj_reg = ldat(fn)
+        return obj_reg
+    catch e
+        # rm(fn; force = true)
+        return []
+    end
+end
+# ------------------------------------------------------------
 # function _foreach_obj_reg(f::Function; n = Inf)
 #     files = readdir(procdir(PROJ, [SIMVER]); join = true)
 #     i = 0 
