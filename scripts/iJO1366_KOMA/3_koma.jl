@@ -57,7 +57,7 @@ include("1.1_utils.jl")
     lkpath = procdir(PROJ, [SIMVER], "koma_sync.lk")
     thlk = ReentrantLock()
     proclk = SimpleLockFile(lkpath)
-    proclk_ops = (;tout = 10.0, ctime=0.1, wtime=0.5, vtime = 160.0, force = true)
+    proclk_ops = (;time_out = 10.0, recheck_time=0.1, retry_time=0.5, valid_time = 160.0, force = true)
 
     # koma
     @threads for _ in 1:NTHREADS

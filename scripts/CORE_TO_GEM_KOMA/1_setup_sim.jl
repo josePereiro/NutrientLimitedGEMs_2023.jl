@@ -41,7 +41,7 @@ end
 # ------------------------------------------------------------------
 # Top context
 
-SIMVER = "CORE_TO_GEM-ECOLI-0.1.0"
+SIMVER = "CORE_TO_GEM-ECOLI-0.2.0"
 
 _load_contextdb(SIMVER)
 cacherefs_dir!(cachedir(PROJ, SIMVER))

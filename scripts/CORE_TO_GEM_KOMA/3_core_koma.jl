@@ -6,6 +6,7 @@
     using MetXBase
     using MetXOptim
     using MetXNetHub
+    using BlobBatches
     using Base.Threads
     using ProgressMeter
     using SimpleLockFiles
@@ -44,8 +45,8 @@ include("1.1_utils.jl")
     target_rxn0is = Int16.(colindex(core_lep0, target_rxn0s))
     koma_hashs = UInt64[]
     # koma_idxs => status
-    obj_reg = Dict{String, Any}[]
-    _sync_state!(koma_hashs, obj_reg)
+    blobbatch = Dict{String, Any}[]
+    _sync_state!(koma_hashs, blobbatch)
     
     sync_frec = 5000 # iters
     log_frec = 10.0 # seconds
@@ -59,7 +60,7 @@ include("1.1_utils.jl")
     lkpath = procdir(PROJ, [SIMVER], "koma_sync.lk")
     thlk = ReentrantLock()
     proclk = SimpleLockFile(lkpath)
-    proclk_ops = (;tout = 10.0, ctime=0.1, wtime=0.5, vtime = 160.0, force = true)
+    proclk_ops = (;time_out = 10.0, recheck_time=0.1, retry_time=0.5, valid_time = 160.0, force = true)
 
     # koma
     @threads for _ in 1:NTHREADS
@@ -140,24 +141,24 @@ include("1.1_utils.jl")
                         "core_koma.koset" => koset, 
                         "core_koma.status" => status
                     )
-                    push!(obj_reg, obj)
+                    push!(blobbatch, obj)
                     # insert hash
                     i = searchsortedfirst(koma_hashs, koset_hash)
                     insert!(koma_hashs, i, koset_hash)
                 end
                 
                 tot_time = time() - init_time
-                effitiency = length(obj_reg) / roll_count
+                effitiency = length(blobbatch) / roll_count
 
                 # sync state
-                if length(obj_reg) > sync_frec
+                if length(blobbatch) > sync_frec
                     
                     lock(proclk; proclk_ops...) do
-                        _sync_state!(koma_hashs, obj_reg)
+                        _sync_state!(koma_hashs, blobbatch)
                     end
                     
                     # empty to save memmory
-                    empty!(obj_reg)
+                    empty!(blobbatch)
                     roll_count = 0
                     GC.gc()
                 end
@@ -172,11 +173,11 @@ include("1.1_utils.jl")
                             downreg_factor = downreg_factor,
                             opt_reltime = opt_time / tot_time,
                             roll_count = roll_count,
-                            obj_reg_len = length(obj_reg),
+                            obj_reg_len = length(blobbatch),
                             obj_val = obj_val,
                             batch_size = batch_size,
                             # koma_hashs_size = Base.summarysize(koma_hashs),
-                            # obj_reg_size = Base.summarysize(obj_reg),
+                            # obj_reg_size = Base.summarysize(blobbatch),
                             status = status, 
                         )
                     end
@@ -193,7 +194,7 @@ include("1.1_utils.jl")
 
     # save state
     lock(proclk; proclk_ops...) do
-        _sync_state!(koma_hashs, obj_reg)
+        _sync_state!(koma_hashs, blobbatch)
         _log("FINISHED")
     end
 
