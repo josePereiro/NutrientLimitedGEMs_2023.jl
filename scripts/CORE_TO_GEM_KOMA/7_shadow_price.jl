@@ -15,6 +15,7 @@ include("1_setup_sim.jl")
 include("1.1_utils.jl")
 
 ## ------------------------------------------------------------
+# TODD: Update to BlobBatches
 @tempcontext ["CORE_NUT_SP" => v"0.1.0"] let
     
     # dbs

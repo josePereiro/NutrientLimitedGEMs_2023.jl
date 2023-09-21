@@ -24,25 +24,22 @@ function _merge_rxninfo!(dest_net1, id1, src_net2, id2)
 end
 
 # ------------------------------------------------------------
-function _log(msg; loginfo...)
-    lkf = SimpleLockFile(procdir(PROJ, [SIMVER], "koma.lockfile.txt"))
-    lock(lkf) do
-        # format log info
-        ks = collect(keys(loginfo))
-        # sort!(ks)
-        loginfo = [string(k, "=", loginfo[k]) for k in ks]
-        loginfo = string("[", getpid(), ".", threadid(), "] ", now(), " ", msg, " | ", join(loginfo, ", "))
-        
-        # log!
-        logfn = procdir(PROJ, [SIMVER], "koma.log")
-        mkpath(dirname(logfn))
-        try; open((io) -> println(io, loginfo), logfn, "a"); catch ignored end
-        return logfn
-    end
-end
+# function _log(msg; loginfo...)
+
+#     # format log info
+#     ks = collect(keys(loginfo))
+#     # sort!(ks)
+#     loginfo = [string(k, "=", loginfo[k]) for k in ks]
+#     loginfo = string("[", getpid(), ".", threadid(), "] ", now(), " ", msg, " | ", join(loginfo, ", "))
+    
+#     # log!
+#     logfn = procdir(PROJ, [SIMVER], "koma.log")
+#     mkpath(dirname(logfn))
+#     try; open((io) -> println(io, loginfo), logfn, "a"); catch ignored end
+#     return logfn
+# end
 
 # ------------------------------------------------------------
-# function _sync_state!(koma_hashs, obj_reg; loginfo...)
 function _sync_koma_hashs!(koma_hashs)
     # up state
     lock(LKFILE) do
@@ -172,6 +169,43 @@ function _with_downreg(f::Function, model, todownv::Vector, downreg_factor)
     finally; bounds!(model, todownv, lb0, ub0)
     end
 end
+
+## ------------------------------------------------------------
+using Base.Threads: Atomic
+function _th_readdir(f::Function, n1 = Inf, n0 = 1;
+        info_frec = 1.0, nthrs = 10
+    )
+    batches = readdir(BlobBatch, procdir(PROJ, [SIMVER]))
+    nread = Atomic{Int}(0)
+    bbi = Atomic{Int}(0)
+    t0 = Atomic{Float64}(-1.0)
+    @threads for _ in 1:nthrs
+        for bb in batches
+            nread[] += 1
+            nread[] >= n0 || continue
+
+            flag = f(bbi[], bb)
+            flag === :break && break
+            flag === :ignore && continue
+
+            # info
+            if time() > t0[]
+                println(
+                    "[", getpid(), ".", threadid(), "]", 
+                    "\tbbi: ", bbi[], ", nread: ", nread[]
+                )
+                t0[] = time() + info_frec
+            end
+            
+            bbi[] += 1
+            bbi[] > n1 && break
+        end
+    end
+    return nothing
+end
+
+# ------------------------------------------------------------
+_uniqueidx(v) = unique(i -> v[i], eachindex(v))
 
 # ------------------------------------------------------------
 nothing

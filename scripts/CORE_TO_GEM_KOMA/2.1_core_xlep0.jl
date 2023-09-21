@@ -1,7 +1,7 @@
 ## ------------------------------------------------------------
 @time begin
-    using MetXBase
     using MetXGEMs
+    using MetXBase
     using MetXOptim
     using MetXNetHub
     using NutrientLimitedGEMs
