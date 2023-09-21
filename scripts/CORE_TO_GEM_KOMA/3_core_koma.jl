@@ -24,7 +24,7 @@ include("1.1_utils.jl")
     ALG_VER = context("CORE_KOMA")
 
     # Hi
-    _log("HELLO")
+    println("[", getpid(), ".", threadid(), "] ", "HELLO")
 
     # globals
     glob_db = query(["ROOT", "GLOBALS"])
@@ -44,158 +44,150 @@ include("1.1_utils.jl")
     target_rxn0s = colids(core_lep0, core_elep0.idxi)
     target_rxn0is = Int16.(colindex(core_lep0, target_rxn0s))
     koma_hashs = UInt64[]
-    # koma_idxs => status
-    blobbatch = Dict{String, Any}[]
-    _sync_state!(koma_hashs, blobbatch)
+    _sync_koma_hashs!(koma_hashs)
     
-    sync_frec = 5000 # iters
+    max_nblobs = 500 # bobs per batch
     log_frec = 10.0 # seconds
     roll_count = 0
     batch_size = 3 # kos per roll
     effitiency = 1.0
     effitiency_th = -1 # stop if "effitiency < effitiency_th"
     downreg_factor = 0.3 # stop if "effitiency < effitiency_th"
-    
-    # locks
-    lkpath = procdir(PROJ, [SIMVER], "koma_sync.lk")
-    thlk = ReentrantLock()
-    proclk = SimpleLockFile(lkpath)
-    proclk_ops = (;time_out = 10.0, recheck_time=0.1, retry_time=0.5, valid_time = 160.0, force = true)
 
     # koma
-    @threads for _ in 1:NTHREADS
-        
-        opt_time = 0.0
-        tot_time = 0.0
-        init_time = time()
-        last_log = 0.0
-        
-        th = threadid()
-        th_opm = FBAOpModel(core_lep0, LP_SOLVER)
-        set_linear_obj!(th_opm, obj_idx, MAX_SENSE)
-        
-        for ko in 1:Int(1e8)
-            
-            # init
-            bounds!(th_opm, :, lb0, ub0) # reset bounds
-            # th_target_rxn0is = shuffle(target_rxn0is)
-            th_target_rxn0is = target_rxn0is
-            koset = Int16[]
-            koset_hash = hash(0)
-            
-            status = :INIT
-            obj_val = 0.0
-            
-            # coin toss
-            for toss in 1:N
+    opt_time = 0.0
+    tot_time = 0.0
+    init_time = time()
+    last_log = 0.0
+    
+    th = threadid()
+    th_opm = FBAOpModel(core_lep0, LP_SOLVER)
+    set_linear_obj!(th_opm, obj_idx, MAX_SENSE)
 
-                # random ko
-                if isempty(th_target_rxn0is) 
-                    status = :EMPTY_TARGETS
-                    break
-                end
-                for r in 1:batch_size
-                    isempty(th_target_rxn0is) && break # for r
-                    # toko = pop!(th_target_rxn0is)
-                    toko = rand(th_target_rxn0is)
-                    l, u = bounds(th_opm, toko)
-                    bounds!(th_opm, toko, l * downreg_factor, u * downreg_factor)
-                    push!(koset, toko)
-                end
-                koset_hash = hash(koset)
+    # BlobBatch
+    bb = BlobBatch(procdir(PROJ, [SIMVER], "batch", (;h=rand(UInt64))))
+    # mkpath(bb)
+    bb["core_koma"] = Dict[]
+    
+    for ko in 1:Int(1e8)
+        
+        # init
+        bounds!(th_opm, :, lb0, ub0) # reset bounds
+        # th_target_rxn0is = shuffle(target_rxn0is)
+        th_target_rxn0is = target_rxn0is
+        koset = Int16[]
+        koset_hash = hash(0)
+        
+        status = :INIT
+        obj_val = 0.0
+        
+        # coin toss
+        for toss in 1:N
+            # random ko
+            if isempty(th_target_rxn0is) 
+                status = :EMPTY_TARGETS
+                break
+            end
+            for r in 1:batch_size
+                isempty(th_target_rxn0is) && break # for r
+                # toko = pop!(th_target_rxn0is)
+                toko = rand(th_target_rxn0is)
+                l, u = bounds(th_opm, toko)
+                bounds!(th_opm, toko, l * downreg_factor, u * downreg_factor)
+                push!(koset, toko)
+            end
+            koset_hash = hash(koset)
 
-                _break = false
-                try
-                    # Test koma
-                    if insorted(koset_hash, koma_hashs)
-                        status = :REVISED
-                        _break = true;
-                    else
-                        # Test biomass
-                        opt_time += @elapsed optimize!(th_opm)
-                        obj_val = objective_value(th_opm)
-                        if obj_val > obj_val_th
-                            status = :FEASIBLE
-                            sort!(koset) # FEASIBLE are sorted (reduce duplication)
-                        else
-                            status = :UNFEASIBLE
-                            _break = true;
-                        end
-                    end
-                catch e
-                    status = :ERROR
-                    # _log("ERROR"; err = err_str(e; max_len = 100))
-                    _break = true;
-                end 
-                _break && break # for toss
-            end # for toss
-
-            # up new koma
             _break = false
-            lock(thlk) do
-                roll_count += 1
-                if status != :REVISED
-                    # push object
-                    obj = Dict{String, Any}(
-                        "core_koma.ver" => ALG_VER, 
-                        "core_koma.koset" => koset, 
-                        "core_koma.status" => status
-                    )
-                    push!(blobbatch, obj)
-                    # insert hash
-                    i = searchsortedfirst(koma_hashs, koset_hash)
-                    insert!(koma_hashs, i, koset_hash)
-                end
-                
-                tot_time = time() - init_time
-                effitiency = length(blobbatch) / roll_count
-
-                # sync state
-                if length(blobbatch) > sync_frec
-                    
-                    lock(proclk; proclk_ops...) do
-                        _sync_state!(koma_hashs, blobbatch)
-                    end
-                    
-                    # empty to save memmory
-                    empty!(blobbatch)
-                    roll_count = 0
-                    GC.gc()
-                end
-
-                # LOG
-                if time() - last_log > log_frec
-                    lock(proclk; proclk_ops...) do
-                        _log("INFO" ;
-                            koma_hashs_len = length(koma_hashs),
-                            koset_len = length(koset),
-                            effitiency = effitiency,
-                            downreg_factor = downreg_factor,
-                            opt_reltime = opt_time / tot_time,
-                            roll_count = roll_count,
-                            obj_reg_len = length(blobbatch),
-                            obj_val = obj_val,
-                            batch_size = batch_size,
-                            # koma_hashs_size = Base.summarysize(koma_hashs),
-                            # obj_reg_size = Base.summarysize(blobbatch),
-                            status = status, 
-                        )
-                    end
-                    last_log = time()
-                end
-
-                if roll_count > (0.1 * sync_frec) && effitiency < effitiency_th
+            try
+                # Test koma
+                if insorted(koset_hash, koma_hashs)
+                    status = :REVISED
                     _break = true;
+                else
+                    # Test biomass
+                    opt_time += @elapsed optimize!(th_opm)
+                    obj_val = objective_value(th_opm)
+                    if obj_val > obj_val_th
+                        status = :FEASIBLE
+                        sort!(koset) # FEASIBLE are sorted (reduce duplication)
+                    else
+                        status = :UNFEASIBLE
+                        _break = true;
+                    end
                 end
-            end # lock(lk) do
-            _break && break # for ko
-        end # for ko
-    end # for _
+            catch e
+                status = :ERROR
+                # _log("ERROR"; err = err_str(e; max_len = 100))
+                _break = true;
+            end 
+            _break && break # for toss
+        end # for toss
 
-    # save state
-    lock(proclk; proclk_ops...) do
-        _sync_state!(koma_hashs, blobbatch)
-        _log("FINISHED")
-    end
+        # up new koma
+        roll_count += 1
+        if status != :REVISED
+            # push object
+            obj = Dict{String, Any}(
+                "koset" => koset, 
+                "status" => status
+            )
+            push!(bb["core_koma"], obj)
+            # insert hash
+            i = searchsortedfirst(koma_hashs, koset_hash)
+            insert!(koma_hashs, i, koset_hash)
+        end
+        
+        tot_time = time() - init_time
+        effitiency = length(bb["core_koma"]) / roll_count
+
+        # sync blobs
+        if length(bb["core_koma"]) > max_nblobs
+            
+            # up koma_hashs
+            _sync_koma_hashs!(koma_hashs)
+            
+            # up BlobBatch
+            bb["meta"]["core_koma.ver"] = ALG_VER # sign
+            serialize(bb)
+
+            # empty to save memmory ?
+            empty!(bb)
+            GC.gc()
+            
+            # new BlobBatch
+            bb = BlobBatch(procdir(PROJ, [SIMVER], "batch", (;h=rand(UInt64))))
+            mkpath(bb)
+            bb["core_koma"] = Dict[]
+
+            roll_count = 0
+        end
+
+        # LOG
+        if time() - last_log > log_frec
+            lock(LKFILE) do
+                print("[", getpid(), ".", threadid(), "] ")
+                print(" INFO ")
+                print("effitiency = ", effitiency)
+                print(", koma_hashs_len = ", length(koma_hashs))
+                print(", koset_len = ", length(koset))
+                print(", effitiency = ", effitiency)
+                print(", downreg_factor = ", downreg_factor)
+                print(", opt_reltime = ", opt_time / tot_time)
+                print(", roll_count = ", roll_count)
+                print(", obj_reg_len = ", length(bb["core_koma"]))
+                print(", obj_val = ", obj_val)
+                print(", batch_size = ", batch_size)
+                print(", status = ", status,)
+                println()
+                println(bb)
+            end
+            last_log = time()
+        end
+
+        if roll_count > (0.1 * max_nblobs) && effitiency < effitiency_th
+            break;
+        end
+    end # for ko
 
 end # @tempcontext

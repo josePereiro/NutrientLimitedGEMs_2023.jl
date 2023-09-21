@@ -42,26 +42,24 @@ function _log(msg; loginfo...)
 end
 
 # ------------------------------------------------------------
-function _sync_state!(koma_hashs, obj_reg; loginfo...)
-    lkf = SimpleLockFile(procdir(PROJ, [SIMVER], "koma.lockfile.txt"))
-    lock(lkf) do
-        # save state
-        _, _koma_hashs = lprocdat(PROJ, [SIMVER], "koma_hashs", ".jls") do 
+# function _sync_state!(koma_hashs, obj_reg; loginfo...)
+function _sync_koma_hashs!(koma_hashs)
+    # up state
+    lock(LKFILE) do
+        # koma_hashs
+        fn = procdir(PROJ, [SIMVER], "koma_hashs.jls")
+        _, _koma_hashs = ldat(fn) do 
             UInt64[]
         end
         push!(koma_hashs, setdiff(_koma_hashs, koma_hashs)...)
         unique!(koma_hashs)
         sort!(koma_hashs)
-        
-        sprocdat(PROJ, koma_hashs, 
-            [SIMVER], "koma_hashs", ".jls"
-        )
-        sprocdat(PROJ, obj_reg, 
-            [SIMVER], "obj_reg", (;h = hash(koma_hashs)), ".jls"
-        )
+        sdat(koma_hashs, fn)
+
+        # write blobs
+        println("[", getpid(), ".", threadid(), "] ", "SYNC KOMA_HASH")
     end
-    # log
-    _log("SYNC"; h=hash(koma_hashs), loginfo...)
+    return koma_hashs
 end
 
 

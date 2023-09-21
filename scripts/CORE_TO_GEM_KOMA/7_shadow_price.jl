@@ -5,7 +5,7 @@
     using MetXNetHub
     using MetXBase
     using MetXOptim
-    using Base.Threads
+    using BlobBatches
     using NutrientLimitedGEMs
 end
 
@@ -18,9 +18,9 @@ include("1.1_utils.jl")
 @tempcontext ["CORE_NUT_SP" => v"0.1.0"] let
     
     # dbs
+    ALG_VER = context("CORE_NUT_SP")
     glob_db = query(["ROOT", "GLOBALS"])
     xlep_db = query(["ROOT", "CORE_XLEP"])
-    ALG_VER = context("CORE_NUT_SP")
 
     # koma files
     downreg_factor = 0.3 # TOSYNC

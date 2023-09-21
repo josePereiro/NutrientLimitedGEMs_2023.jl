@@ -4,7 +4,7 @@
     using MetXGEMs
     using MetXBase
     using MetXOptim
-    using Base.Threads
+    using BlobBatches
     using NutrientLimitedGEMs
 end
 
@@ -26,81 +26,86 @@ include("1.1_utils.jl")
 @tempcontext ["CORE_STRIP" => v"0.1.0"] let
     
     # dbs
+    ALG_VER = context("CORE_STRIP")
     glob_db = query(["ROOT", "GLOBALS"])
     xlep_db = query(["ROOT", "CORE_XLEP"])
 
     # koma files
-    objfiles = readdir(procdir(PROJ, [SIMVER]); join = true)
-    @threads for fn in shuffle(objfiles)
-        contains(basename(fn), "obj_reg") || continue
+    batches = readdir(BlobBatch, procdir(PROJ, [SIMVER]))
+    for (bbi, bb) in enumerate(batches)
 
-        # deserialize
-        _, obj_reg = ldat(fn)
-        isempty(obj_reg) && continue
+        # filter
+        islocked(bb) && continue # somebody is working
+        get(bb["meta"], "core_strip.ver", :NONE) == ALG_VER && continue
+        haskey(bb["meta"], "core_koma.ver") || continue
 
-        # globals
-        LP_SOLVER = glob_db["LP_SOLVER"]
-        
-        # lep
-        core_elep0 = xlep_db["core_elep0"][]
-        core_lep0 = lepmodel(core_elep0)
-        core_elep0 = nothing
-        obj_id = extras(core_lep0, "BIOM")
-        obj_idx = colindex(core_lep0, obj_id)
+        # lock
+        lock(bb) do
 
-        # opm
-        opm = FBAOpModel(core_lep0, LP_SOLVER)
-        
-        # run
-        do_save = false
-        ALG_VER = context("CORE_STRIP")
-        info_frec = 100
-        for (obji, obj) in enumerate(obj_reg)
+            # new frame
+            bb["core_strip"] = Dict[]
 
-            # check done
-            get(obj, "core_strip.ver", :NONE) == ALG_VER && continue
-            do_save = true
-
-            # info
-            info_flag = obji == 1 || obji == lastindex(obj_reg) || iszero(rem(obji, info_frec)) 
-            info_flag && println("[", getpid(), ".", threadid(), "] ", 
-                "obji ", obji, "\\", length(obj_reg), " ",
-                basename(fn)
-            )
+            # globals
+            LP_SOLVER = glob_db["LP_SOLVER"]
             
-            # koset
-            koset = obj["core_koma.koset"]
-            if isempty(koset) 
-                obj["core_strip.ver"] = ALG_VER
-                continue
-            end
+            # lep
+            core_elep0 = xlep_db["core_elep0"][]
+            core_lep0 = lepmodel(core_elep0)
+            core_elep0 = nothing
+            obj_id = extras(core_lep0, "BIOM")
+            obj_idx = colindex(core_lep0, obj_id)
 
-            # strip
-            obj["core_strip.koset"] = Int16[]
-            downreg_factor = 0.3 # TOSYNC
-            obj_val_th = 0.01 # TOSYNC
-            for downi in reverse(eachindex(koset))
-                feasible = true
-                subdown = koset[1:downi]
-                _with_downreg(opm, subdown, downreg_factor) do
-                    set_linear_obj!(opm, obj_idx, MAX_SENSE)
-                    sol = 0.0
-                    try; optimize!(opm)
-                        sol = solution(opm, obj_idx)
-                    catch e; end
-                    feasible = sol > obj_val_th
-                end
+            # opm
+            opm = FBAOpModel(core_lep0, LP_SOLVER)
+            
+            # run
+            info_frec = 100
+            for (blobi, koma_blob) in enumerate(bb["core_koma"])
                 
-                if feasible 
-                    obj["core_strip.koset"] = koset[1:downi+1]
-                    break
-                end 
-            end # for downi 
-            obj["core_strip.ver"] = ALG_VER
-        end # for reg in obj_reg
-        
-        # save
-        do_save && sdat(obj_reg, fn)
-        
+                # push blob
+                strip_blob = typeof(koma_blob)()
+                push!(bb["core_strip"], strip_blob)
+
+                # info
+                info_flag = blobi == 1 || blobi == lastindex(bb["core_koma"]) || iszero(rem(blobi, info_frec)) 
+                info_flag && println("[", getpid(), ".", threadid(), "] ", 
+                    "blobi ", blobi, "\\", length(bb["core_koma"]), " ",
+                    basename(rootdir(bb))
+                )
+
+                # koset
+                koset = koma_blob["koset"]
+                isempty(koset) && continue
+
+                # strip
+                strip_blob["koset"] = Int16[]
+                downreg_factor = 0.3 # TOSYNC
+                obj_val_th = 0.01 # TOSYNC
+                for downi in reverse(eachindex(koset))
+                    feasible = true
+                    subdown = koset[1:downi]
+                    _with_downreg(opm, subdown, downreg_factor) do
+                        set_linear_obj!(opm, obj_idx, MAX_SENSE)
+                        sol = 0.0
+                        try; optimize!(opm)
+                            sol = solution(opm, obj_idx)
+                        catch e; end
+                        feasible = sol > obj_val_th
+                    end
+                    
+                    if feasible 
+                        strip_blob["koset"] = koset[1:downi+1]
+                        break
+                    end 
+                end # for downi 
+            end # for core_blob
+
+            # sign
+            bb["meta"]["core_strip.ver"] = ALG_VER
+            
+            # save
+            serialize(bb)
+            
+        end # lock
     end # for fn 
 end

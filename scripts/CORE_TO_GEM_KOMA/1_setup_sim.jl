@@ -2,8 +2,9 @@ using Clp
 # using Gurobi
 using ProjFlows
 using ContextDBs
-using NutrientLimitedGEMs
 using Base.Threads
+using SimpleLockFiles
+using NutrientLimitedGEMs
 
 # ------------------------------------------------------------------
 # GLOBALS
@@ -42,6 +43,8 @@ end
 # Top context
 
 SIMVER = "CORE_TO_GEM-ECOLI-0.2.0"
+LKFILE = SimpleLockFile(procdir(PROJ, [SIMVER], "lockfile.lk"))
+atexit(() -> rm(LKFILE; force = true))
 
 _load_contextdb(SIMVER)
 cacherefs_dir!(cachedir(PROJ, SIMVER))

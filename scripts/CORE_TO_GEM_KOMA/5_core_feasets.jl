@@ -4,7 +4,7 @@
     using MetXGEMs
     using MetXBase
     using MetXOptim
-    using Base.Threads
+    using BlobBatches
     using NutrientLimitedGEMs
 end
 
@@ -26,53 +26,58 @@ include("1.1_utils.jl")
 @tempcontext ["CORE_FEASETS" => v"0.1.0"] let
     
     # dbs
+    ALG_VER = context("CORE_FEASETS")
     glob_db = query(["ROOT", "GLOBALS"])
     xlep_db = query(["ROOT", "CORE_XLEP"])
 
     # koma files
-    objfiles = readdir(procdir(PROJ, [SIMVER]); join = true)
+    batches = readdir(BlobBatch, procdir(PROJ, [SIMVER]))
+    for (bbi, bb) in enumerate(batches)
 
-    ALG_VER = context("CORE_FEASETS")
+        # filter
+        islocked(bb) && continue # somebody is working
+        get(bb["meta"], "core_feasets.ver", :NONE) == ALG_VER && continue
+        haskey(bb["meta"], "core_koma.ver") || continue
+        haskey(bb["meta"], "core_strip.ver") || continue
 
-    @threads for fn in objfiles
-        contains(basename(fn), "obj_reg") || continue
-
-        # deserialize
-        obj_reg = try_ldat(fn)
-        isempty(obj_reg) && continue
-
-        # run
-        do_save = false
-        info_frec = 1000
-        for (obji, obj) in enumerate(obj_reg)
-
-            # check done
-            get(obj, "core_feasets.ver", :NONE) == ALG_VER && continue
-            haskey(obj, "core_strip.koset") || continue
-            do_save = true
-
-            # info
-            info_flag = obji == 1 || obji == lastindex(obj_reg) || iszero(rem(obji, info_frec)) 
-            info_flag && println("[", getpid(), ".", threadid(), "] ", 
-                "obji ", obji, "\\", length(obj_reg), " ",
-                basename(fn)
-            )
+        # lock
+        lock(bb) do
             
-            # gen feasets
-            koset = obj["core_strip.koset"]
-            feaset_gen_step = 3 # TOSYNC
-            idxs = range(firstindex(koset), lastindex(koset) - 1; step = feaset_gen_step)
-            obj["core_feasets"] = Dict{Int16, Any}()
-            for lasti in idxs
-                obj["core_feasets"][lasti] = Dict{String, Any}()
-            end
-            
-            obj["core_feasets.ver"] = ALG_VER
+            # new frame
+            bb["core_feasets"] = Dict[]
 
-        end # for reg in obj_reg
-        
-        # save
-        do_save && sdat(obj_reg, fn)
-        
-    end # for fn 
+            # run
+            info_frec = 100
+            for (blobi, strip_blob) in enumerate(bb["core_strip"])
+                
+                # feasibles
+                feasets_blob = typeof(strip_blob)()
+                push!(bb["core_feasets"], feasets_blob)
+
+                # info
+                info_flag = blobi == 1 || blobi == lastindex(bb["core_strip"]) || iszero(rem(blobi, info_frec)) 
+                info_flag && println("[", getpid(), ".", threadid(), "] ", 
+                    "blobi ", blobi, "\\", length(bb["core_strip"]), " ",
+                    basename(rootdir(bb))
+                )
+                
+                # gen feasets
+                koset = strip_blob["koset"]
+                feaset_gen_step = 3 # TOSYNC
+                idxs = range(firstindex(koset), lastindex(koset) - 1; step = feaset_gen_step)
+                feasets_blob["feasets"] = Dict{Int16, Any}()
+                for lasti in idxs
+                    feasets_blob["feasets"][lasti] = Dict{String, Any}()
+                end
+
+            end # for reg in obj_reg
+            
+            # sign
+            bb["meta"]["core_feasets.ver"] = ALG_VER
+
+            # save
+            serialize(bb)
+            
+        end # lock
+    end # for bb 
 end
