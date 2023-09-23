@@ -1,15 +1,11 @@
 ## ------------------------------------------------------------
 @time begin
-    using Dates
-    using Random
     using MetXGEMs
     using MetXBase
     using MetXOptim
     using MetXNetHub
     using BlobBatches
     using Base.Threads
-    using ProgressMeter
-    using SimpleLockFiles
     using NutrientLimitedGEMs
 end
 
@@ -165,7 +161,7 @@ include("1.1_utils.jl")
 
         # LOG
         if time() - last_log > log_frec
-            _lock_proj() do
+            lock(PROJ) do
                 print("[", getpid(), ".", threadid(), "] ")
                 print(" INFO ")
                 print("effitiency = ", effitiency)

@@ -28,24 +28,30 @@ let
     @sync let
         @async _run_cmd("""pwd"""; dir = @__DIR__)
         for p in 1:3
-            @async _run_cmd(
-                """\
-                julia -t1 --project=$(projtoml) ./3_core_koma.jl -- \
-                "SIMVER:ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
-                """; dir = @__DIR__
-            )
-            @async _run_cmd(
-                """\
-                julia -t1 --project=$(projtoml) ./3_core_koma.jl -- \
-                "SIMVER:ECOLI-CORE-BEG2007-PHASE_II-0.1.0"
-                """; dir = @__DIR__
-            )
-            @async _run_cmd(
-                """\
-                julia -t1 --project=$(projtoml) ./3_core_koma.jl -- \
-                "SIMVER:ECOLI-CORE-BEG2007-PHASE_III-0.1.0"
-                """; dir = @__DIR__
-            )
+            @async while true
+                _run_cmd(
+                    """\
+                    julia -t1 --project=$(projtoml) ./3_core_koma.jl -- \
+                    "SIMVER:ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+                    """; dir = @__DIR__
+                )
+            end
+            @async while true 
+                _run_cmd(
+                    """\
+                    julia -t1 --project=$(projtoml) ./3_core_koma.jl -- \
+                    "SIMVER:ECOLI-CORE-BEG2007-PHASE_II-0.1.0"
+                    """; dir = @__DIR__
+                )
+            end
+            @async while true
+                 _run_cmd(
+                    """\
+                    julia -t1 --project=$(projtoml) ./3_core_koma.jl -- \
+                    "SIMVER:ECOLI-CORE-BEG2007-PHASE_III-0.1.0"
+                    """; dir = @__DIR__
+                )
+            end
         end
     end
     nothing

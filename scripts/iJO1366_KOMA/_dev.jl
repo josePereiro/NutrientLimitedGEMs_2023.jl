@@ -8,7 +8,6 @@
     using MetXNetHub
     using Base.Threads
     using ProgressMeter
-    using SimpleLockFiles
     using NutrientLimitedGEMs
 end
 

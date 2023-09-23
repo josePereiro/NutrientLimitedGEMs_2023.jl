@@ -2,7 +2,6 @@ using Clp
 # using Gurobi
 using ProjFlows
 using ContextDBs
-using SimpleLockFiles
 using NutrientLimitedGEMs
 using Base.Threads
 

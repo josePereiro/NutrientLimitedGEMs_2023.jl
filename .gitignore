@@ -7,6 +7,7 @@
 /cluster
 log.txt
 *log.txt
+*.pidfile
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,macos,julia,latex,windows,python,git
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,linux,macos,julia,latex,windows,python,git
