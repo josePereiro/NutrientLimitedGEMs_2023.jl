@@ -40,9 +40,22 @@ end
 # end
 
 # ------------------------------------------------------------
+LKFILE = SimpleLockFile(procdir(PROJ, [SIMVER], "lockfile.lk"))
+atexit(() -> rm(LKFILE; force = true))
+function _lock_proj(f::Function)
+    return f() # TODO: check why lock is failing
+    # lock(f, LKFILE; 
+    #     valid_time = Inf, 
+    #     time_out = Inf,
+    #     retry_time = 0.05, 
+    #     recheck_time = 0.5,
+    # )    
+end
+
+# ------------------------------------------------------------
 function _sync_koma_hashs!(koma_hashs)
     # up state
-    lock(LKFILE) do
+    _lock_proj() do
         # koma_hashs
         fn = procdir(PROJ, [SIMVER], "koma_hashs.jls")
         _, _koma_hashs = ldat(fn) do 

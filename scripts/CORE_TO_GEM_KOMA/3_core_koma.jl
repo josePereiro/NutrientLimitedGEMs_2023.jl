@@ -165,7 +165,7 @@ include("1.1_utils.jl")
 
         # LOG
         if time() - last_log > log_frec
-            lock(LKFILE) do
+            _lock_proj() do
                 print("[", getpid(), ".", threadid(), "] ")
                 print(" INFO ")
                 print("effitiency = ", effitiency)
