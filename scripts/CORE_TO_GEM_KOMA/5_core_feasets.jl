@@ -44,20 +44,21 @@ include("1.1_utils.jl")
         lock(bb) do
             
             # new frame
-            bb["core_feasets"] = Dict[]
+            feasets_frame = bb["core_feasets"] = Dict[]
 
             # run
             info_frec = 100
-            for (blobi, strip_blob) in enumerate(bb["core_strip"])
+            strip_frame = bb["core_strip"]
+            for (blobi, strip_blob) in enumerate(strip_frame)
                 
-                # feasibles
+                # push! new obj
                 feasets_blob = typeof(strip_blob)()
-                push!(bb["core_feasets"], feasets_blob)
+                push!(feasets_frame, feasets_blob)
 
                 # info
-                info_flag = blobi == 1 || blobi == lastindex(bb["core_strip"]) || iszero(rem(blobi, info_frec)) 
+                info_flag = blobi == 1 || blobi == lastindex(strip_frame) || iszero(rem(blobi, info_frec)) 
                 info_flag && println("[", getpid(), ".", threadid(), "] ", 
-                    "blobi ", blobi, "\\", length(bb["core_strip"]), " ",
+                    "blobi ", blobi, "\\", length(strip_frame), " ",
                     basename(rootdir(bb))
                 )
                 

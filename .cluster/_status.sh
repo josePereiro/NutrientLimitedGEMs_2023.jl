@@ -9,13 +9,14 @@ while true; do
     echo;
     echo "------------------------------------";
     # ls data/processed/ECOLI-CORE-0.1.0 -hll | head -n4;
-    ls data/processed/CORE_TO_GEM-ECOLI-0.1.0 -1 | wc -l
-    ls data/processed/CORE_TO_GEM-ECOLI-0.1.0 -hll | head -n4;
+    # ls data/processed/CORE_TO_GEM-ECOLI-0.1.0 -hll | head -n4;
 
     echo;
     echo "------------------------------------";
-    echo;
-    du -hsx data/processed/CORE_TO_GEM-ECOLI-0.1.0/* | sort -rh | head -3
+    ls data/processed/CORE_TO_GEM-ECOLI-0.1.0 -1 | wc -l
+    du -hs data/processed/CORE_TO_GEM-ECOLI-0.1.0 
+    echo "------------------------------------";
+    du -hsx data/processed/CORE_TO_GEM-ECOLI-0.1.0/* | sort -rh | head -5
 
     # echo;
     # echo "------------------------------------";
