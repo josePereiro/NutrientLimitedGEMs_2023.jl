@@ -60,16 +60,18 @@ include("1.1_utils.jl")
             
             # run
             info_frec = 100
-            for (blobi, koma_blob) in enumerate(bb["core_koma"])
+            koma_frame = bb["core_koma"]
+            strip_frame = bb["core_strip"] # new frame
+            for (blobi, koma_blob) in enumerate(koma_frame)
                 
-                # push blob
+                # new blob
                 strip_blob = typeof(koma_blob)()
-                push!(bb["core_strip"], strip_blob)
+                push!(strip_frame, strip_blob)
 
                 # info
-                info_flag = blobi == 1 || blobi == lastindex(bb["core_koma"]) || iszero(rem(blobi, info_frec)) 
+                info_flag = blobi == 1 || blobi == lastindex(koma_frame) || iszero(rem(blobi, info_frec)) 
                 info_flag && println("[", getpid(), ".", threadid(), "] ", 
-                    "blobi ", blobi, "\\", length(bb["core_koma"]), " ",
+                    "blobi ", blobi, "\\", length(koma_frame), " ",
                     basename(rootdir(bb))
                 )
 
