@@ -31,15 +31,13 @@ include("1.1_utils.jl")
     xlep_db = query(["ROOT", "CORE_XLEP"])
 
     # koma files
-    batches = readdir(BlobBatch, procdir(PROJ, [SIMVER]))
-    for (bbi, bb) in enumerate(batches)
+    _th_readdir(Inf, 0; nthrs = 10) do bbi, bb
 
         # filter
-        islocked(bb) && continue # somebody is working
-        get(bb["meta"], "core_strip.ver", :NONE) == ALG_VER && continue
-        haskey(bb["meta"], "core_koma.ver") || continue
+        islocked(bb) && return :continue # somebody is working
+        get(bb["meta"], "core_strip.ver", :NONE) == ALG_VER && return :continue
+        haskey(bb["meta"], "core_koma.ver") || return :continue
 
-        # lock
         lock(bb) do
 
             # new frame
@@ -109,5 +107,6 @@ include("1.1_utils.jl")
             serialize(bb)
             
         end # lock
+        return :continue
     end # for fn 
 end

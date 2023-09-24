@@ -44,11 +44,11 @@ include("1.1_utils.jl")
         haskey(bb["meta"], "core_koma.ver") || return :ignore
         haskey(bb["meta"], "core_strip.ver") || return :ignore
         haskey(bb["meta"], "core_feasets.ver") || return :ignore
-        haskey(bb["meta"], "core_biomass.ver") || return :ignore
-        haskey(bb["meta"], "core_nut_sp.ver") || return :ignore
+        # haskey(bb["meta"], "core_biomass.ver") || return :ignore
+        # haskey(bb["meta"], "core_nut_sp.ver") || return :ignore
 
         # lock
-        # lock(bb) do
+        lock(bb) do
 
             # lep
             core_elep0 = xlep_db["core_elep0"][]
@@ -84,6 +84,7 @@ include("1.1_utils.jl")
                         feaobj["core_fva.fvalb"] = Float16.(fvalb)
                         feaobj["core_fva.fvaub"] = Float16.(fvaub)
                     end 
+
                 end
                 
             end # for obj in frame
@@ -93,7 +94,7 @@ include("1.1_utils.jl")
             
             # save
             serialize(bb)
-        # end # lock
+        end # lock
 
     end # for fn 
 end
