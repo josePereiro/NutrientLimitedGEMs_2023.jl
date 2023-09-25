@@ -31,14 +31,13 @@ include("1.1_utils.jl")
     xlep_db = query(["ROOT", "CORE_XLEP"])
 
     # koma files
-    batches = readdir(BlobBatch, procdir(PROJ, [SIMVER]))
-    for (bbi, bb) in enumerate(batches)
+    _th_readdir(Inf, 0; nthrs = 10) do bbi, bb
 
         # filter
-        islocked(bb) && continue # somebody is working
-        get(bb["meta"], "core_feasets.ver", :NONE) == ALG_VER && continue
-        haskey(bb["meta"], "core_koma.ver") || continue
-        haskey(bb["meta"], "core_strip.ver") || continue
+        islocked(bb) && return :continue # somebody is working
+        get(bb["meta"], "core_feasets.ver", :NONE) == ALG_VER && return :continue
+        haskey(bb["meta"], "core_koma.ver") || return :continue
+        haskey(bb["meta"], "core_strip.ver") || return :continue
 
         # lock
         lock(bb) do
@@ -52,7 +51,7 @@ include("1.1_utils.jl")
             for (blobi, strip_blob) in enumerate(strip_frame)
                 
                 # push! new obj
-                feasets_blob = typeof(strip_blob)()
+                feasets_blob = Dict{Int16, Any}()
                 push!(feasets_frame, feasets_blob)
 
                 # info
@@ -66,11 +65,9 @@ include("1.1_utils.jl")
                 koset = strip_blob["koset"]
                 feaset_gen_step = 3 # TOSYNC
                 idxs = range(firstindex(koset), lastindex(koset) - 1; step = feaset_gen_step)
-                feasets_blob["feasets"] = Dict{Int16, Any}()
                 for lasti in idxs
-                    feasets_blob["feasets"][lasti] = Dict{String, Any}()
+                    feasets_blob[lasti] = Dict{String, Any}()
                 end
-
             end # for reg in obj_reg
             
             # sign
