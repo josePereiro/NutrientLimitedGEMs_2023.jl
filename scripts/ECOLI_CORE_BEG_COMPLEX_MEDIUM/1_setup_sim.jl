@@ -22,20 +22,24 @@ PROJ = Project0(NutrientLimitedGEMs)
 # ------------------------------------------------------------------
 # Utils
 function _load_contextdb(id)
-    name = string("db.", id, ".jls")
-    fn, DB = withprocdat(PROJ, :get!, name) do 
-        ContextDB()
+    lock(PROJ) do
+        name = string("db.", id, ".jls")
+        fn, DB = withprocdat(PROJ, :get!, name) do 
+            ContextDB()
+        end
+        contextdb!(DB)
+        println(fn)
     end
-    contextdb!(DB)
-    println(fn)
 end
 
 function _save_contextdb(id)
-    name = string("db.", id, ".jls")
-    fn, _ = withprocdat(PROJ, :set!, name) do 
-        contextdb()
+    lock(PROJ) do
+        name = string("db.", id, ".jls")
+        fn, _ = withprocdat(PROJ, :set!, name) do 
+            contextdb()
+        end
+        println(fn)
     end
-    println(fn)
 end
 
 # ------------------------------------------------------------------
@@ -44,7 +48,7 @@ end
 SIMVER = let
     _ver = nothing
     if isinteractive()
-        _ver = "ECOLI-CORE-BEG2007-PHASE_III-0.1.0"
+        _ver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
     end
     for arg in ARGS
         startswith(arg, "SIMVER:") || continue

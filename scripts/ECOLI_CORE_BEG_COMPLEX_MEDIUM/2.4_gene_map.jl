@@ -16,6 +16,9 @@ include("1.1_utils.jl")
 # Prepare network
 @tempcontext ["MICROARRAY_COMPLEX_MEDIUM" => v"0.1.0"] let
 
+    # Data taken from Beg 2007 supplementary materials
+    # Supp1 and Supp3
+
     @stage! raw_map = Dict()
     raw_map["Supp1"] = Dict()
     raw_map["Supp3"] = Dict()
@@ -1312,36 +1315,13 @@ include("1.1_utils.jl")
         ncols = length(genes[1]["raw"])
         exp_mat[rxn] = zeros(nrows, ncols)
         for (ri, obj) in enumerate(genes)
-            exp_mat[ri, :] .= obj["raw"]
+            exp_mat[rxn][ri, :] .= obj["raw"]
         end
     end
 
-    exp_mat
+    nothing
 end
 
-## ------------------------------------------------
-## ------------------------------------------------
-## ------------------------------------------------
-let
-    f = Figure()
-    ax = Axis(f[1,1]; xlabel = "time", ylabel = "gen expression")
-    rxns = ["ACALD", "PTAr", "UDPG4E", "ALCD2x", "PDH", "CO2t", "PYK", "EX_nh4_e", "MALt2_2", "CS", "GLYCtpp", "G3PD2", "PGM", "TKT1", "EX_mal__L_e", "ACONTa", "EX_pi_e", "GLNS", "ICL", "PGMT", "EX_o2_e", "FBA", "EX_gln__L_e", "EX_glc__D_e", "FORt2", "SUCCt3", "G6PDH2r", "EX_malt_e", "AKGDH", "TKT2", "FRD7", "SUCOAS", "BIOMASS_Ecoli_core_w_GAM", "FBP", "ICDHyr", "AKGt2r", "GLUSy", "TPI", "GALKr", "FORt", "ACONTb", "EX_ac_e", "GLNabc", "EX_akg_e", "EX_fru_e", "RPE", "ACKr", "EX_glyc_e", "THD2", "D_LACt2", "EX_glu__L_e", "PFL", "RPI", "TALA", "ATPM", "ACt2r", "EX_etoh_e", "PPCK", "NH4t", "PGL", "NADTRHD", "PGK", "GALabcpp", "LDH_D", "ME1", "PIt2r", "EX_h2o_e", "EX_succ_e", "ATPS4r", "EX_acald_e", "PYRt2", "EX_h_e", "UGLT", "GLCpts", "GLUDy", "CYTBD", "EX_gal_e", "FUMt2_2", "FRUpts2", "GAPD", "H2Ot", "NADH16", "PPC", "GLYK", "EX_for_e", "PFK", "MDH", "PGI", "O2t", "ME2", "EX_pyr_e", "EX_co2_e", "AMALT1", "GND", "GLUN", "SUCCt2_2", "EX_fum_e", "ETOHt2r", "MALTabcpp", "ADK1", "ACALDt", "EX_lac__D_e", "SUCDi", "ENO", "MALS", "GLUt2r", "PPS", "FUM"]
-    for (rxn, genes) in raw_map["Supp3"]
-        # rxn == rand(rxns) || continue
-        rxn == rand(rxns) || continue
-        @show rxn
-        exp_sum = nothing
-        genid = ""
-        for gene in genes
-            genid = gene["desc"][1:20]
-            exp_sum = isnothing(exp_sum) ? gene["raw"] : exp_sum + gene["raw"]
-            # lines!(ax, patt; label = genid)
-            # lines!(ax, gene["raw"]; label = genid)
-        end
-        exp_patt = exp_sum .- minimum(exp_sum)
-        exp_patt = exp_patt ./ maximum(exp_patt)
-        lines!(ax, exp_patt; label = genid)
-    end
-    axislegend(ax)
-    f
-end
+## ------------------------------------------------------------
+# save
+_save_contextdb(SIMVER)
