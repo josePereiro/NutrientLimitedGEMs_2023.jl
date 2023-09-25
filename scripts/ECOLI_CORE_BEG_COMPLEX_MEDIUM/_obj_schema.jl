@@ -43,7 +43,6 @@ let
         end
     end
 
-
     for (ver, keys) in meta_count
         println("-"^60)
         println("SIMVER: ", ver)
@@ -51,6 +50,8 @@ let
             println(k, ": ", c)
         end
     end
+
+    exit()
 end
 
 ## ------------------------------------------------------------
