@@ -43,21 +43,15 @@ function _save_contextdb(id)
 end
 
 # ------------------------------------------------------------------
-# Top context
-
-SIMVER = let
-    _ver = nothing
-    if isinteractive()
-        _ver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
-    end
-    for arg in ARGS
-        startswith(arg, "SIMVER:") || continue
-        _ver = replace(arg, "SIMVER:" => "")
-    end
-    isnothing(_ver) && error("SIMVER arg missing")
-    _ver
+# ARGS
+if isinteractive()
+    # ARGS DEV
+    SIMVER = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+else
+    SIMVER = parseARGS("SIMVER:")
 end
 
+# ------------------------------------------------------------------
 _load_contextdb(SIMVER)
 cacherefs_dir!(cachedir(PROJ, SIMVER))
 @context! "ROOT" SIMVER
