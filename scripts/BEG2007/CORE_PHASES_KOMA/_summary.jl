@@ -44,14 +44,17 @@ let
                         record["batches"] += 1
                     end
                 end
-            end
+            end # for _SIMVER
             
             # Printl
+            run(`clear`)
+            println("="^60)
             for (ver, records) in meta_records
                 println("-"^60)
                 println("SIMVER: ", ver)
+                batches = records["batches"]
                 for (k, c) in records
-                    println(k, ": ", c, " -- ", round(c / record["batches"]; sigdigits = 2))
+                    println(k, ": ", c, " -- ", round(c / batches; sigdigits = 2))
                 end
             end
 
