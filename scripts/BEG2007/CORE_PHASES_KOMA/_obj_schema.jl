@@ -21,37 +21,39 @@ let
     n0 = 0 # init
     n1 = Inf # non-ignored count
     lk = ReentrantLock()
-    global meta_count = Dict()
-    for _SIMVER in [
-            "ECOLI-CORE-BEG2007-PHASE_I-0.1.0",
-            "ECOLI-CORE-BEG2007-PHASE_II-0.1.0",
-            "ECOLI-CORE-BEG2007-PHASE_III-0.1.0",
-        ]
-        global SIMVER = _SIMVER
-        simdat = get!(meta_count, _SIMVER) do
-            Dict()
-        end
-        _th_readdir(n1, n0; nthrs = 10) do bbi, bb
-            lock(lk) do
-                for key in keys(bb["meta"])
-                    get!(simdat, key, 0)
-                    simdat[key] += 1
-                end     
-                get!(simdat, "batches", 0)
-                simdat["batches"] += 1
+    while true
+        meta_count = Dict()
+        for _SIMVER in [
+                "ECOLI-CORE-BEG2007-PHASE_I-0.1.0",
+                "ECOLI-CORE-BEG2007-PHASE_II-0.1.0",
+                "ECOLI-CORE-BEG2007-PHASE_III-0.1.0",
+            ]
+            global SIMVER = _SIMVER
+            simdat = get!(meta_count, _SIMVER) do
+                Dict()
+            end
+            _th_readdir(n1, n0; nthrs = 10) do bbi, bb
+                lock(lk) do
+                    for key in keys(bb["meta"])
+                        get!(simdat, key, 0)
+                        simdat[key] += 1
+                    end     
+                    get!(simdat, "batches", 0)
+                    simdat["batches"] += 1
+                end
             end
         end
-    end
-
-    for (ver, keys) in meta_count
-        println("-"^60)
-        println("SIMVER: ", ver)
-        for (k, c) in keys
-            println(k, ": ", c)
+        
+        # Printl
+        for (ver, keys) in meta_count
+            println("-"^60)
+            println("SIMVER: ", ver)
+            for (k, c) in keys
+                println(k, ": ", c)
+            end
         end
-    end
 
-    exit()
+        sleep(60)
+    end # while true
 end
 
-## ------------------------------------------------------------
