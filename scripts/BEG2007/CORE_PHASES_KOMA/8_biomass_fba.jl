@@ -6,6 +6,7 @@
     using BlobBatches
     using MetXBase
     using MetXOptim
+    using NutrientLimitedGEMs
 end
 
 # ------------------------------------------------------------
@@ -27,10 +28,7 @@ include("1.1_utils.jl")
     # read batches
     n0 = 0 # init file
     n1 = Inf # non-ignored file count
-    # TODO: _th_readdir(n1, n0) makes no sense
     _th_readdir(n1, n0; nthrs = 10) do bbi, bb
-
-        @show bb
 
         # filter
         islocked(bb) && return :ignore # somebody is working
@@ -56,7 +54,7 @@ include("1.1_utils.jl")
             
             # run
             info_frec = 100
-            gc_frec = 10
+            gc_frec = 100
             for (blobi, (strip_blob, feasets_blob)) in enumerate(
                     zip(strip_frame, feasets_frame)
                 )
@@ -94,6 +92,5 @@ include("1.1_utils.jl")
             serialize(bb)
 
         end # lock
-
     end # for fn 
 end
