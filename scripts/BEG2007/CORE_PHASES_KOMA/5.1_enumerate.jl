@@ -18,9 +18,6 @@ include("1_setup_sim.jl")
 include("1.1_utils.jl")
 
 ## ------------------------------------------------------------
-
-
-## ------------------------------------------------------------
 # delete downset duplicates (this is not exaustive, but it must eliminate the extremes)
 let
     n0 = 0 # init

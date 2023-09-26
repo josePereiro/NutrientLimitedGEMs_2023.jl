@@ -1,9 +1,8 @@
 using Clp
-# using Gurobi
 using ProjFlows
 using ContextDBs
-using NutrientLimitedGEMs
 using Base.Threads
+using NutrientLimitedGEMs
 
 # ------------------------------------------------------------------
 # GLOBALS

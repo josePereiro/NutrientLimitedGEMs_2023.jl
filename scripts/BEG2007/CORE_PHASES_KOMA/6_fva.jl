@@ -17,7 +17,7 @@ include("1.1_utils.jl")
 ## ------------------------------------------------------------
 @tempcontext ["CORE_FVA" => v"0.1.0"] let
     
-    # dbs
+    # context
     ALG_VER = context("CORE_FVA")
     glob_db = query(["ROOT", "GLOBALS"])
     xlep_db = query(["ROOT", "CORE_XLEP"])
@@ -34,18 +34,10 @@ include("1.1_utils.jl")
         
         # filter
         islocked(bb) && return :ignore # somebody is working
-        if get(bb["meta"], "core_fva.ver", :NONE) == ALG_VER 
-            println("[", getpid(), ".", threadid(), "] IGNORED ", "bbi ", bbi, " ",
-                "core_fva.ver ", ALG_VER, " ",
-                basename(rootdir(bb))
-            )
-            return :ignore
-        end
+        get(bb["meta"], "core_fva.ver", :NONE) == ALG_VER && return :ignore
         haskey(bb["meta"], "core_koma.ver") || return :ignore
         haskey(bb["meta"], "core_strip.ver") || return :ignore
         haskey(bb["meta"], "core_feasets.ver") || return :ignore
-        # haskey(bb["meta"], "core_biomass.ver") || return :ignore
-        # haskey(bb["meta"], "core_nut_sp.ver") || return :ignore
 
         # lock
         lock(bb) do

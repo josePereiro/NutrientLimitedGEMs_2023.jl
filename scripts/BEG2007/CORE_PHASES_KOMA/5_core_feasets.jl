@@ -8,21 +8,11 @@
     using NutrientLimitedGEMs
 end
 
-# TODO: Add Graphs.jl kind of functionality for getting basic stuff
 # ------------------------------------------------------------
 include("1_setup_sim.jl")
 include("1.1_utils.jl")
 
 ## ------------------------------------------------------------
-# IDEA: ProjFlows, save all variables except the one with a given naming convention 
-# Ex: var (yes), _var (yes), __var (no)
-# Also, have a gitignore kind of configuration
-# All computation/saving happends at a @commit like macro
-
-# TODO: Add file lock to 'sdat'...
-
-# IDEA: Add obj renamer cli
-
 @tempcontext ["CORE_FEASETS" => v"0.1.0"] let
     
     # dbs
