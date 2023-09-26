@@ -19,10 +19,10 @@ include("1.1_utils.jl")
 @tempcontext ["CORE_NUT_SP" => v"0.1.0"] let
     
     # dbs
-    LP_SOLVER = glob_db["LP_SOLVER"]
     ALG_VER = context("CORE_NUT_SP")
     glob_db = query(["ROOT", "GLOBALS"])
     xlep_db = query(["ROOT", "CORE_XLEP"])
+    LP_SOLVER = glob_db["LP_SOLVER"]
 
     # read batches
     n0 = 0 # init file
@@ -92,7 +92,7 @@ include("1.1_utils.jl")
                 gc_flag = iszero(rem(obji, gc_frec))
                 gc_flag && GC.gc()
                 
-            end # for reg in obj_reg
+            end # for blobi
 
             # sign
             bb["meta"]["core_nut_sp.ver"] = ALG_VER
