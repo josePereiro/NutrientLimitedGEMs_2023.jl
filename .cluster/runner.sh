@@ -1,9 +1,4 @@
-while true; do
-    cd /home/pereiro/dev/NutrientLimitedGEMs
-    pwd
-    julia --project -t30 scripts/CORE_TO_GEM_KOMA/4_strip.jl || true
-    julia --project -t30 scripts/CORE_TO_GEM_KOMA/5_fva.jl || true
-    sleep 10
-done
-
-(julia --project -t5 scripts/CORE_TO_GEM_KOMA/4_strip.jl) &
+(julia -t5 --project scripts/BEG2007/CORE_PHASES_KOMA/6_fva.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_I-0.1.0") &
+(julia -t5 --project scripts/BEG2007/CORE_PHASES_KOMA/7_shadow_price.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_I-0.1.0") &
+(julia -t5 --project scripts/BEG2007/CORE_PHASES_KOMA/2.1_core_xlep0.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_I-0.1.0") &
+julia -t5 --project scripts/BEG2007/CORE_PHASES_KOMA/_obj_schema.jl  --  "SIMVER:"

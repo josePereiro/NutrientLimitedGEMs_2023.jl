@@ -51,7 +51,7 @@ include("1.1_utils.jl")
             strip_frame = bb["core_strip"]
 
             # run
-            info_frec = 100
+            info_frec = 50
             gc_frec = 100
             for (blobi, (strip_blob, feasets_blob)) in enumerate(
                     zip(strip_frame, feasets_frame)
@@ -74,11 +74,16 @@ include("1.1_utils.jl")
                                 "EX_glc__D_e", "EX_lac__D_e", "EX_malt_e",
                                 "EX_gal_e", "EX_glyc_e", "EX_ac_e", "EX_ac_e"
                             ]
+                            exch in colids(opm) || continue
                             test_points = lb(opm, exch) .* [1.0, 0.95, 0.9]
-                            obj_m, obj_err, vars_ms, vars_errs = bound_dual_prices(
-                                opm, exch, test_points, :lb; 
-                                dovars = true
-                            )
+                            obj_m, obj_err, vars_ms, vars_errs = try
+                                bound_dual_prices(
+                                    opm, exch, test_points, :lb; 
+                                    dovars = true
+                                )
+                            catch e
+                                NaN, NaN, [], []
+                            end
                             feaobj["core_nut_sp.$(exch).obj_m"] = Float16(obj_m)
                             feaobj["core_nut_sp.$(exch).obj_err"] = Float16(obj_err)
                             feaobj["core_nut_sp.$(exch).vars_ms"] = Float16.(vars_ms)
@@ -86,10 +91,11 @@ include("1.1_utils.jl")
                             
                         end # for exch
                     end  # _with_downreg
+
                 end # for feasets
                 
-                # GC (TEST)
-                gc_flag = iszero(rem(obji, gc_frec))
+                # GC
+                gc_flag = iszero(rem(blobi, gc_frec))
                 gc_flag && GC.gc()
                 
             end # for blobi

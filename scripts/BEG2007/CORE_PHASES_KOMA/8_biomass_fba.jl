@@ -51,7 +51,7 @@ include("1.1_utils.jl")
             strip_frame = bb["core_strip"]
             
             # run
-            info_frec = 100
+            info_frec = 50
             gc_frec = 100
             for (blobi, (strip_blob, feasets_blob)) in enumerate(
                     zip(strip_frame, feasets_frame)
@@ -77,7 +77,7 @@ include("1.1_utils.jl")
 
                 end # for feasets
 
-                # GC (TEST)
+                # GC
                 gc_flag = iszero(rem(blobi, gc_frec))
                 gc_flag && GC.gc()
 
