@@ -1,6 +1,5 @@
 ## ------------------------------------------------------------
 @time begin
-    using Random
     using MetXGEMs
     using MetXNetHub
     using MetXBase
