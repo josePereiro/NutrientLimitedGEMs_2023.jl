@@ -17,10 +17,10 @@ include("1.1_utils.jl")
 
     # -------------------------------------------
     # globals
-    glob_db = query(["ROOT", "GLOBALS"])
-    LP_SOLVER = glob_db["LP_SOLVER"]
-    GEM_NET_ID = glob_db["GEM_NET_ID"]
-    NTHREADS = glob_db["NTHREADS"]
+    GLOB_DB = query(["ROOT", "GLOBALS"])
+    LP_SOLVER = GLOB_DB["LP_SOLVER"]
+    GEM_NET_ID = GLOB_DB["GEM_NET_ID"]
+    NTHREADS = GLOB_DB["NTHREADS"]
 
     # -------------------------------------------
     # core_xlepdb

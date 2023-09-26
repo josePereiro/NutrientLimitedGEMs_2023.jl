@@ -17,15 +17,16 @@ include("1.1_utils.jl")
 # Prepare network
 @tempcontext ["CORE_KOMA" => v"0.1.0"] let
 
+    # context
     ALG_VER = context("CORE_KOMA")
 
     # Hi
     println("[", getpid(), ".", threadid(), "] ", "HELLO")
 
     # globals
-    glob_db = query(["ROOT", "GLOBALS"])
-    LP_SOLVER = glob_db["LP_SOLVER"]
-    NTHREADS = glob_db["NTHREADS"]
+    GLOB_DB = query(["ROOT", "GLOBALS"])
+    LP_SOLVER = GLOB_DB["LP_SOLVER"]
+    NTHREADS = GLOB_DB["NTHREADS"]
     
     # xlep
     core_xlep_db = query(["ROOT", "CORE_XLEP"])
@@ -48,7 +49,7 @@ include("1.1_utils.jl")
     batch_size = 3 # kos per roll
     effitiency = 1.0
     effitiency_th = -1 # stop if "effitiency < effitiency_th"
-    downreg_factor = 0.3 # stop if "effitiency < effitiency_th"
+    DOWNREG_FACTOR = GLOB_DB["DOWNREG_FACTOR"] # stop if "effitiency < effitiency_th"
 
     # koma
     opt_time = 0.0
@@ -89,7 +90,7 @@ include("1.1_utils.jl")
                 # toko = pop!(th_target_rxn0is)
                 toko = rand(th_target_rxn0is)
                 l, u = bounds(th_opm, toko)
-                bounds!(th_opm, toko, l * downreg_factor, u * downreg_factor)
+                bounds!(th_opm, toko, l * DOWNREG_FACTOR, u * DOWNREG_FACTOR)
                 push!(koset, toko)
             end
             koset_hash = hash(koset)
@@ -168,7 +169,7 @@ include("1.1_utils.jl")
                 print(", koma_hashs_len = ", length(koma_hashs))
                 print(", koset_len = ", length(koset))
                 print(", effitiency = ", effitiency)
-                print(", downreg_factor = ", downreg_factor)
+                print(", DOWNREG_FACTOR = ", DOWNREG_FACTOR)
                 print(", opt_reltime = ", opt_time / tot_time)
                 print(", roll_count = ", roll_count)
                 print(", obj_reg_len = ", length(bb["core_koma"]))

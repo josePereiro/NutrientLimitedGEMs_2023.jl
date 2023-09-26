@@ -18,11 +18,12 @@ include("1.1_utils.jl")
 # TODD: Update to BlobBatches
 @tempcontext ["CORE_NUT_SP" => v"0.1.0"] let
     
-    # dbs
+    # context
     ALG_VER = context("CORE_NUT_SP")
-    glob_db = query(["ROOT", "GLOBALS"])
-    xlep_db = query(["ROOT", "CORE_XLEP"])
-    LP_SOLVER = glob_db["LP_SOLVER"]
+    GLOB_DB = query(["ROOT", "GLOBALS"])
+    XLEP_DB = query(["ROOT", "CORE_XLEP"])
+    LP_SOLVER = GLOB_DB["LP_SOLVER"]
+    DOWNREG_FACTOR = GLOB_DB["DOWNREG_FACTOR"] # TOSYNC
 
     # read batches
     n0 = 0 # init file
@@ -39,7 +40,7 @@ include("1.1_utils.jl")
         lock(bb) do
 
             # lep
-            core_elep0 = xlep_db["core_elep0"][]
+            core_elep0 = XLEP_DB["core_elep0"][]
             core_lep0 = lepmodel(core_elep0)
             core_elep0 = nothing
 
@@ -69,7 +70,7 @@ include("1.1_utils.jl")
                 for (li, feaobj) in feasets_blob
                     feaset = koset[1:li]
 
-                    _with_downreg(opm, feaset, downreg_factor) do
+                    _with_downreg(opm, feaset, DOWNREG_FACTOR) do
                         for exch in [
                                 "EX_glc__D_e", "EX_lac__D_e", "EX_malt_e",
                                 "EX_gal_e", "EX_glyc_e", "EX_ac_e", "EX_ac_e"

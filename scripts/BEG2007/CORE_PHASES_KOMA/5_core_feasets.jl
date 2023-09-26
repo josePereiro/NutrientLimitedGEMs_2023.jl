@@ -15,10 +15,11 @@ include("1.1_utils.jl")
 ## ------------------------------------------------------------
 @tempcontext ["CORE_FEASETS" => v"0.1.0"] let
     
-    # dbs
+    # context
     ALG_VER = context("CORE_FEASETS")
-    glob_db = query(["ROOT", "GLOBALS"])
-    xlep_db = query(["ROOT", "CORE_XLEP"])
+    GLOB_DB = query(["ROOT", "GLOBALS"])
+    XLEP_DB = query(["ROOT", "CORE_XLEP"])
+    DOWNREG_BATCH_SIZE = GLOB_DB["DOWNREG_BATCH_SIZE"]
 
     # koma files
     _th_readdir(Inf, 0; nthrs = 10) do bbi, bb
@@ -53,8 +54,7 @@ include("1.1_utils.jl")
                 
                 # gen feasets
                 koset = strip_blob["koset"]
-                feaset_gen_step = 3 # TOSYNC
-                idxs = range(firstindex(koset), lastindex(koset) - 1; step = feaset_gen_step)
+                idxs = range(firstindex(koset), lastindex(koset) - 1; step = DOWNREG_BATCH_SIZE)
                 for lasti in idxs
                     feasets_blob[lasti] = Dict{String, Any}()
                 end

@@ -18,12 +18,10 @@ include("1.1_utils.jl")
     
     # context
     ALG_VER = context("CORE_BIOMASS_FBA")
-    glob_db = query(["ROOT", "GLOBALS"])
-    xlep_db = query(["ROOT", "CORE_XLEP"])
-    LP_SOLVER = glob_db["LP_SOLVER"]
-
-    # downregulation
-    downreg_factor = 0.3 # TOSYNC
+    GLOB_DB = query(["ROOT", "GLOBALS"])
+    XLEP_DB = query(["ROOT", "CORE_XLEP"])
+    LP_SOLVER = GLOB_DB["LP_SOLVER"]
+    DOWNREG_FACTOR = GLOB_DB["DOWNREG_FACTOR"] 
 
     # read batches
     n0 = 0 # init file
@@ -40,7 +38,7 @@ include("1.1_utils.jl")
         lock(bb) do
         
             # lep
-            core_elep0 = xlep_db["core_elep0"][]
+            core_elep0 = XLEP_DB["core_elep0"][]
             core_lep0 = lepmodel(core_elep0)
             biom_id = extras(core_lep0, "BIOM")
             core_elep0 = nothing
@@ -71,7 +69,7 @@ include("1.1_utils.jl")
                 for (li, feaobj) in feasets_blob
                     feaset = koset[1:li]
                     # fba
-                    _with_downreg(opm, feaset, downreg_factor) do
+                    _with_downreg(opm, feaset, DOWNREG_FACTOR) do
                         optimize!(opm)
                         feaobj["core_biomass_fba.biom"] = solution(opm, biom_id)
                         feaobj["core_biomass_fba.solution"] = Float16.(solution(opm))

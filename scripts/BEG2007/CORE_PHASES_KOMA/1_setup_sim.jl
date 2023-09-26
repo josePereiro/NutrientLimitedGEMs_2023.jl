@@ -75,6 +75,10 @@ cacherefs_dir!(cachedir(PROJ, SIMVER))
     @stage! GEM_NET_ID = "iJO1366"
     @stage! LP_SOLVER = Clp.Optimizer
     @stage! NTHREADS = max(nthreads() - 2, 1)
+    @stage! DOWNREG_FACTOR = 0.3
+    @stage! KO_OBJ_VAL_TH = 0.01
+    @stage! DOWNREG_BATCH_SIZE = 3
+
 end
 
 # ------------------------------------------------------------------

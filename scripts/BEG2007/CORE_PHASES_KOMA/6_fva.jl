@@ -19,12 +19,10 @@ include("1.1_utils.jl")
     
     # context
     ALG_VER = context("CORE_FVA")
-    glob_db = query(["ROOT", "GLOBALS"])
-    xlep_db = query(["ROOT", "CORE_XLEP"])
-    LP_SOLVER = glob_db["LP_SOLVER"]
-
-    # downregulation
-    downreg_factor = 0.3 # TOSYNC
+    GLOB_DB = query(["ROOT", "GLOBALS"])
+    XLEP_DB = query(["ROOT", "CORE_XLEP"])
+    LP_SOLVER = GLOB_DB["LP_SOLVER"]
+    DOWNREG_FACTOR = GLOB_DB["DOWNREG_FACTOR"]
     
     # read batches
     n0 = 0 # init file
@@ -43,7 +41,7 @@ include("1.1_utils.jl")
         lock(bb) do
 
             # lep
-            core_elep0 = xlep_db["core_elep0"][]
+            core_elep0 = XLEP_DB["core_elep0"][]
             core_lep0 = lepmodel(core_elep0)
             core_elep0 = nothing
             M, N = size(core_lep0)
@@ -71,7 +69,7 @@ include("1.1_utils.jl")
                     feaset = koset[1:li]
 
                     # fva
-                    _with_downreg(core_lep0, feaset, downreg_factor) do
+                    _with_downreg(core_lep0, feaset, DOWNREG_FACTOR) do
                         fvalb, fvaub = fva(core_lep0, LP_SOLVER; verbose = false)
                         feaobj["core_fva.fvalb"] = Float16.(fvalb)
                         feaobj["core_fva.fvaub"] = Float16.(fvaub)

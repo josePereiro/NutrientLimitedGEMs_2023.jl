@@ -27,8 +27,8 @@ include("1.1_utils.jl")
     
     # dbs
     ALG_VER = context("CORE_STRIP")
-    glob_db = query(["ROOT", "GLOBALS"])
-    xlep_db = query(["ROOT", "CORE_XLEP"])
+    GLOB_DB = query(["ROOT", "GLOBALS"])
+    XLEP_DB = query(["ROOT", "CORE_XLEP"])
 
     # koma files
     _th_readdir(Inf, 0; nthrs = 10) do bbi, bb
@@ -44,10 +44,10 @@ include("1.1_utils.jl")
             bb["core_strip"] = Dict[]
 
             # globals
-            LP_SOLVER = glob_db["LP_SOLVER"]
+            LP_SOLVER = GLOB_DB["LP_SOLVER"]
             
             # lep
-            core_elep0 = xlep_db["core_elep0"][]
+            core_elep0 = XLEP_DB["core_elep0"][]
             core_lep0 = lepmodel(core_elep0)
             core_elep0 = nothing
             obj_id = extras(core_lep0, "BIOM")
@@ -79,12 +79,12 @@ include("1.1_utils.jl")
 
                 # strip
                 strip_blob["koset"] = Int16[]
-                downreg_factor = 0.3 # TOSYNC
-                obj_val_th = 0.01 # TOSYNC
+                DOWNREG_FACTOR = GLOB_DB["DOWNREG_FACTOR"]
+                obj_val_th = GLOB_DB["KO_OBJ_VAL_TH"] 
                 for downi in reverse(eachindex(koset))
                     feasible = true
                     subdown = koset[1:downi]
-                    _with_downreg(opm, subdown, downreg_factor) do
+                    _with_downreg(opm, subdown, DOWNREG_FACTOR) do
                         set_linear_obj!(opm, obj_idx, MAX_SENSE)
                         sol = 0.0
                         try; optimize!(opm)

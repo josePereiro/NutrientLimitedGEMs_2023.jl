@@ -15,10 +15,10 @@ include("1_setup_sim.jl")
 @tempcontext ["GEM_XLEP" => v"0.1.0"] let
 
     # globals
-    glob_db = query(["ROOT", "GLOBALS"])
-    LP_SOLVER = glob_db["LP_SOLVER"]
-    GEM_NET_ID = glob_db["GEM_NET_ID"]
-    NTHREADS = glob_db["NTHREADS"]
+    GLOB_DB = query(["ROOT", "GLOBALS"])
+    LP_SOLVER = GLOB_DB["LP_SOLVER"]
+    GEM_NET_ID = GLOB_DB["GEM_NET_ID"]
+    NTHREADS = GLOB_DB["NTHREADS"]
 
     # net
     net0 = pull_net(GEM_NET_ID)
