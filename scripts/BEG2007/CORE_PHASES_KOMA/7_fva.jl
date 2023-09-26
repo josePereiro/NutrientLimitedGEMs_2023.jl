@@ -11,8 +11,8 @@ end
 
 # TODO: Add Graphs.jl kind of functionality for getting basic stuff
 # ------------------------------------------------------------
-include("1_setup_sim.jl")
-include("1.1_utils.jl")
+include("1_setup.jl")
+include("2_utils.jl")
 
 ## ------------------------------------------------------------
 @tempcontext ["CORE_FVA" => v"0.1.0"] let

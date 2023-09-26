@@ -15,8 +15,8 @@ end
 
 # TODO: Add Graphs.jl kind of functionality for getting basic stuff
 # ------------------------------------------------------------
-include("1_setup_sim.jl")
-include("1.1_utils.jl")
+include("1_setup.jl")
+include("2_utils.jl")
 
 ## ------------------------------------------------------------
 # biomass vs downset length histogram
