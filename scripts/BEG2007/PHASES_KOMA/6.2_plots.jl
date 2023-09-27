@@ -1,15 +1,10 @@
 ## ------------------------------------------------------------
 @time begin
-    using Random
     using MetXGEMs
     using MetXBase
     using ProjFlows
-    using Statistics
     using CairoMakie
     using BlobBatches
-    using Base.Threads
-    using Combinatorics
-    using Base.Threads: Atomic
     using NutrientLimitedGEMs
 end
 
@@ -21,10 +16,10 @@ include("2_utils.jl")
 ## ------------------------------------------------------------
 # identity-histogram
 let
-    _simver = "ECOLI-CORE-BEG2007-PHASE_III-0.1.0"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
     n0 = 0
     n1 = Inf
-    cid = (@__FILE__, "feasets:identity-histogram", n1)
+    cid = (@__FILE__, _simver, "feasets:identity-histogram", n1)
     lk = ReentrantLock()
     _, h0 = withcachedat(PROJ, :get!, cid) do
         _h0 = Histogram(
@@ -55,6 +50,8 @@ let
         merge!(_h0, h_pool...) # reduce
         return _h0
     end
+    
+    return
     
     # Plots
     xs = collect(keys(h0, 1))
