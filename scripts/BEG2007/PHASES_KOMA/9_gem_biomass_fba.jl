@@ -25,8 +25,6 @@ include("2_utils.jl")
     LP_SOLVER = GLOB_DB["LP_SOLVER"]
     DOWNREG_FACTOR = GLOB_DB["DOWNREG_FACTOR"] 
 
-    return
-
     # read batches
     n0 = 0 # init file
     n1 = Inf # non-ignored file count
@@ -46,9 +44,13 @@ include("2_utils.jl")
             core_lep0 = lepmodel(core_elep0)
             core_elep0 = nothing
             
-            gem_elep0 = GEM_XLEP_DB["core_elep0"][]
-            gem_lep0 = lepmodel(gem_elep0)
-            gem_elep0 = nothing
+            # TDOD: boxing kill GEM growth, using unbox lep0
+            # gem_elep0 = GEM_XLEP_DB["gem_elep0"][]
+            # gem_lep0 = lepmodel(gem_elep0)
+            # gem_elep0 = nothing
+            # gem_biom_id = extras(gem_lep0, "BIOM")
+
+            gem_lep0 = GEM_XLEP_DB["gem_lep0"][]
             gem_biom_id = extras(gem_lep0, "BIOM")
 
             # gem_opm
@@ -81,17 +83,17 @@ include("2_utils.jl")
                     ]
 
                     # fba
-                    _with_downreg(gem_opm, feaset, DOWNREG_FACTOR) do
+                    _with_downreg(gem_opm, gem_feaset, DOWNREG_FACTOR) do
                         try
                             optimize!(gem_opm)
                             feaobj["gem_biomass_fba.biom"] = solution(gem_opm, gem_biom_id)
                             feaobj["gem_biomass_fba.solution"] = Float16.(solution(gem_opm))
                         catch e
                             feaobj["gem_biomass_fba.biom"] = NaN
-                            feaobj["gem_biomass_fba.solution"] = []
+                            feaobj["gem_biomass_fba.solution"] = Float16[]
                         end
                     end  # _with_downreg
-
+    
                 end # for feasets
 
                 # GC

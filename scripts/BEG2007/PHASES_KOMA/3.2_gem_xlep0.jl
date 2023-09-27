@@ -57,6 +57,7 @@ include("2_utils.jl")
     gem_lep0 = lepmodel(gem_net0)
     
     # blep
+    # TODO: this kill growth, fix it
     cid = (:BOX, GEM_NET_ID, hash(gem_lep0))
     _, gem_blep0ref = withcachedat(PROJ, :get!, cid) do 
         gem_blep0 = box(gem_lep0, LP_SOLVER; nths = NTHREADS, verbose = true)
