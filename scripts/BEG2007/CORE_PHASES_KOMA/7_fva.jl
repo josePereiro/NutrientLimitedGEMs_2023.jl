@@ -47,6 +47,7 @@ include("2_utils.jl")
             
             # run
             info_frec = 2
+            gc_frec = 10
             
             # frames
             feasets_frame = bb["core_feasets"]
@@ -75,8 +76,12 @@ include("2_utils.jl")
                     end 
 
                 end
+
+                # GC
+                gc_flag = iszero(rem(blobi, gc_frec))
+                gc_flag && GC.gc()
                 
-            end # for obj in frame
+            end # for blobi
             
             # sign
             bb["meta"]["core_fva.ver"] = ALG_VER
