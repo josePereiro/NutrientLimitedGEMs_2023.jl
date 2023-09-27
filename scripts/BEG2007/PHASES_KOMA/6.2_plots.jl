@@ -51,7 +51,14 @@ let
         return _h0
     end
     
-    return
+    # Plots
+    xs = collect(keys(h0, 1))
+    ws = collect(values(h0))
+    @show length(ws) / sum(ws)
+    @show length(xs)
+    @show extrema(ws)
+
+    return 
     
     # Plots
     xs = collect(keys(h0, 1))
