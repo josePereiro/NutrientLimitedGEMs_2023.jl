@@ -70,9 +70,14 @@ include("2_utils.jl")
 
                     # fva
                     _with_downreg(core_lep0, feaset, DOWNREG_FACTOR) do
-                        fvalb, fvaub = fva(core_lep0, LP_SOLVER; verbose = false)
-                        feaobj["core_fva.fvalb"] = Float16.(fvalb)
-                        feaobj["core_fva.fvaub"] = Float16.(fvaub)
+                        try
+                            fvalb, fvaub = fva(core_lep0, LP_SOLVER; verbose = false)
+                            feaobj["core_fva.fvalb"] = Float16.(fvalb)
+                            feaobj["core_fva.fvaub"] = Float16.(fvaub)
+                        catch e
+                            feaobj["core_fva.fvalb"] = Float16[]
+                            feaobj["core_fva.fvaub"] = Float16[]
+                        end
                     end 
 
                 end

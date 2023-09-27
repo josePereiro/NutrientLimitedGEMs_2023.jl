@@ -30,11 +30,10 @@ let
                     "ECOLI-CORE-BEG2007-PHASE_II-0.1.0",
                     "ECOLI-CORE-BEG2007-PHASE_III-0.1.0",
                 ]
-                global SIMVER = _SIMVER
                 record = get!(meta_records, _SIMVER) do
                     Dict()
                 end
-                _th_readdir(;n1, n0, nthrs = 10, verbose = false) do bbi, bb
+                _th_readdir(_SIMVER; n1, n0, nthrs = 10, verbose = false) do bbi, bb
                     lock(lk) do
                         for key in keys(bb["meta"])
                             get!(record, key, 0)

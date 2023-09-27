@@ -21,6 +21,7 @@ include("2_utils.jl")
 ## ------------------------------------------------------------
 # identity-histogram
 let
+    _simver = "ECOLI-CORE-BEG2007-PHASE_III-0.1.0"
     n0 = 0
     n1 = Inf
     cid = (@__FILE__, "feasets:identity-histogram", n1)
@@ -30,7 +31,7 @@ let
             UInt64,          # feaset hashes
         )
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
-        _th_readdir(;n0, n1, nthrs = 1) do bbi, bb
+        _th_readdir(_simver; n0, n1, nthrs = 10) do bbi, bb
 
             haskey(bb["meta"], "core_koma.ver") || return :ignore
             haskey(bb["meta"], "core_feasets.ver") || return :ignore
