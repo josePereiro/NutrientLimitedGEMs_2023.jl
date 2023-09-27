@@ -22,7 +22,9 @@ include("2_utils.jl")
     DOWNREG_BATCH_SIZE = GLOB_DB["DOWNREG_BATCH_SIZE"]
 
     # koma files
-    _th_readdir(Inf, 0; nthrs = 10) do bbi, bb
+    n0 = 0
+    n1 = Inf
+    _th_readdir(;n0, n1, nthrs = 10) do bbi, bb
 
         # filter
         islocked(bb) && return :continue # somebody is working

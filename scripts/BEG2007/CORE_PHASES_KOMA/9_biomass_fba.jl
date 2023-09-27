@@ -26,7 +26,7 @@ include("2_utils.jl")
     # read batches
     n0 = 0 # init file
     n1 = Inf # non-ignored file count
-    _th_readdir(n1, n0; nthrs = 10) do bbi, bb
+    _th_readdir(;n0, n1, nthrs = 10) do bbi, bb
 
         # filter
         islocked(bb) && return :ignore # somebody is working

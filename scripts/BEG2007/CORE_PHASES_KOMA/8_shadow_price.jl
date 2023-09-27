@@ -27,7 +27,7 @@ include("2_utils.jl")
     # read batches
     n0 = 0 # init file
     n1 = Inf # non-ignored file count
-    _th_readdir(n1, n0; nthrs = 10) do bbi, bb
+    _th_readdir(;n0, n1, nthrs = 10) do bbi, bb
 
         # filter
         islocked(bb) && return :ignore # somebody is working
@@ -72,7 +72,7 @@ include("2_utils.jl")
                     _with_downreg(opm, feaset, DOWNREG_FACTOR) do
                         for exch in [
                                 "EX_glc__D_e", "EX_lac__D_e", "EX_malt_e",
-                                "EX_gal_e", "EX_glyc_e", "EX_ac_e", "EX_ac_e"
+                                "EX_gal_e", "EX_glyc_e", "EX_ac_e"
                             ]
                             exch in colids(opm) || continue
                             test_points = lb(opm, exch) .* [1.0, 0.95, 0.9]

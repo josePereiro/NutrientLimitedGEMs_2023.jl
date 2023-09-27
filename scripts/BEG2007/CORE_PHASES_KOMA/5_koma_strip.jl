@@ -31,7 +31,9 @@ include("2_utils.jl")
     XLEP_DB = query(["ROOT", "CORE_XLEP"])
 
     # koma files
-    _th_readdir(Inf, 0; nthrs = 10) do bbi, bb
+    n0 = 0
+    n1 = Inf
+    _th_readdir(;n0, n1, nthrs = 10) do bbi, bb
 
         # filter
         islocked(bb) && return :continue # somebody is working

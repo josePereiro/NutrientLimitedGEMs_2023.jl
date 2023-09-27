@@ -34,7 +34,7 @@ let
                 record = get!(meta_records, _SIMVER) do
                     Dict()
                 end
-                _th_readdir(n1, n0; nthrs = 10, verbose = false) do bbi, bb
+                _th_readdir(;n1, n0, nthrs = 10, verbose = false) do bbi, bb
                     lock(lk) do
                         for key in keys(bb["meta"])
                             get!(record, key, 0)

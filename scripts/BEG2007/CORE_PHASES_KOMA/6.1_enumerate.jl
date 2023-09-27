@@ -24,7 +24,7 @@ let
     n1 = Inf # non-ignored count
     lk = ReentrantLock()
     _downset_hashes_ = Set{UInt64}()
-    _th_readdir(n1, n0; nthrs = 10) do bbi, bb
+    _th_readdir(;n0, n1, nthrs = 10) do bbi, bb
 
         haskey(bb["meta"], "core_koma.ver") || return :ignore
         haskey(bb["meta"], "core_feasets.ver") || return :ignore

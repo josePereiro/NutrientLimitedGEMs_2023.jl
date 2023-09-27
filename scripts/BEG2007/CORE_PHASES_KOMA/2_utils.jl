@@ -71,11 +71,12 @@ function _with_downreg(f::Function, model, todownv::Vector, DOWNREG_FACTOR)
 end
 
 ## ------------------------------------------------------------
-using Base.Threads: Atomic
-function _th_readdir(f::Function, n1 = Inf, n0 = 1;
+import Base.Threads: Atomic
+function _th_readdir(f::Function, sim; 
+        n1 = Inf, n0 = 1,
         info_frec = 1.0, nthrs = 10, verbose = true
     )
-    batches = readdir(BlobBatch, procdir(PROJ, [SIMVER]))
+    batches = readdir(BlobBatch, procdir(PROJ, [sim]))
     nread = Atomic{Int}(0)
     bbi = Atomic{Int}(0)
     t0 = Atomic{Float64}(-1.0)
@@ -103,6 +104,7 @@ function _th_readdir(f::Function, n1 = Inf, n0 = 1;
     end
     return nothing
 end
+_th_readdir(f::Function; kwargs...) = _th_readdir(f::Function, SIMVER; kwargs...)
 
 # ------------------------------------------------------------
 _uniqueidx(v) = unique(i -> v[i], eachindex(v))

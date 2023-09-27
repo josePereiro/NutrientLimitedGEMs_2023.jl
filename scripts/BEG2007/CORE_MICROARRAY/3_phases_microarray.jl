@@ -14,7 +14,7 @@ include("2_utils.jl")
 
 ## ------------------------------------------------------------
 # Prepare network
-@tempcontext ["MICROARRAY_COMPLEX_MEDIUM" => v"0.1.0"] let
+@tempcontext ["PHASES_MICROARRAY" => v"0.1.0"] let
 
     # Data taken from Beg 2007 supplementary materials
     # Supp1 and Supp3
@@ -1319,6 +1319,8 @@ include("2_utils.jl")
         end
     end
 
+    @stage! time_tags = [2 ,2.5, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8]
+ 
     nothing
 end
 

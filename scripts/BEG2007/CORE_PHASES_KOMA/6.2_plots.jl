@@ -28,7 +28,7 @@ let
     _, h0 = withcachedat(PROJ, :get!, cid) do
         _h0 = identity_histogram(UInt64)
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
-        _th_readdir(n1; nthrs = 10) do bbi, bb
+        _th_readdir(;n0, n1, nthrs = 10) do bbi, bb
 
             haskey(bb["meta"], "core_koma.ver") || return :ignore
             haskey(bb["meta"], "core_feasets.ver") || return :ignore

@@ -31,7 +31,7 @@ let
             0.0:0.05:3.0, # biom
         )
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
-        _th_readdir(n1, n0; nthrs = 1) do bbi, bb
+        _th_readdir(;n0, n1, nthrs = 10) do bbi, bb
 
             haskey(bb["meta"], "core_koma.ver") || return :ignore
             haskey(bb["meta"], "core_feasets.ver") || return :ignore
@@ -117,7 +117,7 @@ let
             -10.0:0.0025:10.0, # shadow price
         )
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
-        _th_readdir(n1, n0; nthrs = 10) do bbi, bb
+        _th_readdir(;n0, n1, nthrs = 10) do bbi, bb
 
             # filter
             haskey(bb["meta"], "core_koma.ver") || return :ignore

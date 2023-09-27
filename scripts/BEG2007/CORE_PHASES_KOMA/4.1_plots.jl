@@ -21,13 +21,13 @@ include("2_utils.jl")
 ## ------------------------------------------------------------
 # identity histogram
 let
-    n = 10
-    cid = (@__FILE__, :IDENTITY, n)
+    n1 = 10
+    cid = (@__FILE__, :IDENTITY, n1)
     _, h0 = withcachedat(PROJ, :get!, cid) do
         _h0 = identity_histogram(UInt64)
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
         
-        _th_readdir(n; info_frec = 10) do bbi, bb
+        _th_readdir(; n1, info_frec = 10) do bbi, bb
             haskey(bb["meta"], "core_koma.ver") || return false
             for blob in bb["core_koma"]
                 count!(h_pool[threadid()], hash(blob["koset"]))
@@ -57,12 +57,12 @@ end
 ## ------------------------------------------------------------
 # koma.lenght histogram
 let
-    n = Inf
-    cid = (@__FILE__, :LENGHT, n)
+    n1 = Inf
+    cid = (@__FILE__, :LENGHT, n1)
     _, h0 = withcachedat(PROJ, :get!, cid) do
         _h0 = identity_histogram(Int)
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
-        _th_readdir(n; info_frec = 10) do bbi, bb
+        _th_readdir(; n1, info_frec = 10) do bbi, bb
             haskey(bb["meta"], "core_koma.ver") || return :ignore
             for blob in bb["core_koma"]
                 count!(h_pool[threadid()], length(blob["koset"]))
