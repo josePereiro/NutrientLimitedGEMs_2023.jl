@@ -70,9 +70,14 @@ include("2_utils.jl")
                     feaset = koset[1:li]
                     # fba
                     _with_downreg(opm, feaset, DOWNREG_FACTOR) do
-                        optimize!(opm)
-                        feaobj["core_biomass_fba.biom"] = solution(opm, biom_id)
-                        feaobj["core_biomass_fba.solution"] = Float16.(solution(opm))
+                        try
+                            optimize!(opm)
+                            feaobj["core_biomass_fba.biom"] = solution(opm, biom_id)
+                            feaobj["core_biomass_fba.solution"] = Float16.(solution(opm))
+                        catch e
+                            feaobj["core_biomass_fba.biom"] = NaN
+                            feaobj["core_biomass_fba.solution"] = []
+                        end
                     end  # _with_downreg
 
                 end # for feasets
