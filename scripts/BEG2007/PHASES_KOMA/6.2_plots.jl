@@ -22,18 +22,20 @@ include("2_utils.jl")
 # identity-histogram
 let
     n0 = 0
-    n1 = 100
+    n1 = Inf
     cid = (@__FILE__, "feasets:identity-histogram", n1)
     lk = ReentrantLock()
     _, h0 = withcachedat(PROJ, :get!, cid) do
-        _h0 = identity_histogram(UInt64)
+        _h0 = Histogram(
+            UInt64,          # feaset hashes
+        )
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
-        _th_readdir(;n0, n1, nthrs = 10) do bbi, bb
+        _th_readdir(;n0, n1, nthrs = 1) do bbi, bb
 
             haskey(bb["meta"], "core_koma.ver") || return :ignore
             haskey(bb["meta"], "core_feasets.ver") || return :ignore
-            haskey(bb["meta"], "core_biomass.ver") || return :ignore
-            haskey(bb["meta"], "core_nut_sp.ver") || return :ignore
+            # haskey(bb["meta"], "core_biomass.ver") || return :ignore
+            # haskey(bb["meta"], "core_nut_sp.ver") || return :ignore
 
             # load frame
             feasets_db = bb["core_feasets"]
@@ -44,18 +46,18 @@ let
                 strip_koset = strip_blob0["koset"]
                 for (_fealen, feasets_blob1) in feasets_blob0
                     _feahash = hash(sort(strip_koset[1:_fealen]))
-                    count!(h_pool[threadid()], _feahash)
+                    count!(h_pool[threadid()], (_feahash,))
                 end
             end
             return :continue
         end # _th_readdir
-        count!(_h0, h_pool...) # reduce
+        merge!(_h0, h_pool...) # reduce
         return _h0
     end
     
     # Plots
-    xs = collect(bins(h0))
-    ws = counts(h0, xs)
+    xs = collect(keys(h0, 1))
+    ws = collect(values(h0))
     @show length(ws) / sum(ws)
 
     # filter
