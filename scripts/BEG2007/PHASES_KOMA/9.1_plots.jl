@@ -20,69 +20,101 @@ include("2_utils.jl")
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 # biomass vs downset length histogram
 let
+    # context
     _simver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+    _load_contextdb(_simver)
+
+    CORE_XLEP_DB = query(["ROOT", "CORE_XLEP"])
+    GEM_XLEP_DB = query(["ROOT", "GEM_XLEP"])
+    global RXN_MAP = query(["ROOT", "GEM_CORE_RXN_MAP"])["rxn_map"]
+    
+    # lep
+    core_elep0 = CORE_XLEP_DB["core_elep0"][]
+    global core_lep0 = lepmodel(core_elep0)
+    core_elep0 = nothing
+    # TDOD: boxing kill GEM growth, using unbox lep0
+    global gem_lep0 = GEM_XLEP_DB["gem_lep0"][]
+    global CORE_RXNI_MAP = Dict(id => i for (i, id) in enumerate(colids(core_lep0)))
+    global GEM_RXNI_MAP = Dict(id => i for (i, id) in enumerate(colids(gem_lep0)))
 
     n0 = 0 # init file
-    n1 = Inf # non-ignored file count
+    n1 = 3 # non-ignored file count
     cid = (@__FILE__, _simver, "biomass:core vs gem", n0, n1)
     lk = ReentrantLock()
     _, ret = withcachedat(PROJ, :get!, cid) do
-        _gem_biomv, _core_biomv = Float64[], Float64[]
+        _h0 = Histogram(
+            -1000.0:0.01:1000.0,                  # core_rxns
+            -1000.0:0.01:1000.0,                  # core_rxns
+        )
+        h_th_pool = Dict()
         _th_readdir(_simver; n0, n1, nthrs = 1) do bbi, bb
             haskey(bb["meta"], "core_biomass_fba.ver") || return :ignore
             haskey(bb["meta"], "gem_biomass_fba.ver") || return :ignore
             # load frame
             feasets_db = bb["core_feasets"]
+            h_pool = get!(h_th_pool, threadid(), Dict())
             _th_gem_biomv, _th_core_biomv = Float64[], Float64[]
             for feasets_blob0 in feasets_db
                 for (_fealen, feasets_blob1) in feasets_blob0
-                    _core_biom = feasets_blob1["core_biomass_fba.biom"]
-                    _gem_biom  = feasets_blob1["gem_biomass_fba.biom"]
-                    isnan(_core_biom) && continue
-                    isnan(_gem_biom) && continue
-                    push!(_th_core_biomv, _core_biom)
-                    push!(_th_gem_biomv, _gem_biom)
+                    _core_sol = feasets_blob1["core_biomass_fba.solution"]
+                    _gem_sol  = feasets_blob1["gem_biomass_fba.solution"]
+                    isempty(_core_sol) && continue
+                    isempty(_gem_sol) && continue
+                    # for (core_rxn, gem_rxn) in RXN_MAP
+                    for core_rxn in colids(core_lep0)
+                        gem_rxn = RXN_MAP[core_rxn]
+                        core_rxni = CORE_RXNI_MAP[core_rxn]
+                        gem_rxni = GEM_RXNI_MAP[gem_rxn]
+                        h = get!(h_pool, core_rxn) do 
+                            deepcopy(_h0)
+                        end
+                        count!(h, 
+                            (_core_sol[core_rxni], _gem_sol[gem_rxni])
+                        )
+                    end
                 end
             end # for feasets_blob0
-            lock(lk) do
-                push!(_core_biomv, _th_core_biomv...)
-                push!(_gem_biomv, _th_gem_biomv...)
-            end
         end # _th_readdir
-        return _core_biomv, _gem_biomv
+        # reduce
+        h0_pool = Dict()
+        for (th, pool) in h_th_pool
+            for (core_rxn, hi) in pool
+                h0 = get!(h0_pool, core_rxn) do 
+                    deepcopy(_h0)
+                end
+                merge!(h0, hi) 
+            end
+        end
+        return h0_pool
     end
-    global core_biomv, gem_biomv = ret
+    global h0_pool = ret
 
     return
 end
 
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-# Correlations
+# Growth Correlations Plots
 let
-    h0 = Histogram(
-        -0.5:0.05:3.0,                  # core_biomv
-        -0.5:0.05:3.0,                  # gem_biomv
-    )
-    @time for (core_biom, gem_biom) in zip(core_biomv, gem_biomv)
-        count!(h0, (core_biom, gem_biom))
-    end
-
+    rxn = "BIOMASS_Ecoli_core_w_GAM"
+    h0 = h0_pool[rxn]
+             
     # Plot
     # 2D
-    # TODO: add cor(core_biomv, gem_biomv) text
     f = Figure()
     g = GridLayout(f[1, 1])
     ax = Axis(g[1:3,2:5]; 
-        title = "CORE vs GEM growth",
+        title = "CORE vs GEM [$(rxn)]",
         limits = (-0.1, 2.5, -0.1, 2.5), 
     )
     x1 = collect(keys(h0, 1))
     x2 = collect(keys(h0, 2))
     @show length(x2)
+    @show cor(x1, x2)
     w = collect(values(h0))
-    scatter!(ax, x1, x2; 
+    sidx = sortperm(w; rev = false)
+    scatter!(ax, x1[sidx], x2[sidx]; 
         colormap = :viridis, markersize = 20, 
-        color = log10.(w) ./ maximum(log10, w), 
+        color = log10.(w[sidx]) ./ maximum(log10, w), 
         alpha = 1.0
     )
     lines!(ax, -0.0:0.05:2.3, -0.0:0.05:2.3;
@@ -102,7 +134,8 @@ let
         limits = (-0.1, 2.5, nothing, nothing)
     )
     barplot!(ax, collect(keys(h1, 1)), collect(values(h1));
-        color = :black, gap = -1
+        color = :black, gap = -1, 
+        width = 0.03
     )
 
     # marginals
@@ -113,7 +146,8 @@ let
         xticklabelrotation = pi/4
     )
     barplot!(ax, collect(keys(h1, 1)), collect(values(h1));
-        direction=:x, color = :black, gap = -1
+        direction=:x, color = :black, gap = -1, 
+        width = 0.04
     )
 
     colgap!(g, 1, -20)
@@ -123,19 +157,69 @@ let
 end
 
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-# Comulative
+# Correlations Coes
 let
-    f =Figure()
+    cors = Float64[]
+    bioms_cor = 0.0
+    biom_id = "BIOMASS_Ecoli_core_w_GAM"
+    for (rxn, h0) in h0_pool
+        @show rxn
+        nsamples = sum(values(h0))
+        # @show nsamples
+        scale = min(30000 / nsamples, 1.0)
+        # @show scale
+        # x1 = collect(keys(h0, 1))
+        x1 = resample(h0, 1; scale)
+        # x2 = collect(keys(h0, 2))
+        x2 = resample(h0, 2; scale)
+        # @show length(x1)
+        _cor = cor(x1, x2)
+        isnan(_cor) && continue
+        push!(cors, _cor)
+        rxn == biom_id && (bioms_cor = _cor)
+    end
+    sort!(cors)
+    
+    f = Figure()
+    ax = Axis(f[1,1]; 
+        title = "CORE vs GEM optimal",
+        xlabel = "core rxn index (sorted)", 
+        ylabel = "Pearson correlation"
+    )
+    lines!(ax, cors; 
+        linewidth = 5, 
+        color = :black,
+        label = "all reactions"
+    )
+    idx = findfirst(isequal(bioms_cor), cors)
+    scatter!(ax, [idx], [bioms_cor];
+        markersize = 35,
+        color = :black, 
+        marker = :star5, 
+        label = "biom"
+    )
+    axislegend(ax; position = :lt)
+    f
+end
+
+## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+# Biomass Comulative
+let
+    f = Figure()
     ax = Axis(f[1,1]; 
         title = "CORE vs GEM growth",
-        xlabel = "downregulation index (sorted)",
+        xlabel = "downset index (sorted)",
         ylabel = "biomass [1/h]",
     )
-    lines!(ax, sort(core_biomv);
+
+    scale = 1e-2
+    samples = resample(h0, 1; scale)
+    lines!(ax, eachindex(samples) ./ scale, sort(samples);
         linewidth = 5, 
         label = "core"
     )
-    lines!(ax, sort(gem_biomv);
+    samples = resample(h0, 2; scale)
+    lines!(ax, eachindex(samples) ./ scale, sort(samples);
         linewidth = 5,
         label = "gem"
     )
