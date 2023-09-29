@@ -39,7 +39,7 @@ let
 
     n0 = 0 # init file
     n1 = Inf # non-ignored file count
-    cid = (@__FILE__, _simver, "biomass:core vs gem", n0, n1)
+    cid = (@__FILE__, _simver, "fba:core vs gem", n0, n1)
     lk = ReentrantLock()
     _, ret = withcachedat(PROJ, :get!, cid) do
         _h0 = Histogram(
@@ -99,60 +99,14 @@ let
              
     # Plot
     # 2D
-    f = Figure()
-    g = GridLayout(f[1, 1])
-    ax = Axis(g[1:3,2:5]; 
-        title = "CORE vs GEM [$(rxn)]",
-        limits = (-0.1, 2.5, -0.1, 2.5), 
+    return _histogram2D_grid(h0, 1, 2;
+        title = "Koma sets",
+        xlabel = "set index (sorted)", 
+        ylabel = "rxn index",
+        limits = (nothing, nothing, nothing, nothing),
+        dim1_bar_width = 0.03,
+        dim2_bar_width = 0.05,
     )
-    x1 = collect(keys(h0, 1))
-    x2 = collect(keys(h0, 2))
-    @show length(x2)
-    @show cor(x1, x2)
-    w = collect(values(h0))
-    sidx = sortperm(w; rev = false)
-    scatter!(ax, x1[sidx], x2[sidx]; 
-        colormap = :viridis, markersize = 20, 
-        color = log10.(w[sidx]) ./ maximum(log10, w), 
-        alpha = 1.0
-    )
-    lines!(ax, -0.0:0.05:2.3, -0.0:0.05:2.3;
-        linestyle = :dot, 
-        color = :black,
-        linewidth = 10
-    )
-    Colorbar(g[1:3, 6]; 
-        label = "log10(count)",
-        colormap = :viridis, limits = extrema(log10.(w)), 
-    )
-    
-    # marginals
-    h1 = marginal(h0, 1)
-    ax = Axis(g[4,2:5]; 
-        xlabel = "core biom [1/h]", ylabel = "count",
-        limits = (-0.1, 2.5, nothing, nothing)
-    )
-    barplot!(ax, collect(keys(h1, 1)), collect(values(h1));
-        color = :black, gap = -1, 
-        width = 0.03
-    )
-
-    # marginals
-    h1 = marginal(h0, 2)
-    ax = Axis(g[1:3,1]; 
-        xlabel = "count", ylabel = "gem biom [1/h]",
-        limits = (nothing, nothing, -0.1, 2.5),
-        xticklabelrotation = pi/4
-    )
-    barplot!(ax, collect(keys(h1, 1)), collect(values(h1));
-        direction=:x, color = :black, gap = -1, 
-        width = 0.04
-    )
-
-    colgap!(g, 1, -20)
-    rowgap!(g, 3, -5)
-    
-    f
 end
 
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -165,7 +119,7 @@ let
     @threads for (rxn, h0) in collect(h0_pool)
         @show rxn
         nsamples = sum(values(h0))
-        nresamples = 300_000 # 
+        nresamples = 30_000 # 
         # @show nsamples
         scale = min(nresamples / nsamples, 1.0)
         x1 = resample(h0, 1; scale)

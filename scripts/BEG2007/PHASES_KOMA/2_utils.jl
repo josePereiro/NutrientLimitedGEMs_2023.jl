@@ -110,4 +110,71 @@ _th_readdir(f::Function; kwargs...) = _th_readdir(f::Function, SIMVER; kwargs...
 _uniqueidx(v) = unique(i -> v[i], eachindex(v))
 
 # ------------------------------------------------------------
+## ------------------------------------------------------------
+function _histogram2D_grid(h0::Histogram, dim1, dim2;
+        title = "",
+        xlabel = "", ylabel = "",
+        dim1_T = identity,
+        dim2_T = identity,
+        limits = (nothing, nothing, nothing, nothing),
+        dim1_bar_width = 1.0,
+        dim2_bar_width = 1.0,
+        colgap = -20,
+        rowgap = -5
+    )
+
+    # Plots
+    f = Figure()
+    g = GridLayout(f[1, 1])
+    ax = Axis(g[1:3,2:5]; 
+        title, limits
+    )
+    x1 = dim1_T(collect(keys(h0, dim1))) # koma len
+    x2 = dim2_T(collect(keys(h0, dim2))) # rxn idx
+    @show length(x2)
+    @show cor(x1, x2)
+    w = collect(values(h0))
+    sidx = sortperm(w; rev = false)
+    scatter!(ax, x1[sidx], x2[sidx]; 
+        colormap = :viridis, markersize = 20, 
+        color = log10.(w[sidx]) ./ maximum(log10, w), 
+        alpha = 1.0
+    )
+    Colorbar(g[1:3, 6]; 
+        label = "log10(count)",
+        colormap = :viridis, limits = extrema(log10.(w)), 
+    )
+    f
+
+    # marginals 1
+    h1 = marginal(h0, dim1) # koma indx
+    ax = Axis(g[4,2:5]; 
+        xlabel = xlabel, ylabel = "count",
+        limits = (limits[1], limits[2], nothing, nothing),
+    )
+    barplot!(ax, dim1_T(collect(keys(h1, 1))), collect(values(h1));
+        color = :black, gap = -1, 
+        width = dim1_bar_width
+    )
+
+    # marginals 2
+    h1 = marginal(h0, dim2) # rxn idx
+    ax = Axis(g[1:3,1]; 
+        xlabel = "count", ylabel = ylabel,
+        limits = (nothing, nothing, limits[3], limits[4]),
+        xticklabelrotation = pi/4
+    )
+    barplot!(ax, dim2_T(collect(keys(h1, 1))), collect(values(h1));
+        direction=:x, color = :black, gap = -1, 
+        width = dim2_bar_width
+    )
+
+    colgap!(g, 1, colgap)
+    rowgap!(g, 3, rowgap)
+    
+    f
+end
+
+
+# ------------------------------------------------------------
 nothing

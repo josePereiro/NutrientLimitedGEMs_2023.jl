@@ -55,37 +55,76 @@ let
 end
 
 ## ------------------------------------------------------------
-# koma.lenght histogram
+# koma.length histogram
 let
     n1 = Inf
-    cid = (@__FILE__, :LENGHT, n1)
-    _, h0 = withcachedat(PROJ, :get!, cid) do
-        _h0 = identity_histogram(Int)
-        h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
+    cid = (@__FILE__, "koma.lenght histogram", n1)
+    _, ret = withcachedat(PROJ, :set!, cid) do
+        _h0 = Histogram(
+            0:10_000,      # koma len
+            0:10_000,      # rxn idx
+        )
+        h_pool = Dict()
         _th_readdir(; n1, info_frec = 10) do bbi, bb
             haskey(bb["meta"], "core_koma.ver") || return :ignore
+            _h = get!(() -> deepcopy(_h0), h_pool, threadid())
             for blob in bb["core_koma"]
-                count!(h_pool[threadid()], length(blob["koset"]))
+                koset = blob["koset"]
+                koset_length = length(koset)
+                for rxni in koset
+                    count!(_h, (koset_length, rxni))
+                end
             end
-            return false # continue
         end # _th_readdir
-        count!(_h0, h_pool...) # reduce
+        merge!(_h0, values(h_pool)...) # reduce
         return _h0
     end
+    h0 = ret
 
-    # Plots
-    xs = collect(bins(h0))
-    ws = counts(h0, xs)
-    @show length(ws) / sum(ws)
-
-    sidxs = sortperm(xs)
-    f = Figure()
-    ax = Axis(f[1,1]; 
-        title = basename(@__DIR__),
-        xlabel = "core_koma.koset length", ylabel = "count",
+    _histogram2D_grid(h0, 1, 2;
+        title = "Koma sets", 
+        xlabel = "koma len", 
+        ylabel = "rxn idx",
+        limits = (nothing, nothing, nothing, nothing),
+        dim1_bar_width = 1.6,
+        dim2_bar_width = 0.6,
     )
-    lines!(ax, xs[sidxs], ws[sidxs]; label = "", color = :black)
-    f
+end
+
+## ------------------------------------------------------------
+# komaset index vs rxn idx
+let
+    n1 = Inf
+    cid = (@__FILE__, "koma.lenght vs rxn idx", n1)
+    _, ret = withcachedat(PROJ, :set!, cid) do
+        _h0 = Histogram(
+            0:10_000,      # koma indx
+            0:10_000       # rxn idx
+        )
+        h_pool = Dict()
+        _th_readdir(; n1, info_frec = 10) do bbi, bb
+            haskey(bb["meta"], "core_koma.ver") || return :ignore
+            _h = get!(() -> deepcopy(_h0), h_pool, threadid())
+            for blob in bb["core_koma"]
+                for (i, rxni) in enumerate(blob["koset"])
+                    count!(_h, (i, rxni))
+                end
+            end
+        end # _th_readdir
+        merge!(_h0, values(h_pool)...) # reduce
+        return _h0
+    end
+    h0 = ret
+
+    return _histogram2D_grid(h0, 1, 2;
+        title = "Koma sets",
+        xlabel = "set index (sorted)", 
+        ylabel = "rxn index",
+        limits = (nothing, nothing, nothing, nothing),
+        dim1_bar_width = 0.6,
+        dim2_bar_width = 0.6,
+    )
+
 end
 
 # ## ------------------------------------------------------------

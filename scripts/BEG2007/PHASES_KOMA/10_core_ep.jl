@@ -1,4 +1,4 @@
-## ------------------------------------------------------------
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 @time begin
     using Random
     using MetXGEMs
@@ -11,18 +11,67 @@
     using NutrientLimitedGEMs
 end
 
-# TODO: Add Graphs.jl kind of functionality for getting basic stuff
-# ------------------------------------------------------------
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 include("1_setup.jl")
 include("2_utils.jl")
 
-## ------------------------------------------------------------
+## --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+@tempcontext ["CORE_EP.LEP0" => v"0.1.0"] let
+    
+    # context
+    XLEP_DB = query(["ROOT", "CORE_XLEP"])
+
+    # epm original
+    # lep
+    core_elep0 = XLEP_DB["core_elep0"][]
+    core_lep0 = lepmodel(core_elep0)
+    core_elep0 = nothing
+
+    # epm
+    epm = FluxEPModelT0(core_lep0)
+    config!(epm; 
+        verbose = false,    
+        epsconv = 1e-6
+    )
+    converge!(epm)
+
+    @stage! "entropy" => entropy(epm)
+    @stage! "free_energy" => first(free_energy(epm))
+    @stage! "status" => convergence_status(epm)
+    
+end
+
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+# save
+_save_contextdb(SIMVER)
+
+## --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 @tempcontext ["CORE_EP" => v"0.1.0"] let
     
     # context
     ALG_VER = context("CORE_EP")
     GLOB_DB = query(["ROOT", "GLOBALS"])
     XLEP_DB = query(["ROOT", "CORE_XLEP"])
+
+    # epm original
+    let
+        # lep
+        core_elep0 = XLEP_DB["core_elep0"][]
+        core_lep0 = lepmodel(core_elep0)
+        core_elep0 = nothing
+
+        # epm
+        epm = FluxEPModelT0(core_lep0)
+        config!(epm; 
+            verbose = false,    
+            epsconv = 1e-6
+        )
+        converge!(epm)
+
+        @stage! "entropy" => entropy(epm)
+        feaobj["core_ep.free_energy"] = first(free_energy(epm))
+        feaobj["core_ep.status"] = convergence_status(epm)
+    end
     
     # read batches
     n0 = 0 # init file
@@ -44,7 +93,6 @@ include("2_utils.jl")
             core_elep0 = XLEP_DB["core_elep0"][]
             core_lep0 = lepmodel(core_elep0)
             core_elep0 = nothing
-            M, N = size(core_lep0)
             
             # run
             info_frec = 2
