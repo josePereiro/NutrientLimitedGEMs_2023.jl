@@ -18,7 +18,7 @@ include("1_setup.jl")
 include("2_utils.jl")
 
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-# biomass vs downset length histogram
+# Collect max biomass fba solutions
 let
     # context
     _simver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
@@ -38,7 +38,7 @@ let
     global GEM_RXNI_MAP = Dict(id => i for (i, id) in enumerate(colids(gem_lep0)))
 
     n0 = 0 # init file
-    n1 = 3 # non-ignored file count
+    n1 = Inf # non-ignored file count
     cid = (@__FILE__, _simver, "biomass:core vs gem", n0, n1)
     lk = ReentrantLock()
     _, ret = withcachedat(PROJ, :get!, cid) do
@@ -47,7 +47,7 @@ let
             -1000.0:0.01:1000.0,                  # core_rxns
         )
         h_th_pool = Dict()
-        _th_readdir(_simver; n0, n1, nthrs = 1) do bbi, bb
+        _th_readdir(_simver; n0, n1, nthrs = 10) do bbi, bb
             haskey(bb["meta"], "core_biomass_fba.ver") || return :ignore
             haskey(bb["meta"], "gem_biomass_fba.ver") || return :ignore
             # load frame
@@ -165,8 +165,9 @@ let
     for (rxn, h0) in h0_pool
         @show rxn
         nsamples = sum(values(h0))
+        nresamples = 300_000 # 
         # @show nsamples
-        scale = min(30000 / nsamples, 1.0)
+        scale = min(nresamples / nsamples, 1.0)
         # @show scale
         # x1 = collect(keys(h0, 1))
         x1 = resample(h0, 1; scale)
@@ -205,6 +206,9 @@ end
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 # Biomass Comulative
 let
+    rxn = "BIOMASS_Ecoli_core_w_GAM"
+    h0 = h0_pool[rxn]
+    
     f = Figure()
     ax = Axis(f[1,1]; 
         title = "CORE vs GEM growth",
