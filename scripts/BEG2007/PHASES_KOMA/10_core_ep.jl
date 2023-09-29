@@ -26,8 +26,8 @@ include("2_utils.jl")
     
     # read batches
     n0 = 0 # init file
-    n1 = 1 # non-ignored file count
-    _th_readdir(;n0, n1, nthrs = 1) do bbi, bb
+    n1 = Inf # non-ignored file count
+    _th_readdir(;n0, n1, nthrs = 10) do bbi, bb
         
         # filter
         islocked(bb) && return :ignore # somebody is working
@@ -73,14 +73,15 @@ include("2_utils.jl")
                         isempty(fvalb) && error("go to catch")
                         isempty(fvaub) && error("go to catch")
                         
-                        # contextufva bounds
+                        # contextu fva bounds
                         lb!(core_lep0, fvalb)
                         ub!(core_lep0, fvaub)
                         
                         # epm
                         epm = FluxEPModelT0(core_lep0)
                         config!(epm; 
-                            verbose = true,    
+                            verbose = false,    
+                            epsconv = 1e-6
                         )
                         converge!(epm)
 
@@ -92,14 +93,10 @@ include("2_utils.jl")
                         feaobj["core_ep.free_energy"] = NaN
                         feaobj["core_ep.status"] = :error
                         # rethrow(e)
-                    end 
-
+                    end
                     
                 end # for (li, feaobj)
                 
-                global _feasets_blob = feasets_blob
-                error()
-
                 # GC
                 gc_flag = iszero(rem(blobi, gc_frec))
                 gc_flag && GC.gc()

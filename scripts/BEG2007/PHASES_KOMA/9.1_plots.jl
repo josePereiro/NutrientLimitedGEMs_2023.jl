@@ -162,22 +162,21 @@ let
     cors = Float64[]
     bioms_cor = 0.0
     biom_id = "BIOMASS_Ecoli_core_w_GAM"
-    for (rxn, h0) in h0_pool
+    lk = ReentrantLock()
+    @threads for (rxn, h0) in collect(h0_pool)
         @show rxn
         nsamples = sum(values(h0))
         nresamples = 300_000 # 
         # @show nsamples
         scale = min(nresamples / nsamples, 1.0)
-        # @show scale
-        # x1 = collect(keys(h0, 1))
         x1 = resample(h0, 1; scale)
-        # x2 = collect(keys(h0, 2))
         x2 = resample(h0, 2; scale)
-        # @show length(x1)
         _cor = cor(x1, x2)
         isnan(_cor) && continue
-        push!(cors, _cor)
-        rxn == biom_id && (bioms_cor = _cor)
+        lock(lk) do
+            push!(cors, _cor)
+            rxn == biom_id && (bioms_cor = _cor)
+        end
     end
     sort!(cors)
     
