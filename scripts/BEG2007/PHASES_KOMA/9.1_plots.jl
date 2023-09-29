@@ -53,7 +53,6 @@ let
             # load frame
             feasets_db = bb["core_feasets"]
             h_pool = get!(h_th_pool, threadid(), Dict())
-            _th_gem_biomv, _th_core_biomv = Float64[], Float64[]
             for feasets_blob0 in feasets_db
                 for (_fealen, feasets_blob1) in feasets_blob0
                     _core_sol = feasets_blob1["core_biomass_fba.solution"]
