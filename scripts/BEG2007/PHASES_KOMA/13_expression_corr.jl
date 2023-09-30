@@ -78,27 +78,32 @@ let
         _ensems = _ensems_patt(r"PHASE_1.*Uniform.*5000", r"PHASE_3.*Uniform.*5000")
         _microarray = _microarray_patts(;phs = [1,3])
         _comm = intersect(Set(keys(_ensems)), Set(keys(_microarray)))
-        __vs = Float64[]
-        __Es = Float64[]
         for rxn in _comm
-            for (v, E) in zip(_ensems[rxn], _microarray[rxn])
-                push!(__vs, v)
-                push!(__Es, E)
-            end
+            _v_patt = abs.(_ensems[rxn])
+            # @show _v_patt
+            # _v_patt = _v_patt ./ mean(_v_patt)
+            any(isnan, _v_patt) && continue
+            _E_patt = abs.(_microarray[rxn])
+            # @show _E_patt
+            # _E_patt = _E_patt ./ mean(_E_patt)
+            any(isnan, _E_patt) && continue
+            
+            push!(_vs, _v_patt...)
+            push!(_Es, _E_patt...)
         end
-        push!(_corrs, cor(__vs, __Es))
-        push!(_vs, __vs...)
-        push!(_Es, __Es...)
     end
 
     f = Figure()
-    ax = Axis(f[1,1];)
-    _vs = abs.(_vs) .- mean(abs.(_vs))
-    _vs ./= std(_vs)
-    _Es = _Es .- mean(_Es)
-    _Es ./= std(_Es)
+    ax = Axis(f[1,1];
+        xlabel = "(|v| - mean(|v|))/std(|v|)",
+        ylabel = "(E - mean(E))/std(E)",
+    )
+    # _vs = abs.(_vs) 
+    # _vs = (_vs .- mean(_vs)) ./ std(_vs)
+    # _Es = abs.(_Es)
+    # _Es = (_Es .- mean(_Es)) ./ std(_Es)
     scatter!(ax, _vs, _Es; color = :black)
-    lines!(ax, _vs, _vs; color = :black)
+    # lines!(ax, _vs, _vs; color = :black)
     @show cor(_vs, _Es)
     f
 end
