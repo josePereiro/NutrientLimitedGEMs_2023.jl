@@ -74,9 +74,10 @@ end
 import Base.Threads: Atomic
 function _th_readdir(f::Function, sim; 
         n1 = Inf, n0 = 1,
-        info_frec = 1.0, nthrs = 10, verbose = true
+        info_frec = 1.0, nthrs = 10, verbose = true,
+        perm = sort!,
     )
-    batches = readdir(BlobBatch, procdir(PROJ, [sim]))
+    batches = readdir(BlobBatch, procdir(PROJ, [sim]); perm)
     nread = Atomic{Int}(0)
     bbi = Atomic{Int}(0)
     t0 = Atomic{Float64}(-1.0)
@@ -173,6 +174,42 @@ function _histogram2D_grid(h0::Histogram, dim1, dim2;
     rowgap!(g, 3, rowgap)
     
     f
+end
+
+# ------------------------------------------------------------
+import Optim
+using Distributions
+function _MaxEnt_beta(av0)
+    a0, b0 = 1.0, 1.0
+    a, b = 1.0, 1.0
+    res_b = Optim.optimize(0.0, Inf, [b0]) do _b
+        b = clamp(first(_b), 1e-9, Inf)
+        res_a = Optim.optimize(0.0, Inf, [a0]) do _a
+            a = clamp(first(_a), 1e-9, Inf)
+            B = Beta(a, b)
+            (av0 - mean(B))^2
+        end
+        _a = first(Optim.minimizer(res_a))
+        a = clamp(first(_a), 1e-9, Inf)
+        B = Beta(a, b)
+        S = entropy(B)
+        return -S
+    end
+    b = first(Optim.minimizer(res_b))
+    B = Beta(a, b)
+    return B
+end
+
+# ------------------------------------------------------------
+function _ensem_fba_solutions(net, ensem, id)
+    idx = colindex(net, id)
+    v = Float64[]
+    for feaobj in ensem
+        sol = feaobj["core_biomass_fba.solution"]
+        isempty(sol) && continue
+        push!(v, sol[idx])
+    end
+    return v
 end
 
 

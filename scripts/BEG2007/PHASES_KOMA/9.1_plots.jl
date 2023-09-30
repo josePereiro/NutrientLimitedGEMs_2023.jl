@@ -101,8 +101,8 @@ let
     # 2D
     return _histogram2D_grid(h0, 1, 2;
         title = "Koma sets",
-        xlabel = "set index (sorted)", 
-        ylabel = "rxn index",
+        xlabel = "core biomass", 
+        ylabel = "gem biomass",
         limits = (nothing, nothing, nothing, nothing),
         dim1_bar_width = 0.03,
         dim2_bar_width = 0.05,

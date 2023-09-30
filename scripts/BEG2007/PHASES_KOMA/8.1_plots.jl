@@ -79,7 +79,7 @@ let
     # Plot
     # 2D
     return _histogram2D_grid(h0, 1, 4;
-        title = "Koma sets",
+        title = "Feasible sets",
         xlabel = "downregulation length", 
         ylabel = "shadow price",
         limits = (-10, 170, nothing, nothing),

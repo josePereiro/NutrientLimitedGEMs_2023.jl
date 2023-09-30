@@ -7,6 +7,7 @@
     using Statistics
     using CairoMakie
     using BlobBatches
+    using Distributions
     using Base.Threads
     using Combinatorics
     using Base.Threads: Atomic
