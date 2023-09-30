@@ -24,11 +24,11 @@ include("2_utils.jl")
 # implements the ider interface
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 # ensemble ph1 v1
-# 1. Only glc allowed 
+# 1. intake of ac and glyc
 # 2. Average biomass fixed (sampled from a MaxEnt Beta distribution)
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_1"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_3"
     _load_contextdb(_simver)
 
     # lep
@@ -38,18 +38,21 @@ let
     RIDX = Dict(id => i for (i, id) in enumerate(colids(core_lep0)))
     core_elep0 = nothing
     
-    tries_per_bb = 2000
-    ensem_size = 500
+    ensem_size = 3000
+    tries_per_bb = 500
     global ensem = []
+
+    # @show core_lep0.ub[RIDX["BIOMASS_Ecoli_core_w_GAM"]]
     
     # biomass
-    ave_biom = 0.55 # approx from Beg2007 fig2.a
+    ave_biom = 0.3 # approx from Beg2007 fig2.a
     ave_biom1 = 0.8 # upper bound for the biomass space (it must be feasible with just glc)
     biom_th = 0.05 # hit th
     B = _MaxEnt_beta(ave_biom)
     biom_dist_target = rand(B, floor(Int, ensem_size * 1.2)) .* ave_biom1
     _target_mean_biom = mean(biom_dist_target)
     @show mean(biom_dist_target)
+    return
 
     # find an essemble
     n0 = 0
@@ -94,6 +97,7 @@ let
 
                 # unpack
                 feasets_blob0 = rand(feasets_frame)
+                isempty(feasets_blob0) && continue
                 fealen, feaobj = rand(feasets_blob0)
                 _core_sol = feaobj["core_biomass_fba.solution"]
                 isempty(_core_sol) && continue
@@ -105,11 +109,11 @@ let
                 # At phase 1, only glucose can be consumed
                 good_pattern = true
                 for exch in [
-                        "EX_lac__D_e", "EX_malt_e",
-                        "EX_gal_e", "EX_glyc_e"
+                        "EX_glyc_e", "EX_ac_e"
                     ]
                     flx = _core_sol[RIDX[exch]]
-                    abs(flx) < 1e-2 && continue
+                    flx <= 0.0 && continue # intaking
+                    flx <= -1e-2 && continue # but not so much
                     good_pattern = false
                     break
                 end
@@ -119,8 +123,7 @@ let
                 # distribution filters
                 # --------------------------------------------
                 # biomass distribution
-                ixd = RIDX["BIOMASS_Ecoli_core_w_GAM"]
-                _core_biom = _core_sol[ixd]
+                _core_biom = _core_sol[RIDX["BIOMASS_Ecoli_core_w_GAM"]]
                 lock(lk) do
                     _thidx = findfirst(biom_dist_target) do z0
                         abs(_core_biom - z0) < biom_th
@@ -152,26 +155,7 @@ let
     fn = procdir(PROJ, ["ensembles"], basename(@__FILE__), (;len = length(ensem)), ".jls")
     sdat(_dat, fn; verbose = true)
 
-    println()
-    println("= "^30)
-
-    println("ENSEMBLE")
-    println("- length(ensem)     ", length(ensem))
-    
-    flxs = _ensem_fba_solutions(core_lep0, ensem, "BIOMASS_Ecoli_core_w_GAM")
-    println("- target mean(BIOM) ", _target_mean_biom)
-    println("- ensem mean(BIOM)  ", mean(flxs))
-    println("- ensem std(BIOM)   ", std(flxs))
-
-    for each in [
-            "EX_glc__D_e", "EX_lac__D_e", "EX_malt_e",
-            "EX_gal_e", "EX_glyc_e", "EX_ac_e"
-        ]
-        flxs = _ensem_fba_solutions(core_lep0, ensem, each)
-        println("- ensem mean($each)  ", mean(flxs))
-        println("- ensem std($each)   ", std(flxs))
-    end
-
+    _ensem_summary(ensem, core_lep0)
     nothing
 end
 

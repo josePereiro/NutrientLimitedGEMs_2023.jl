@@ -214,4 +214,28 @@ end
 
 
 # ------------------------------------------------------------
+function _ensem_summary(ensem, core_lep0)
+    println()
+    println("= "^30)
+
+    println("ENSEMBLE")
+    println("- length(ensem)     ", length(ensem))
+    
+    flxs = _ensem_fba_solutions(core_lep0, ensem, "BIOMASS_Ecoli_core_w_GAM")
+    println("- ensem mean(BIOM)  ", mean(flxs))
+    println("- ensem std(BIOM)   ", std(flxs))
+
+    for exch in [
+            "EX_glc__D_e", "EX_lac__D_e", "EX_malt_e",
+            "EX_gal_e", "EX_glyc_e", "EX_ac_e"
+        ]
+        hascolid(core_lep0, exch) || continue
+        flxs = _ensem_fba_solutions(core_lep0, ensem, exch)
+        println("- ensem mean($exch)  ", mean(flxs))
+        println("- ensem std($exch)   ", std(flxs))
+    end
+
+end
+
+# ------------------------------------------------------------
 nothing

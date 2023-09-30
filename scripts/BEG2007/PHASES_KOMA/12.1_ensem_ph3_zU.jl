@@ -29,7 +29,7 @@ include("2_utils.jl")
 # 2. Average biomass fixed (sampled from an Uniform distribution)
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_1"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_3"
     _load_contextdb(_simver)
 
     # lep
@@ -39,12 +39,12 @@ let
     RIDX = Dict(id => i for (i, id) in enumerate(colids(core_lep0)))
     core_elep0 = nothing
     
-    tries_per_bb = 2000
+    tries_per_bb = 500
     ensem_size = 500
     global ensem = []
     
     # biomass distribution
-    ave_biom = 0.60 # from Beg2007 fig2.a
+    ave_biom = 0.30 # from Beg2007 fig2.a
     B = Uniform(ave_biom - 0.1, ave_biom + 0.1)
     biom_dist_target = rand(B, floor(Int, ensem_size * 1.2)) 
     biom_th = 0.05
@@ -94,6 +94,7 @@ let
 
                 # unpack
                 feasets_blob0 = rand(feasets_frame)
+                isempty(feasets_blob0) && continue
                 fealen, feaobj = rand(feasets_blob0)
                 _core_sol = feaobj["core_biomass_fba.solution"]
                 isempty(_core_sol) && continue
@@ -104,12 +105,9 @@ let
                 # intake patterns
                 # At phase 1, only glucose can be consumed
                 good_pattern = true
-                for exch in [
-                        "EX_lac__D_e", "EX_malt_e",
-                        "EX_gal_e", "EX_glyc_e"
-                    ]
+                for exch in ["EX_ac_e"]
                     flx = _core_sol[RIDX[exch]]
-                    abs(flx) < 1e-2 && continue
+                    flx < 0.0 && continue # intaking
                     good_pattern = false
                     break
                 end
@@ -148,30 +146,12 @@ let
     # store
     _dat = Dict("ensem" => ensem, "RIDX" => RIDX)
     fn = procdir(PROJ, ["ensembles"], basename(@__FILE__), ".jls")
-    sdat(_dat, fn; verbose = true)
+    sdat(_dat, fn; verbose = false)
     fn = procdir(PROJ, ["ensembles"], basename(@__FILE__), (;len = length(ensem)), ".jls")
     sdat(_dat, fn; verbose = true)
 
-    println()
-    println("= "^30)
-
-    println("ENSEMBLE")
-    println("- length(ensem)     ", length(ensem))
+    _ensem_summary(ensem, core_lep0)
     
-    flxs = _ensem_fba_solutions(core_lep0, ensem, "BIOMASS_Ecoli_core_w_GAM")
-    println("- target mean(BIOM) ", _target_mean_biom)
-    println("- ensem mean(BIOM)  ", mean(flxs))
-    println("- ensem std(BIOM)   ", std(flxs))
-
-    for each in [
-            "EX_glc__D_e", "EX_lac__D_e", "EX_malt_e",
-            "EX_gal_e", "EX_glyc_e", "EX_ac_e"
-        ]
-        flxs = _ensem_fba_solutions(core_lep0, ensem, each)
-        println("- ensem mean($each)  ", mean(flxs))
-        println("- ensem std($each)   ", std(flxs))
-    end
-
     nothing
 end
 
