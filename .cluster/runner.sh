@@ -6,6 +6,7 @@
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/9_gem_biomass_fba.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_I-0.1.0") &
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/9_biomass_fba.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_III-0.1.0") &
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/10_core_ep.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_I-0.1.0") &
+(julia -t10 --project scripts/BEG2007/PHASES_KOMA/12.1_ensembles_ph1_v1.jl -- "SIMVER:") &
 julia -t5 --project scripts/BEG2007/PHASES_KOMA/_summary.jl  --  "SIMVER:"
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/6.2_plots.jl  --  "SIMVER:") &
 
