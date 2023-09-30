@@ -11,8 +11,14 @@
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/9_core_biomass_fba.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_1") &
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/10_core_ep.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_1") &
 (julia -t10 --project scripts/BEG2007/PHASES_KOMA/12.1_ensembles_ph1_v1.jl -- "SIMVER:") &
+
 julia -t3 --project scripts/BEG2007/PHASES_KOMA/_summary.jl  --  "SIMVER:"
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/6.2_plots.jl  --  "SIMVER:") &
+
+# Ensembles
+(julia -t5 --project scripts/BEG2007/PHASES_KOMA/12.1_ensem_ph1_zU.jl -- "SIMVER:" "ENS-SIZE:5000") &
+(julia -t5 --project scripts/BEG2007/PHASES_KOMA/12.1_ensem_zU.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_1" "ENS-SIZE:5000" "BIOMAS-DIST:Uniform") &
+(julia -t5 --project scripts/BEG2007/PHASES_KOMA/12.1_ensem_zU.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_3" "ENS-SIZE:5000" "BIOMAS-DIST:Uniform") &
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
 ============================================================

@@ -42,39 +42,62 @@ let
 end
 
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
-function _microarray_patt(rxnid)
+function _microarray_patts()
     # load micorarray data
     array_db = query(["ROOT", "PHASES_MICROARRAY"])
-    global RAW_EXP_MAT = array_db["exp_mat"]
-    haskey(RAW_EXP_MAT, rxnid) || nothing 
-    # return time_tags = array_db["time_tags"]
-
-    _patt = Float64
-    # @show RAW_EXP_MAT[id]
-    _mat = sum(RAW_EXP_MAT[rxnid]; dims = 1)
-    # ph1: 2.0, 2.5, 3.5 
-    # ph2: 4.0, 4.5, 5.0, 5.5, 6.0
-    # ph3: 6.5, 7.0, 7.5, 8.0
-
-    # else
-    # ph_idxs = 
+    RAW_EXP_MAT = array_db["exp_mat"]
+    MICRO_PATTS = Dict()
+    for rxnid in keys(RAW_EXP_MAT)
+        _patt = sum(RAW_EXP_MAT[rxnid]; dims = 1)
+        _patt .= _patt ./ mean(_patt)
+        _patt = [mean(_patt[1:4]), mean(_patt[5:8]), mean(_patt[9:12])]
+        MICRO_PATTS[rxnid] = _patt
+    end
+    return MICRO_PATTS
 end
 
+function _ensems_mean_vec(fnhint)
+    fnhint = Regex(fnhint)
+    dir = procdir(PROJ, ["ensembles"])
+    files = readdir(dir; join = true)
+    sort!(files; by = f -> rand()) # shuffle
+
+    ENS_MEANS = Dict{String, Float64}()
+    for fn in files
+        m = match(fnhint, basename(fn))
+        isnothing(m) && continue
+        
+        _, dat = ldat(fn)
+        ensem = dat["ensem"]
+        for (rxn, idx) in dat["RIDX"]
+            flxs = _ensem_fba_solutions(ensem, idx)
+            ENS_MEANS[rxn] = mean(flxs)
+        end
+        break
+    end
+    return ENS_MEANS
+end
+
+function _ensems_patt(hits...)
+    _means = map(_ensems_mean_vec, hits)
+    # all_keys = string.(unique(vcat(collect.(keys.(_means))...)))
+    _comm = intersect([Set(keys(_m)) for _m in _means]...)
+    ENS_PATTS = Dict()
+    for _m in _means
+        for key in _comm
+            _patt = get!(ENS_PATTS, key, Float64[])
+            push!(_patt, _m[key])
+        end
+    end
+    ENS_PATTS
+end
+_ensems_patt("ph1_zU", "ph3_zU")
+# "12.1_ensem_ph1_zU.jl...<<len=503>>.jls"
+# "12.1_ensem_ph3_zU.jl...<<len=15098>>.jls"
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 # create ph expression and ense flux mats
 let
     
-
-    RAW_EXP_MAT["ACALD"]
-    # for (rxn, genes) in raw_map["Supp3"]
-    #     isempty(genes) && continue
-    #     nrows = length(genes)
-    #     ncols = length(genes[1]["raw"])
-    #     exp_mat[rxn] = zeros(nrows, ncols)
-    #     for (ri, obj) in enumerate(genes)
-    #         exp_mat[rxn][ri, :] .= obj["raw"]
-    #     end
-    # end
 
     
 end

@@ -40,7 +40,10 @@ let
     core_elep0 = nothing
     
     tries_per_bb = 500
-    ensem_size = 500
+    ensem_size = parseARGS("ENS-SIZE:") do _str
+        isnothing(_str) && return 5000
+        return parse(Int, _str)
+    end
     global ensem = []
     
     # biomass distribution
@@ -145,12 +148,13 @@ let
 
     # store
     _dat = Dict("ensem" => ensem, "RIDX" => RIDX)
-    fn = procdir(PROJ, ["ensembles"], basename(@__FILE__), ".jls")
-    sdat(_dat, fn; verbose = false)
-    fn = procdir(PROJ, ["ensembles"], basename(@__FILE__), (;len = length(ensem)), ".jls")
+    fn = procdir(PROJ, 
+        ["ensembles"], 
+        basename(@__FILE__), 
+        (;h = hash(ensem), len = length(ensem_size)), 
+        ".jls"
+    )
     sdat(_dat, fn; verbose = true)
-
-    _ensem_summary(ensem, core_lep0)
     
     nothing
 end

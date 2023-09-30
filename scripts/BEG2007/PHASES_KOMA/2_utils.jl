@@ -201,8 +201,7 @@ function _MaxEnt_beta(av0)
 end
 
 # ------------------------------------------------------------
-function _ensem_fba_solutions(net, ensem, id)
-    idx = colindex(net, id)
+function _ensem_fba_solutions(ensem, idx::Int)
     v = Float64[]
     for feaobj in ensem
         sol = feaobj["core_biomass_fba.solution"]
@@ -210,6 +209,11 @@ function _ensem_fba_solutions(net, ensem, id)
         push!(v, sol[idx])
     end
     return v
+end
+
+function _ensem_fba_solutions(net, ensem, id)
+    idx = colindex(net, id)
+    return _ensem_fba_solutions(ensem, idx)
 end
 
 
