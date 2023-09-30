@@ -20,28 +20,6 @@ include("1_setup.jl")
 include("2_utils.jl")
 
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
-# load ensembels
-let
-    _phase_ids = [
-        "ECOLI-CORE-BEG2007-PHASE_1",
-        "ECOLI-CORE-BEG2007-PHASE_2",
-        "ECOLI-CORE-BEG2007-PHASE_3",
-    ]
-    _ensems_fns = Dict(
-        "ECOLI-CORE-BEG2007-PHASE_1" => "12.1_ensem_ph1_zU.jl...<<len=503>>.jls",
-        # "ECOLI-CORE-BEG2007-PHASE_2" => "",
-        "ECOLI-CORE-BEG2007-PHASE_3" => "12.1_ensem_ph3_zU.jl...<<len=548>>.jls",
-    )
-    global ENSEMS_DAT = Dict()
-    for (ph, fname) in _ensems_fns
-        fn = procdir(PROJ, ["ensembles"], fname)
-        _, dat = ldat(fn)
-        ENSEMS_DAT[ph] = dat
-    end
-    nothing
-end
-
-## --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 function _microarray_patts()
     # load micorarray data
     array_db = query(["ROOT", "PHASES_MICROARRAY"])
@@ -56,8 +34,7 @@ function _microarray_patts()
     return MICRO_PATTS
 end
 
-function _ensems_mean_vec(fnhint)
-    fnhint = Regex(fnhint)
+function _ensems_mean_vec(fnhint::Regex)
     dir = procdir(PROJ, ["ensembles"])
     files = readdir(dir; join = true)
     sort!(files; by = f -> rand()) # shuffle
@@ -91,9 +68,8 @@ function _ensems_patt(hits...)
     end
     ENS_PATTS
 end
-_ensems_patt("ph1_zU", "ph3_zU")
-# "12.1_ensem_ph1_zU.jl...<<len=503>>.jls"
-# "12.1_ensem_ph3_zU.jl...<<len=15098>>.jls"
+_ensems_patt(r"PHASE_1.*Uniform.*5000")
+# ECOLI-CORE-BEG2007-PHASE_1...Uniform...5000...<<h=10001632393434744400>>.jls
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 # create ph expression and ense flux mats
 let

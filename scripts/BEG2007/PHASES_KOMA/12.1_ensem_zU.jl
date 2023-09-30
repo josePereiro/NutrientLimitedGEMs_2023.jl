@@ -50,7 +50,7 @@ let
     while true
 
         ensem = []
-        
+
         if BIOMAS_DIST == "Uniform"
             # biomass distribution params
             if SIMVER == "ECOLI-CORE-BEG2007-PHASE_0"
@@ -172,7 +172,7 @@ let
                         # intake patterns
                         # At phase 2 no EX_glyc_e nor EX_ac_e intake
                         good_pattern = true
-                        for exch in ["EX_glyc_e", "EX_ac_e"]
+                        for exch in ["EX_glyc_e"]
                             flx = _core_sol[RIDX[exch]]
                             if flx < -1e-2 
                                 good_pattern = false

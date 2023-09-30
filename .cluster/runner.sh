@@ -18,6 +18,7 @@ julia -t3 --project scripts/BEG2007/PHASES_KOMA/_summary.jl  --  "SIMVER:"
 # Ensembles
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/12.1_ensem_ph1_zU.jl -- "SIMVER:" "ENS-SIZE:5000") &
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/12.1_ensem_zU.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_1" "ENS-SIZE:5000" "BIOMAS-DIST:Uniform") &
+(julia -t5 --project scripts/BEG2007/PHASES_KOMA/12.1_ensem_zU.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_2" "ENS-SIZE:5000" "BIOMAS-DIST:Uniform") &
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/12.1_ensem_zU.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_3" "ENS-SIZE:5000" "BIOMAS-DIST:Uniform") &
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
