@@ -33,7 +33,7 @@ end
 #                 _run_cmd(
 #                     """\
 #                     julia -t1 --project=$(projtoml) ./3_core_koma.jl -- \
-#                     "SIMVER:ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+#                     "SIMVER:ECOLI-CORE-BEG2007-PHASE_1"
 #                     """; dir = @__DIR__
 #                 )
 #             end
@@ -41,7 +41,7 @@ end
 #                 _run_cmd(
 #                     """\
 #                     julia -t1 --project=$(projtoml) ./3_core_koma.jl -- \
-#                     "SIMVER:ECOLI-CORE-BEG2007-PHASE_II-0.1.0"
+#                     "SIMVER:ECOLI-CORE-BEG2007-PHASE_2"
 #                     """; dir = @__DIR__
 #                 )
 #             end
@@ -49,7 +49,7 @@ end
 #                  _run_cmd(
 #                     """\
 #                     julia -t1 --project=$(projtoml) ./3_core_koma.jl -- \
-#                     "SIMVER:ECOLI-CORE-BEG2007-PHASE_III-0.1.0"
+#                     "SIMVER:ECOLI-CORE-BEG2007-PHASE_3"
 #                     """; dir = @__DIR__
 #                 )
 #             end
@@ -69,7 +69,7 @@ projtoml = Base.active_project()
             _run_cmd(
                 """\
                 julia -t1 --project=$(projtoml) ./4_koma_strip.jl -- \
-                "SIMVER:ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+                "SIMVER:ECOLI-CORE-BEG2007-PHASE_1"
                 """; dir = @__DIR__
             )
         end
@@ -77,7 +77,7 @@ projtoml = Base.active_project()
             _run_cmd(
                 """\
                 julia -t1 --project=$(projtoml) ./4_koma_strip.jl -- \
-                "SIMVER:ECOLI-CORE-BEG2007-PHASE_II-0.1.0"
+                "SIMVER:ECOLI-CORE-BEG2007-PHASE_2"
                 """; dir = @__DIR__
             )
         end
@@ -85,7 +85,7 @@ projtoml = Base.active_project()
              _run_cmd(
                 """\
                 julia -t1 --project=$(projtoml) ./4_koma_strip.jl -- \
-                "SIMVER:ECOLI-CORE-BEG2007-PHASE_III-0.1.0"
+                "SIMVER:ECOLI-CORE-BEG2007-PHASE_3"
                 """; dir = @__DIR__
             )
         end

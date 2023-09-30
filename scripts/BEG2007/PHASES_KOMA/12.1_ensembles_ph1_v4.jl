@@ -7,6 +7,7 @@
     using MetXEP
     using BlobBatches
     using CairoMakie
+    using Distributions
     using MetXOptim
     using Statistics
     using MetXEP
@@ -24,8 +25,7 @@ include("2_utils.jl")
 # implements the ider interface
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 # ensemble ph1 v1
-# 1. Only glc allowed 
-# 2. Average biomass fixed (sampled from a MaxEnt Beta distribution)
+# 1. Average biomass fixed (sampled from an Uniform distribution)
 let
     # context
     _simver = "ECOLI-CORE-BEG2007-PHASE_1"
@@ -39,15 +39,14 @@ let
     core_elep0 = nothing
     
     tries_per_bb = 2000
-    ensem_size = 500
+    ensem_size = 5000
     global ensem = []
     
-    # biomass
-    ave_biom = 0.55 # approx from Beg2007 fig2.a
-    ave_biom1 = 0.8 # upper bound for the biomass space (it must be feasible with just glc)
-    biom_th = 0.05 # hit th
-    B = _MaxEnt_beta(ave_biom)
-    biom_dist_target = rand(B, floor(Int, ensem_size * 1.2)) .* ave_biom1
+    # biomass distribution
+    ave_biom = 0.60 # from Beg2007 fig2.a
+    B = Uniform(ave_biom - 0.1, ave_biom + 0.1)
+    biom_dist_target = rand(B, floor(Int, ensem_size * 1.2)) 
+    biom_th = 0.05
     _target_mean_biom = mean(biom_dist_target)
     @show mean(biom_dist_target)
 
@@ -101,19 +100,6 @@ let
                 # --------------------------------------------
                 # boolean filters
                 # --------------------------------------------
-                # intake patterns
-                # At phase 1, only glucose can be consumed
-                good_pattern = true
-                for exch in [
-                        "EX_lac__D_e", "EX_malt_e",
-                        "EX_gal_e", "EX_glyc_e"
-                    ]
-                    flx = _core_sol[RIDX[exch]]
-                    abs(flx) < 1e-2 && continue
-                    good_pattern = false
-                    break
-                end
-                good_pattern || continue
                 
                 # --------------------------------------------
                 # distribution filters

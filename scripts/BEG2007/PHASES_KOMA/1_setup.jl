@@ -19,7 +19,7 @@ include("1.1_utils.jl")
 # ARGS
 if isinteractive()
     # ARGS DEV
-    SIMVER = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+    SIMVER = "ECOLI-CORE-BEG2007-PHASE_1"
 else
     SIMVER = parseARGS("SIMVER:")
 end

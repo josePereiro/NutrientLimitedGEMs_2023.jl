@@ -341,7 +341,7 @@ include("2_utils.jl")
     # adjustment growth factor (I aim to adjust the maximum growth to match glucose only regime ~0.8 1/h (Fig2, a))
     # At least I keep the relation between maximal nutrient intakes
     @stage! gf = 0.18 
-    if SIMVER == "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+    if SIMVER == "ECOLI-CORE-BEG2007-PHASE_0"
         lb!(core_net0, "EX_glc__D_e", -0.9 * 60 * gf)
         lb!(core_net0, "EX_lac__D_e", -1.0 * 60 * gf)
         lb!(core_net0, "EX_malt_e", -0.1 * 60 * gf)
@@ -349,7 +349,15 @@ include("2_utils.jl")
         lb!(core_net0, "EX_glyc_e", -0.6 * 60 * gf)
         lb!(core_net0, "EX_ac_e", 0.0)
         ub!(core_net0, "EX_ac_e", 2.0 * 60 * gf)
-    elseif SIMVER == "ECOLI-CORE-BEG2007-PHASE_II-0.1.0"
+    elseif SIMVER == "ECOLI-CORE-BEG2007-PHASE_1"
+        lb!(core_net0, "EX_glc__D_e", -0.9 * 60 * gf)
+        lb!(core_net0, "EX_lac__D_e", 0.0)
+        lb!(core_net0, "EX_malt_e", 0.0)
+        lb!(core_net0, "EX_gal_e", 0.0)
+        lb!(core_net0, "EX_glyc_e", 0.0)
+        lb!(core_net0, "EX_ac_e", 0.0)
+        ub!(core_net0, "EX_ac_e", 2.0 * 60 * gf)
+    elseif SIMVER == "ECOLI-CORE-BEG2007-PHASE_2"
         lb!(core_net0, "EX_glc__D_e", 0.0)
         lb!(core_net0, "EX_lac__D_e", -1.0 * 60 * gf)
         lb!(core_net0, "EX_malt_e", -0.1 * 60 * gf)
@@ -357,7 +365,7 @@ include("2_utils.jl")
         lb!(core_net0, "EX_glyc_e", -0.6 * 60 * gf)
         lb!(core_net0, "EX_ac_e", -1.5 * 60 * gf) # (?)
         ub!(core_net0, "EX_ac_e", 2.0 * 60 * gf)
-    elseif SIMVER == "ECOLI-CORE-BEG2007-PHASE_III-0.1.0"
+    elseif SIMVER == "ECOLI-CORE-BEG2007-PHASE_3"
         lb!(core_net0, "EX_glc__D_e", 0.0)
         lb!(core_net0, "EX_lac__D_e", 0.0)
         lb!(core_net0, "EX_malt_e", 0.0)

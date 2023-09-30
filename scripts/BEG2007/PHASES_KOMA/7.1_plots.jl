@@ -19,7 +19,7 @@ include("2_utils.jl")
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_1"
     _load_contextdb(_simver)
 
     n0 = 0 # init file
@@ -114,7 +114,7 @@ end
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_1"
     _load_contextdb(_simver)
 
     n0 = 0 # init file
@@ -190,7 +190,7 @@ end
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_1"
     _load_contextdb(_simver)
 
     # lep

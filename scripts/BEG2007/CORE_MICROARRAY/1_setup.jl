@@ -38,9 +38,9 @@ cacherefs_dir!(cachedir(PROJ, SIMVER))
     @stage! KO_OBJ_VAL_TH = 0.01
     @stage! DOWNREG_BATCH_SIZE = 3
     @stage! CORE_KOMA_PHASES = [
-        "ECOLI-CORE-BEG2007-PHASE_I-0.1.0",
-        "ECOLI-CORE-BEG2007-PHASE_II-0.1.0",
-        "ECOLI-CORE-BEG2007-PHASE_III-0.1.0",
+        "ECOLI-CORE-BEG2007-PHASE_1",
+        "ECOLI-CORE-BEG2007-PHASE_2",
+        "ECOLI-CORE-BEG2007-PHASE_3",
     ] # TOSYNC
 end
 
