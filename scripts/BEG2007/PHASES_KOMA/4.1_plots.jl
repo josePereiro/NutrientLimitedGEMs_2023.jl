@@ -57,15 +57,19 @@ end
 ## ------------------------------------------------------------
 # koma.length histogram
 let
-    n1 = Inf
-    cid = (@__FILE__, "koma.lenght histogram", n1)
+    # context
+    _simver = "ECOLI-CORE-BEG2007-PHASE_0"
+    _load_contextdb(_simver)
+
+    n1 = 500
+    cid = (@__FILE__, _simver, "koma.lenght histogram", n1)
     _, ret = withcachedat(PROJ, :set!, cid) do
         _h0 = Histogram(
             0:10_000,      # koma len
             0:10_000,      # rxn idx
         )
         h_pool = Dict()
-        _th_readdir(; n1, info_frec = 10) do bbi, bb
+        _th_readdir(_simver; n1, info_frec = 10) do bbi, bb
             haskey(bb["meta"], "core_koma.ver") || return :ignore
             _h = get!(() -> deepcopy(_h0), h_pool, threadid())
             for blob in bb["core_koma"]
@@ -82,7 +86,8 @@ let
     h0 = ret
 
     _histogram2D_grid(h0, 1, 2;
-        title = "Koma sets", 
+        # title = "Koma sets", 
+        title = _simver, 
         xlabel = "koma len", 
         ylabel = "rxn idx",
         limits = (nothing, nothing, nothing, nothing),

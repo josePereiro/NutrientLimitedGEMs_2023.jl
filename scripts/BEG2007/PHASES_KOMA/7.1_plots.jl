@@ -19,11 +19,11 @@ include("2_utils.jl")
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_1"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_0"
     _load_contextdb(_simver)
 
     n0 = 0 # init file
-    n1 = Inf # non-ignored file count
+    n1 = 100 # non-ignored file count
     cid = (@__FILE__, _simver, "fva: range/center moments", n0, n1)
     lk = ReentrantLock()
     _, ret = withcachedat(PROJ, :set!, cid) do
@@ -35,7 +35,7 @@ let
             0e0:1e0:1e9,                        #= std =#
         )
         h_pool = Dict()
-        _th_readdir(_simver; n0, n1, nthrs = 1) do bbi, bb
+        _th_readdir(_simver; n0, n1, nthrs = 10) do bbi, bb
             haskey(bb["meta"], "core_fva.ver") || return :ignore
             # load frame
             feasets_db = bb["core_feasets"]

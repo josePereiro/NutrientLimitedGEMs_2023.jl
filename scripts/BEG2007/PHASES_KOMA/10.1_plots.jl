@@ -21,11 +21,11 @@ include("2_utils.jl")
 # Collect max biomass fba solutions
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_1"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_0"
     _load_contextdb(_simver)
 
-    n0 = 0 # init file
-    n1 = Inf # non-ignored file count
+    n0 = 10 # init file
+    n1 = n0 + 10 # non-ignored file count
     cid = (@__FILE__, _simver, "ep:entropy + free energy", n0, n1)
     lk = ReentrantLock()
     _, ret = withcachedat(PROJ, :set!, cid) do
@@ -36,7 +36,7 @@ let
                -10.0:0.01:10.0,                    # biomass
         )
         h_pool = Dict()
-        _th_readdir(_simver; n0, n1, nthrs = 1) do bbi, bb
+        _th_readdir(_simver; n0, n1, nthrs = 10) do bbi, bb
             haskey(bb["meta"], "core_ep.ver") || return :ignore
             haskey(bb["meta"], "core_nut_sp.ver") || return :ignore
             haskey(bb["meta"], "core_biomass_fba.ver") || return :ignore
@@ -49,6 +49,8 @@ let
                     _H = feasets_blob1["core_ep.entropy"]
                     _F = feasets_blob1["core_ep.free_energy"]
                     _z = feasets_blob1["core_biomass_fba.biom"]
+                    any(isnan, [_H, _F, _z]) && continue
+                    abs(_F) < 1000 || continue
                     count!(_h, (_fealen, _H, _F, _z))
                 end
             end # for feasets_blob0

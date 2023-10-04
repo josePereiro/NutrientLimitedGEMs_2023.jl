@@ -21,7 +21,7 @@ include("2_utils.jl")
 # Collect max biomass fba solutions
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_1"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_0"
     _load_contextdb(_simver)
 
     CORE_XLEP_DB = query(["ROOT", "CORE_XLEP"])
@@ -38,13 +38,14 @@ let
     global GEM_RXNI_MAP = Dict(id => i for (i, id) in enumerate(colids(gem_lep0)))
 
     n0 = 0 # init file
-    n1 = Inf # non-ignored file count
+    n1 = 100 # non-ignored file count
     cid = (@__FILE__, _simver, "fba:core vs gem", n0, n1)
     lk = ReentrantLock()
-    _, ret = withcachedat(PROJ, :get!, cid) do
+    _, ret = withcachedat(PROJ, :set!, cid) do
         _h0 = Histogram(
+            -1000.0:0.01:1000.0,                  # fealen
             -1000.0:0.01:1000.0,                  # core_rxns
-            -1000.0:0.01:1000.0,                  # core_rxns
+            -1000.0:0.01:1000.0,                  # gem_rxns
         )
         h_th_pool = Dict()
         _th_readdir(_simver; n0, n1, nthrs = 10) do bbi, bb
@@ -68,7 +69,7 @@ let
                             deepcopy(_h0)
                         end
                         count!(h, 
-                            (_core_sol[core_rxni], _gem_sol[gem_rxni])
+                            (_fealen, _core_sol[core_rxni], _gem_sol[gem_rxni])
                         )
                     end
                 end
@@ -89,6 +90,24 @@ let
     global h0_pool = ret
 
     return
+end
+
+## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+# Growth Correlations Plots
+let
+    rxn = "BIOMASS_Ecoli_core_w_GAM"
+    h0 = h0_pool[rxn]
+             
+    # Plot
+    # 2D
+    return _histogram2D_grid(h0, 1, 2;
+        title = "Koma sets",
+        xlabel = "downregulation lenght", 
+        ylabel = "core biomass",
+        limits = (nothing, nothing, nothing, nothing),
+        dim1_bar_width = 1.6,
+        dim2_bar_width = 0.03,
+    )
 end
 
 ## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---

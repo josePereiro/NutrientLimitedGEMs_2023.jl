@@ -21,11 +21,11 @@ include("2_utils.jl")
 # shadown price histogram 
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_1"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_0"
     _load_contextdb(_simver)
 
     n0 = 0 # init file
-    n1 = Inf # non-ignored file count
+    n1 = 100 # non-ignored file count
     cid = (@__FILE__, _simver, "shadow price", n0, n1)
     lk = ReentrantLock()
     _, ret = withcachedat(PROJ, :set!, cid) do
@@ -39,7 +39,7 @@ let
             -1.0:0.001:1.0,                    # 7 EX_ac_e
         )
         h_pool = Dict()
-        _th_readdir(_simver; n0, n1, nthrs = 1) do bbi, bb
+        _th_readdir(_simver; n0, n1, nthrs = 10) do bbi, bb
             haskey(bb["meta"], "core_ep.ver") || return :ignore
             haskey(bb["meta"], "core_nut_sp.ver") || return :ignore
             haskey(bb["meta"], "core_biomass_fba.ver") || return :ignore
@@ -78,13 +78,13 @@ end
 let
     # Plot
     # 2D
-    return _histogram2D_grid(h0, 1, 4;
+    return _histogram2D_grid(h0, 1, 5;
         title = "Feasible sets",
         xlabel = "downregulation length", 
         ylabel = "shadow price",
         limits = (-10, 170, nothing, nothing),
         dim1_bar_width = 2.0,
-        dim2_bar_width = 0.002,
+        dim2_bar_width = 0.003,
     )
 end
 
