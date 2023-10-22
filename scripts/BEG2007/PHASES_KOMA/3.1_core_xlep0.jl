@@ -25,6 +25,7 @@ include("2_utils.jl")
 
     # -------------------------------------------
     # nets
+    # TODO: load 
     core_net0 = pull_net("ecoli_core")
     gem_net0 = pull_net("iJO1366")
 

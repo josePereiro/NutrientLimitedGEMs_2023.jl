@@ -9,7 +9,7 @@
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/7_shadow_price.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_2") &
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/9_gem_biomass_fba.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_1") &
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/9_core_biomass_fba.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_1") &
-(julia -t5 --project scripts/BEG2007/PHASES_KOMA/10_core_ep.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_1") &
+(julia -t5 --project scripts/BEG2007/PHASES_KOMA/10_core_ep.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_0") &
 (julia -t10 --project scripts/BEG2007/PHASES_KOMA/12.1_ensembles_ph1_v1.jl -- "SIMVER:") &
 
 julia -t3 --project scripts/BEG2007/PHASES_KOMA/_summary.jl  --  "SIMVER:"
@@ -23,26 +23,25 @@ julia -t3 --project scripts/BEG2007/PHASES_KOMA/_summary.jl  --  "SIMVER:"
 (julia -t5 --project scripts/BEG2007/PHASES_KOMA/12.1_ensem_zU.jl -- "SIMVER:ECOLI-CORE-BEG2007-PHASE_3" "ENS-SIZE:5000" "BIOMAS-DIST:Uniform") &
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
-============================================================
 ------------------------------------------------------------
 SIMVER: ECOLI-CORE-BEG2007-PHASE_0
 core_biomass_fba.ver: 1718 -- 1.0
 core_strip.ver: 1718 -- 1.0
-gem_biomass_fba.ver: 1140 -- 0.66
 batches: 1718 -- 1.0
 core_feasets.ver: 1718 -- 1.0
-core_ep.ver: 41 -- 0.024
 core_nut_sp.ver: 1718 -- 1.0
 core_koma.ver: 1718 -- 1.0
+gem_biomass_fba.ver: 1140 -- 0.66
+core_ep.ver: 41 -- 0.024
 core_fva.ver: 676 -- 0.39
 ------------------------------------------------------------
 SIMVER: ECOLI-CORE-BEG2007-PHASE_1
 core_strip.ver: 994 -- 0.73
-batches: 1356 -- 1.0
+batches: 1358 -- 1.0
 gem_biomass_fba.ver: 88 -- 0.065
 core_feasets.ver: 994 -- 0.73
-core_koma.ver: 1356 -- 1.0
-core_biomass_fba.ver: 376 -- 0.28
+core_koma.ver: 1358 -- 1.0
+core_biomass_fba.ver: 994 -- 0.73
 ------------------------------------------------------------
 SIMVER: ECOLI-CORE-BEG2007-PHASE_3
 core_biomass_fba.ver: 2663 -- 1.0

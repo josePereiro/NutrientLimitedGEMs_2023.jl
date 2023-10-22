@@ -52,26 +52,6 @@ _save_contextdb(SIMVER)
     ALG_VER = context("CORE_EP")
     GLOB_DB = query(["ROOT", "GLOBALS"])
     XLEP_DB = query(["ROOT", "CORE_XLEP"])
-
-    # epm original
-    let
-        # lep
-        core_elep0 = XLEP_DB["core_elep0"][]
-        core_lep0 = lepmodel(core_elep0)
-        core_elep0 = nothing
-
-        # epm
-        epm = FluxEPModelT0(core_lep0)
-        config!(epm; 
-            verbose = false,    
-            epsconv = 1e-6
-        )
-        converge!(epm)
-
-        @stage! "entropy" => entropy(epm)
-        feaobj["core_ep.free_energy"] = first(free_energy(epm))
-        feaobj["core_ep.status"] = convergence_status(epm)
-    end
     
     # read batches
     n0 = 0 # init file

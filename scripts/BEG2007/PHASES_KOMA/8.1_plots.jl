@@ -25,18 +25,18 @@ let
     _load_contextdb(_simver)
 
     n0 = 0 # init file
-    n1 = 100 # non-ignored file count
+    n1 = 10 # non-ignored file count
     cid = (@__FILE__, _simver, "shadow price", n0, n1)
     lk = ReentrantLock()
     _, ret = withcachedat(PROJ, :set!, cid) do
         _h0 = Histogram(
             0000:10000,                        # 1 _fealen
-            -1.0:0.001:1.0,                    # 2 EX_glc__D_e
-            -1.0:0.001:1.0,                    # 3 EX_lac__D_e
-            -1.0:0.001:1.0,                    # 4 EX_malt_e
-            -1.0:0.001:1.0,                    # 5 EX_gal_e
-            -1.0:0.001:1.0,                    # 6 EX_glyc_e
-            -1.0:0.001:1.0,                    # 7 EX_ac_e
+            -1.0:0.0005:1.0,                    # 2 EX_glc__D_e
+            -1.0:0.0005:1.0,                    # 3 EX_lac__D_e
+            -1.0:0.0005:1.0,                    # 4 EX_malt_e
+            -1.0:0.0005:1.0,                   # 5 EX_gal_e
+            -1.0:0.0005:1.0,                    # 6 EX_glyc_e
+            -1.0:0.0005:1.0,                    # 7 EX_ac_e
         )
         h_pool = Dict()
         _th_readdir(_simver; n0, n1, nthrs = 10) do bbi, bb
@@ -150,7 +150,7 @@ end
 let
     # Plot
     # 2D
-    return _histogram2D_grid(h0, 1, 2;
+    return _histogram2D_grid(h0, 1, 3;
         title = "Koma sets",
         xlabel = "downregulation length",
         ylabel = "shadow price",

@@ -118,7 +118,7 @@ let
              
     # Plot
     # 2D
-    return _histogram2D_grid(h0, 1, 2;
+    return _histogram2D_grid(h0, 2, 3;
         title = "Koma sets",
         xlabel = "core biomass", 
         ylabel = "gem biomass",
@@ -141,8 +141,8 @@ let
         nresamples = 30_000 # 
         # @show nsamples
         scale = min(nresamples / nsamples, 1.0)
-        x1 = resample(h0, 1; scale)
-        x2 = resample(h0, 2; scale)
+        x1 = resample(h0, 2; scale)
+        x2 = resample(h0, 3; scale)
         _cor = cor(x1, x2)
         isnan(_cor) && continue
         lock(lk) do
@@ -188,12 +188,12 @@ let
     )
 
     scale = 1e-2
-    samples = resample(h0, 1; scale)
+    samples = resample(h0, 2; scale)
     lines!(ax, eachindex(samples) ./ scale, sort(samples);
         linewidth = 5, 
         label = "core"
     )
-    samples = resample(h0, 2; scale)
+    samples = resample(h0, 3; scale)
     lines!(ax, eachindex(samples) ./ scale, sort(samples);
         linewidth = 5,
         label = "gem"

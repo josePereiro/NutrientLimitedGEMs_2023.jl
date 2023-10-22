@@ -132,18 +132,22 @@ function _histogram2D_grid(h0::Histogram, dim1, dim2;
     )
     x1 = dim1_T(collect(keys(h0, dim1))) # koma len
     x2 = dim2_T(collect(keys(h0, dim2))) # rxn idx
+    @show length(x1)
     @show length(x2)
     @show cor(x1, x2)
     w = collect(values(h0))
     sidx = sortperm(w; rev = false)
     scatter!(ax, x1[sidx], x2[sidx]; 
         colormap = :viridis, markersize = 20, 
-        color = log10.(w[sidx]) ./ maximum(log10, w), 
+        # color = log10.(w[sidx]) ./ maximum(log10, w), 
+        color = log10.(w[sidx]) ./ max(maximum(log10, w), 1),
         alpha = 1.0
     )
+    _limits = extrema(log10.(w))
+    _limits = (_limits[1] - _limits[2]) == 0.0 ? (-1e0, 1e0) : _limits
     Colorbar(g[1:3, 6]; 
         label = "log10(count)",
-        colormap = :viridis, limits = extrema(log10.(w)), 
+        colormap = :viridis, limits = _limits, 
     )
     f
 

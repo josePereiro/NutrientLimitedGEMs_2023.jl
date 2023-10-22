@@ -75,7 +75,7 @@ let
         ylabel = "free energy",
         limits = (nothing, nothing, nothing, nothing),
         dim1_bar_width = 3.0,
-        dim2_bar_width = 1.0,
+        dim2_bar_width = 3.0,
     )
 end  
 
@@ -86,6 +86,7 @@ let
     XLEP_DB = query(["ROOT", "CORE_EP.LEP0"])
     H0 = XLEP_DB["entropy"]
     F0 = XLEP_DB["free_energy"]
+    @show H0
 
     return _histogram2D_grid(h0, 1, 3;
         title = "Space volume",
@@ -94,7 +95,7 @@ let
         limits = (nothing, nothing, nothing, nothing),
         dim2_T = v -> F0 .- v,
         dim1_bar_width = 2.0,
-        dim2_bar_width = 1.0,
+        dim2_bar_width = 2.0,
     )
 end    
 
