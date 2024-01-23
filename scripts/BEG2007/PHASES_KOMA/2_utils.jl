@@ -138,7 +138,8 @@ function _histogram2D_grid(h0::Histogram, dim1, dim2;
     sidx = sortperm(w; rev = false)
     scatter!(ax, x1[sidx], x2[sidx]; 
         colormap = :viridis, markersize = 20, 
-        color = log10.(w[sidx]) ./ maximum(log10, w), 
+        # color = log10.(w[sidx]) ./ maximum(log10, w), 
+        color = log10.(w[sidx]) ./ maximum(w[sidx])), 
         alpha = 1.0
     )
     Colorbar(g[1:3, 6]; 

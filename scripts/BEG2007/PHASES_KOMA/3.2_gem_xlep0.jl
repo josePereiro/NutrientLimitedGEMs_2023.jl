@@ -29,7 +29,7 @@ include("2_utils.jl")
     # -------------------------------------------
     # nets
     core_net0 = core_xlepdb["core_net0"][]
-    gem_net0 = pull_net("iJO1366")
+    gem_net0 = pull_net("   ")
 
     # -------------------------------------------
     # open complex medium
