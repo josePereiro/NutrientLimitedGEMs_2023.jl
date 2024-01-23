@@ -132,19 +132,21 @@ function _histogram2D_grid(h0::Histogram, dim1, dim2;
     )
     x1 = dim1_T(collect(keys(h0, dim1))) # koma len
     x2 = dim2_T(collect(keys(h0, dim2))) # rxn idx
+    @show length(x1)
     @show length(x2)
     @show cor(x1, x2)
     w = collect(values(h0))
     sidx = sortperm(w; rev = false)
     scatter!(ax, x1[sidx], x2[sidx]; 
         colormap = :viridis, markersize = 20, 
-        # color = log10.(w[sidx]) ./ maximum(log10, w), 
-        color = log10.(w[sidx]) ./ maximum(w[sidx])), 
+        color = log10.(w[sidx]) ./ maximum(log10, w), 
         alpha = 1.0
     )
+    _limits = extrema(log10.(w))
+    _limits = (_limits[1] - _limits[2]) == 0.0 ? (-1e0, 1e0) : _limits
     Colorbar(g[1:3, 6]; 
         label = "log10(count)",
-        colormap = :viridis, limits = extrema(log10.(w)), 
+        colormap = :viridis, limits = _limits, 
     )
     f
 
@@ -202,8 +204,7 @@ function _MaxEnt_beta(av0)
 end
 
 # ------------------------------------------------------------
-function _ensem_fba_solutions(net, ensem, id)
-    idx = colindex(net, id)
+function _ensem_fba_solutions(ensem, idx::Int)
     v = Float64[]
     for feaobj in ensem
         sol = feaobj["core_biomass_fba.solution"]
@@ -213,6 +214,35 @@ function _ensem_fba_solutions(net, ensem, id)
     return v
 end
 
+function _ensem_fba_solutions(net, ensem, id)
+    idx = colindex(net, id)
+    return _ensem_fba_solutions(ensem, idx)
+end
+
+
+# ------------------------------------------------------------
+function _ensem_summary(ensem, core_lep0)
+    println()
+    println("= "^30)
+
+    println("ENSEMBLE")
+    println("- length(ensem)     ", length(ensem))
+    
+    flxs = _ensem_fba_solutions(core_lep0, ensem, "BIOMASS_Ecoli_core_w_GAM")
+    println("- ensem mean(BIOM)  ", mean(flxs))
+    println("- ensem std(BIOM)   ", std(flxs))
+
+    for exch in [
+            "EX_glc__D_e", "EX_lac__D_e", "EX_malt_e",
+            "EX_gal_e", "EX_glyc_e", "EX_ac_e"
+        ]
+        hascolid(core_lep0, exch) || continue
+        flxs = _ensem_fba_solutions(core_lep0, ensem, exch)
+        println("- ensem mean($exch)  ", mean(flxs))
+        println("- ensem std($exch)   ", std(flxs))
+    end
+
+end
 
 # ------------------------------------------------------------
 nothing

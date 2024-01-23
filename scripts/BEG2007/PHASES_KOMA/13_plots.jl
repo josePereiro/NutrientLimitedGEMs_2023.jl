@@ -14,7 +14,6 @@
     using NutrientLimitedGEMs
 end
 
-# TODO: Add Graphs.jl kind of functionality for getting basic stuff
 # ------------------------------------------------------------
 include("1_setup.jl")
 include("2_utils.jl")
@@ -26,7 +25,7 @@ let
     n1 = 3 # non-ignored file count
     cid = (@__FILE__, "feasets:length+biomass+count", n0, n1)
     lk = ReentrantLock()
-    _, h0 = withcachedat(PROJ, :get!, cid) do
+    _, h0 = withcachedat(PROJ, :set!, cid) do
         _h0 = Histogram(
             0:5000,      # feasets len
             0.0:0.05:3.0, # biom

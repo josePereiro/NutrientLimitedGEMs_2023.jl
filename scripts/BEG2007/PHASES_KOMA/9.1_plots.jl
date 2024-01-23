@@ -21,7 +21,7 @@ include("2_utils.jl")
 # Collect max biomass fba solutions
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_0"
     _load_contextdb(_simver)
 
     CORE_XLEP_DB = query(["ROOT", "CORE_XLEP"])
@@ -38,13 +38,14 @@ let
     global GEM_RXNI_MAP = Dict(id => i for (i, id) in enumerate(colids(gem_lep0)))
 
     n0 = 0 # init file
-    n1 = Inf # non-ignored file count
+    n1 = 100 # non-ignored file count
     cid = (@__FILE__, _simver, "fba:core vs gem", n0, n1)
     lk = ReentrantLock()
-    _, ret = withcachedat(PROJ, :get!, cid) do
+    _, ret = withcachedat(PROJ, :set!, cid) do
         _h0 = Histogram(
+            -1000.0:0.01:1000.0,                  # fealen
             -1000.0:0.01:1000.0,                  # core_rxns
-            -1000.0:0.01:1000.0,                  # core_rxns
+            -1000.0:0.01:1000.0,                  # gem_rxns
         )
         h_th_pool = Dict()
         _th_readdir(_simver; n0, n1, nthrs = 10) do bbi, bb
@@ -68,7 +69,7 @@ let
                             deepcopy(_h0)
                         end
                         count!(h, 
-                            (_core_sol[core_rxni], _gem_sol[gem_rxni])
+                            (_fealen, _core_sol[core_rxni], _gem_sol[gem_rxni])
                         )
                     end
                 end
@@ -101,6 +102,24 @@ let
     # 2D
     return _histogram2D_grid(h0, 1, 2;
         title = "Koma sets",
+        xlabel = "downregulation lenght", 
+        ylabel = "core biomass",
+        limits = (nothing, nothing, nothing, nothing),
+        dim1_bar_width = 1.6,
+        dim2_bar_width = 0.03,
+    )
+end
+
+## --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+# Growth Correlations Plots
+let
+    rxn = "BIOMASS_Ecoli_core_w_GAM"
+    h0 = h0_pool[rxn]
+             
+    # Plot
+    # 2D
+    return _histogram2D_grid(h0, 2, 3;
+        title = "Koma sets",
         xlabel = "core biomass", 
         ylabel = "gem biomass",
         limits = (nothing, nothing, nothing, nothing),
@@ -122,8 +141,8 @@ let
         nresamples = 30_000 # 
         # @show nsamples
         scale = min(nresamples / nsamples, 1.0)
-        x1 = resample(h0, 1; scale)
-        x2 = resample(h0, 2; scale)
+        x1 = resample(h0, 2; scale)
+        x2 = resample(h0, 3; scale)
         _cor = cor(x1, x2)
         isnan(_cor) && continue
         lock(lk) do
@@ -169,12 +188,12 @@ let
     )
 
     scale = 1e-2
-    samples = resample(h0, 1; scale)
+    samples = resample(h0, 2; scale)
     lines!(ax, eachindex(samples) ./ scale, sort(samples);
         linewidth = 5, 
         label = "core"
     )
-    samples = resample(h0, 2; scale)
+    samples = resample(h0, 3; scale)
     lines!(ax, eachindex(samples) ./ scale, sort(samples);
         linewidth = 5,
         label = "gem"

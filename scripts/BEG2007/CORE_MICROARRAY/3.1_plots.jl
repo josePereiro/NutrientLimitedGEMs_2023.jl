@@ -92,7 +92,7 @@ let
     exp_mat = array_db["exp_mat"]
     time_tags = array_db["time_tags"]
 
-    phase = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+    phase = "ECOLI-CORE-BEG2007-PHASE_1"
     _load_contextdb(phase)
 
      # context

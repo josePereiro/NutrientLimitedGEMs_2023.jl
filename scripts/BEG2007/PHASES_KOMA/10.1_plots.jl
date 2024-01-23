@@ -21,11 +21,11 @@ include("2_utils.jl")
 # Collect max biomass fba solutions
 let
     # context
-    _simver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_0"
     _load_contextdb(_simver)
 
-    n0 = 0 # init file
-    n1 = Inf # non-ignored file count
+    n0 = 10 # init file
+    n1 = n0 + 10 # non-ignored file count
     cid = (@__FILE__, _simver, "ep:entropy + free energy", n0, n1)
     lk = ReentrantLock()
     _, ret = withcachedat(PROJ, :set!, cid) do
@@ -36,7 +36,7 @@ let
                -10.0:0.01:10.0,                    # biomass
         )
         h_pool = Dict()
-        _th_readdir(_simver; n0, n1, nthrs = 1) do bbi, bb
+        _th_readdir(_simver; n0, n1, nthrs = 10) do bbi, bb
             haskey(bb["meta"], "core_ep.ver") || return :ignore
             haskey(bb["meta"], "core_nut_sp.ver") || return :ignore
             haskey(bb["meta"], "core_biomass_fba.ver") || return :ignore
@@ -49,6 +49,8 @@ let
                     _H = feasets_blob1["core_ep.entropy"]
                     _F = feasets_blob1["core_ep.free_energy"]
                     _z = feasets_blob1["core_biomass_fba.biom"]
+                    any(isnan, [_H, _F, _z]) && continue
+                    abs(_F) < 1000 || continue
                     count!(_h, (_fealen, _H, _F, _z))
                 end
             end # for feasets_blob0
@@ -73,7 +75,7 @@ let
         ylabel = "free energy",
         limits = (nothing, nothing, nothing, nothing),
         dim1_bar_width = 3.0,
-        dim2_bar_width = 1.0,
+        dim2_bar_width = 3.0,
     )
 end  
 
@@ -84,6 +86,7 @@ let
     XLEP_DB = query(["ROOT", "CORE_EP.LEP0"])
     H0 = XLEP_DB["entropy"]
     F0 = XLEP_DB["free_energy"]
+    @show H0
 
     return _histogram2D_grid(h0, 1, 3;
         title = "Space volume",
@@ -92,7 +95,7 @@ let
         limits = (nothing, nothing, nothing, nothing),
         dim2_T = v -> F0 .- v,
         dim1_bar_width = 2.0,
-        dim2_bar_width = 1.0,
+        dim2_bar_width = 2.0,
     )
 end    
 

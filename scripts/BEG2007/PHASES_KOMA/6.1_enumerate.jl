@@ -31,7 +31,7 @@ let
         # haskey(bb["meta"], "core_biomass.ver") || return :ignore
         # haskey(bb["meta"], "core_nut_sp.ver") || return :ignore
 
-        lock(bb) do
+        # lock(bb) do
             # load frame
             feasets_frame = bb["core_feasets"]
             core_strip_db = bb["core_strip"]
@@ -61,6 +61,6 @@ let
             do_save && println("do_save! ", do_save)
             do_save && serialize(bb, "core_feasets")
             return :continue
-        end
+        # end
     end # _th_readdir
 end

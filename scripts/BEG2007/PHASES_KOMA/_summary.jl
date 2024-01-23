@@ -26,9 +26,10 @@ let
         try
             meta_records = Dict()
             for _SIMVER in [
-                    "ECOLI-CORE-BEG2007-PHASE_I-0.1.0",
-                    "ECOLI-CORE-BEG2007-PHASE_II-0.1.0",
-                    "ECOLI-CORE-BEG2007-PHASE_III-0.1.0",
+                    "ECOLI-CORE-BEG2007-PHASE_0",
+                    "ECOLI-CORE-BEG2007-PHASE_1",
+                    "ECOLI-CORE-BEG2007-PHASE_2",
+                    "ECOLI-CORE-BEG2007-PHASE_3",
                 ]
                 record = get!(meta_records, _SIMVER) do
                     Dict()

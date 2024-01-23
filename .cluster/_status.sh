@@ -15,9 +15,9 @@ while true; do
     echo "------------------------------------";
     echo "STORAGE USE"
     du -hs data/processed
-    du -hs data/processed/ECOLI-CORE-BEG2007-PHASE_I-0.1.0
-    du -hs data/processed/ECOLI-CORE-BEG2007-PHASE_II-0.1.0
-    du -hs data/processed/ECOLI-CORE-BEG2007-PHASE_III-0.1.0
+    du -hs data/processed/ECOLI-CORE-BEG2007-PHASE_1
+    du -hs data/processed/ECOLI-CORE-BEG2007-PHASE_2
+    du -hs data/processed/ECOLI-CORE-BEG2007-PHASE_3
     
     echo;
     sleep 5;

@@ -16,7 +16,7 @@ include("2_utils.jl")
 ## ------------------------------------------------------------
 # identity-histogram
 let
-    _simver = "ECOLI-CORE-BEG2007-PHASE_I-0.1.0"
+    _simver = "ECOLI-CORE-BEG2007-PHASE_1"
     n0 = 0
     n1 = Inf
     cid = (@__FILE__, _simver, "feasets:identity-histogram", n1)
