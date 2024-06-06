@@ -15,7 +15,7 @@ end
 # TODO: refactor at koma.jl
 let
     komafiles = readdir(procdir(PROJ, [SIMVER]); join = true)
-    @threads for koma_fn in komafiles
+    @threads :static for koma_fn in komafiles
         contains(basename(koma_fn), "koma_reg") || continue
         obj_fn = replace(koma_fn, "koma_reg" => "obj_reg")
         isfile(obj_fn) && continue

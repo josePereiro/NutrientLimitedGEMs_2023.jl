@@ -81,7 +81,7 @@ function _th_readdir(f::Function, sim;
     nread = Atomic{Int}(0)
     bbi = Atomic{Int}(0)
     t0 = Atomic{Float64}(-1.0)
-    @threads for _ in 1:nthrs
+    @threads :static for _ in 1:nthrs
         for bb in batches
             nread[] += 1
             nread[] >= n0 || continue

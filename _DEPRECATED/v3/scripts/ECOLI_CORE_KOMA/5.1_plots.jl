@@ -30,7 +30,7 @@ let
         # nut_ids = ["EX_glc__D_e", "EX_lac__D_e", "EX_ac_e"]
         @time _foreach_obj_reg(;n) do fn, obj_reg
             @show fn
-            @threads for obj in obj_reg
+            @threads :static for obj in obj_reg
                 haskey(obj, "biom") || continue
                 biom_reg = obj["biom"]
                 # for nut_id in nut_ids
@@ -98,7 +98,7 @@ let
         biom_vec_pool = [Float64[] for _ in 1:nthreads()]
         @time _foreach_obj_reg(;n) do fn, obj_reg
             @show fn
-            @threads for obj in obj_reg
+            @threads :static for obj in obj_reg
                 haskey(obj, "biom") || return
                 # global _obj = obj
                 feaset = obj["koset"][1:(end-batch_size)]

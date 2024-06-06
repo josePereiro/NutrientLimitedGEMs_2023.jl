@@ -33,7 +33,7 @@ let
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
         @time _foreach_obj_reg(;n) do fn, obj_reg
             @show fn
-            @threads for obj in obj_reg
+            @threads :static for obj in obj_reg
                 get(obj, "strip_ver", nothing) == STRIP_ALG_VER || continue
                 haskey(obj, "strip.koset") || continue
                 # global _obj = obj
@@ -80,7 +80,7 @@ let
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
         @time _foreach_obj_reg(;n) do fn, obj_reg
             @show fn
-            @threads for obj in obj_reg
+            @threads :static for obj in obj_reg
                 get(obj, "strip_ver", nothing) == STRIP_ALG_VER || continue
                 haskey(obj, "strip.koset") || continue
                 haskey(obj, "biom") || continue

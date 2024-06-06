@@ -37,7 +37,7 @@ let
     prog = ProgressUnknown(; dt = 1.0, desc="Progress: ")
 
     # generator
-    @threads for _ in 1:nthreads()
+    @threads :static for _ in 1:nthreads()
     # for _ in 1:1
         
         th = threadid()

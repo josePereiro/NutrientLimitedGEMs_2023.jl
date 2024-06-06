@@ -28,7 +28,7 @@ let
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
         @time _foreach_obj_reg(;n) do fn, obj_reg
             @show fn
-            @threads for obj in obj_reg
+            @threads :static for obj in obj_reg
                 count!(h_pool[threadid()], length(obj["koset"]))
             end
         end
@@ -68,7 +68,7 @@ let
         h_pool = Dict()
         @time _foreach_obj_reg(;n) do fn, obj_reg
             @show fn
-            @threads for obj in obj_reg
+            @threads :static for obj in obj_reg
                 koset = obj["koset"]
                 h = lock(lk) do
                     get!(h_pool, (threadid(), length(koset))) do

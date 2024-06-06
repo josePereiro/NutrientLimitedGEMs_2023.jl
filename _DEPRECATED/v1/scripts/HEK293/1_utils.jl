@@ -401,7 +401,7 @@ function _monte_carlo_integration_lazy(f, a, b, n)
     # s = zeros(nthreads())
     s = 0.0
     box = Uniform.(a, b)
-    # @threads for _ in 1:n
+    # @threads :static for _ in 1:n
     for _ in 1:n
         s[threadid()] += f(rand.(box))
     end
@@ -412,7 +412,7 @@ end
 function _monte_carlo_integration_lazy(f, dist::Distribution, n::Int)
     # integral = zeros(nthreads())
     integral = 0.0
-    # @threads for i in 1:n
+    # @threads :static for i in 1:n
     for i in 1:n
         sample = rand(dist)
         weight = pdf(dist, sample)

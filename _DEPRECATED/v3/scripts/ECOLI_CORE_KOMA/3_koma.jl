@@ -59,7 +59,7 @@ include("1.1_utils.jl")
     proclk_ops = (;time_out = 10.0, recheck_time=0.1, retry_time=0.5, valid_time = 160.0, force = true)
 
     # koma
-    @threads for _ in 1:NTHREADS
+    @threads :static for _ in 1:NTHREADS
         
         opt_time = 0.0
         tot_time = 0.0

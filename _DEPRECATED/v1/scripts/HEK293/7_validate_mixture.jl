@@ -25,7 +25,7 @@ let
         nm = _rand_mixture(M, D; 
             μscale = 1.0, σ0 = 0.3,
         )
-        @threads for (i, n) in collect(enumerate(ns))
+        @threads :static for (i, n) in collect(enumerate(ns))
             # D = rand(5:10)
             Hmf[i] = _entropy_mcf(nm, n)
         end
@@ -78,7 +78,7 @@ let
         Hls = zeros(NT)
         Hmf = zeros(NT)
         Hus = zeros(NT)
-        @threads for t in 1:NT
+        @threads :static for t in 1:NT
             M = rand(5:20)
             nm = _rand_mixture(M, D;
                 μscale = 1.0, σ0 = 0.3,
@@ -138,7 +138,7 @@ let
     H = _entropy_lb1(Uniform_nm)
     maxH_ws = Uniform_nm.ws
     lk = ReentrantLock()
-    @time @threads for t in 1:NT
+    @time @threads :static for t in 1:NT
         ws_t = rand(M)
         ws_t ./= sum(ws_t)
         nm = NormalMixture(ws_t, qs)

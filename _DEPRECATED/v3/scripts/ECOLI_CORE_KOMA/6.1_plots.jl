@@ -31,7 +31,7 @@ let
         h_pool = [deepcopy(_h0) for _ in 1:nthreads()]
         @time _foreach_obj_reg(;n) do fn, obj_reg
             @show fn
-            @threads for obj in obj_reg
+            @threads :static for obj in obj_reg
                 get(obj, "fva_ver", nothing) == FVA_ALG_VER || return
                 haskey(obj, "fva.kos") || return
                 # global _obj = obj
@@ -67,7 +67,7 @@ let
         fvako_biom_pool = [Dict{Tuple{UInt64, Int64}, Float64}() for _ in 1:nthreads()]
         @time _foreach_obj_reg(;n) do fn, obj_reg
             @show fn
-            @threads for obj in obj_reg
+            @threads :static for obj in obj_reg
                 get(obj, "fva_ver", nothing) == FVA_ALG_VER || return
                 haskey(obj, "fva.kos") || return
                 haskey(obj, "biom") || return

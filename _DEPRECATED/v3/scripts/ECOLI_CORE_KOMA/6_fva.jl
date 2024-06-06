@@ -28,7 +28,7 @@ include("1.1_utils.jl")
     # koma files
     batch_size = 3 # kos per roll
     objfiles = readdir(procdir(PROJ, [SIMVER]); join = true)
-    @threads for fn in shuffle(objfiles)
+    @threads :static for fn in shuffle(objfiles)
         contains(basename(fn), "obj_reg") || continue
         println("[", getpid(), ".", threadid(), "] ", fn)
 

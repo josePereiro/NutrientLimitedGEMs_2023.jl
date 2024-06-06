@@ -36,7 +36,7 @@ include("1.1_utils.jl")
 
     # koma files
     objfiles = readdir(procdir(PROJ, [SIMVER]); join = true)
-    @threads for fn in shuffle(objfiles)
+    @threads :static for fn in shuffle(objfiles)
         contains(basename(fn), "obj_reg") || continue
         println("[", getpid(), ".", threadid(), "] ", fn)
 

@@ -91,7 +91,7 @@ let
         # build histogram
         h0 = identity_histogram(Vector{Int16})
         h_pool = [deepcopy(h0) for th in 1:4]
-        @threads for koset in kosets
+        @threads :static for koset in kosets
             length(koset) == l || continue
             
             h = h_pool[threadid()]

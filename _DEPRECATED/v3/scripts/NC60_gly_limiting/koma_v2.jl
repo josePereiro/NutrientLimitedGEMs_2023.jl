@@ -68,7 +68,7 @@ let
     koset_max = 3000
 
     # generator
-    @threads for _ in 1:3*nthreads()
+    @threads :static for _ in 1:3*nthreads()
     # for _ in 1:1
         th = threadid()
 

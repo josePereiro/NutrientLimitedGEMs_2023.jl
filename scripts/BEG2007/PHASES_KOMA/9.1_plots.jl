@@ -135,7 +135,7 @@ let
     bioms_cor = 0.0
     biom_id = "BIOMASS_Ecoli_core_w_GAM"
     lk = ReentrantLock()
-    @threads for (rxn, h0) in collect(h0_pool)
+    @threads :static for (rxn, h0) in collect(h0_pool)
         @show rxn
         nsamples = sum(values(h0))
         nresamples = 30_000 # 

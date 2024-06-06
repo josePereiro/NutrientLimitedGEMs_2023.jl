@@ -61,7 +61,7 @@ end
 #     i = 0 
 #     lk1 = ReentrantLock()
 #     lk2 = ReentrantLock()
-#     @threads for fn in files
+#     @threads :static for fn in files
 #         contains(basename(fn), "obj_reg") || continue
 #         lock(lk1) do
 #             i >= n && return true
@@ -84,7 +84,7 @@ function _load_and_vectorize(k::String, ks::String...; n = Inf)
     files = readdir(procdir(PROJ, [SIMVER]); join = true)
     lk = ReentrantLock()
     i = 0 
-    @threads for fn in files
+    @threads :static for fn in files
         contains(basename(fn), "obj_reg") || continue
         col = col_pool[threadid()]
         lock(lk) do

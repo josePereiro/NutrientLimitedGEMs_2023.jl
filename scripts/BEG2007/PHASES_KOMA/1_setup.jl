@@ -40,6 +40,8 @@ cacherefs_dir!(cachedir(PROJ, SIMVER))
         - 
 """
 
+# ------------------------------------------------------------------
+# GLOBALS
 @tempcontext ["GLOBALS"] begin
     @stage! CORE_NET_ID = "ecoli_core"
     @stage! GEM_NET_ID = "iJO1366"
