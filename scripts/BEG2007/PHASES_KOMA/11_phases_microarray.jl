@@ -5,7 +5,7 @@
     using MetXOptim
     using MetXNetHub
     using Statistics
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
 end
 
 # ------------------------------------------------------------

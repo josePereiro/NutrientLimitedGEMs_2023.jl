@@ -11,7 +11,7 @@
     using ProgressMeter
     using Combinatorics
     using DataFileNames
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
 end
 
 # ------------------------------------------------------------

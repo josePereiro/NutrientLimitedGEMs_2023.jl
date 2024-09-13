@@ -13,7 +13,7 @@
     using MetXEP
     using Clp
     using Base.Threads
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
 end
 
 # --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 

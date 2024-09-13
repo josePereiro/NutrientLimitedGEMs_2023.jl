@@ -1,7 +1,7 @@
 ## ------------------------------------------------------------------
 @time begin
-    using NutrientLimitedGEMs
-    const NL = NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
+    const NL = NutrientLimitedGEMs_2023
 
     using ProjFlows
     using MetX
@@ -38,7 +38,7 @@ let
 
         # val_idxs1 = findall(ep_statuses .== :converged)
         val_idxs1 = last(ep_statuses) == :converged
-        val_idxs2 = NutrientLimitedGEMs._find_val_idxs(Ss, Fs)
+        val_idxs2 = NutrientLimitedGEMs_2023._find_val_idxs(Ss, Fs)
         val_idxs = intersect(val_idxs1, val_idxs2)
         isempty(val_idxs) && continue
 

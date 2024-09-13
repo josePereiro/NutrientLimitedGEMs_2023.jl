@@ -5,7 +5,7 @@
     using MetXBase
     using MetXOptim
     using BlobBatches
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
 end
 
 # TODO: Add Graphs.jl kind of functionality for getting basic stuff

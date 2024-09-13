@@ -9,7 +9,7 @@
     using Base.Threads
     using Combinatorics
     using Base.Threads: Atomic
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
 end
 
 # TODO: Add Graphs.jl kind of functionality for getting basic stuff

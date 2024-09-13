@@ -8,7 +8,7 @@
     using BlobBatches
     using BlobBatches: loadallframe!
     using Base.Threads
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
 end
 
 # ------------------------------------------------------------

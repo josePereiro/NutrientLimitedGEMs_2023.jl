@@ -1,6 +1,6 @@
 ## ------------------------------------------------------------------
 begin
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
     using ProjFlows
     using ContextDBs
     using Gurobi
@@ -22,6 +22,6 @@ KO_EPS = 1e-7
 
 ## ------------------------------------------------------------------
 # Project
-PROJ = Project0(NutrientLimitedGEMs)
+PROJ = Project0(NutrientLimitedGEMs_2023)
 
 nothing

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------
 @time begin
     using MetX
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
     using CSV
     using DataFrames
     using ProjFlows
@@ -13,11 +13,11 @@
 end
 
 # ------------------------------------------------------------------
-PROJ = Project0(NutrientLimitedGEMs)
+PROJ = Project0(NutrientLimitedGEMs_2023)
 
 # ------------------------------------------------------------------
 let
-    fn = "/Users/Pereiro/.julia/dev/NutrientLimitedGEMs/data/processed/Calzadilla_et_al/Extracted.csv"
+    fn = "/Users/Pereiro/.julia/dev/NutrientLimitedGEMs_2023/data/processed/Calzadilla_et_al/Extracted.csv"
     # Filename,D(1/h),Fecha,hora,Tiempo cultivo (d),Xv,ALA:[area],ALA:[C(mM)],ALA:[qS(Area/cel*h)],ARG:[area],ARG:[C(mM)],ARG:[qS(Area/cel*h)],ASN:[area],ASN:[C(mM)],ASN:[qS(Area/cel*h)],ASP:[area],ASP:[C(mM)],ASP:[qS(Area/cel*h)],GLN:[area],GLN:[concentracion],GLN:[qS(nmol/e6cel*h)],GLN:[qS(area)],GLN:[DCo/Xv],GLU:[area],GLU:[C(mM)],GLU:[qS(Area/cel*h)],GLC:[area],GLC:[concentracion],GLC:[qS(nmol/e6cel*h)],GLC:[qS(area)],GLC:[DCo/Xv],GLY:[area],GLY:[C(mM)],GLY:[qS(Area/cel*h)],ILE:[area],ILE:[C(mM)],ILE:[qS(Area/cel*h)],LAC:[area],LAC:[concentracion],LAC:[qS(nmol/e6cel*h)],LAC:[qS(area)],LEU:[area],LEU:[C(mM)],LEU:[qS(Area/cel*h)],LYS:[area],LYS:[C(mM)],LYS:[qS(Area/cel*h)],MET:[area],MET:[C(mM)],MET:[qS(Area/cel*h)],PHE:[area],PHE:[C(mM)],PHE:[qS(Area/cel*h)],PRO:[area],PRO:[C(mM)],PRO:[qS(Area/cel*h)],SER:[area],SER:[C(mM)],SER:[qS(Area/cel*h)],THR:[area],THR:[C(mM)],THR:[qS(Area/cel*h)],TRP:[area],TRP:[C(mM)],TRP:[qS(Area/cel*h)],TYR:[area],TYR:[C(mM)],TYR:[qS(Area/cel*h)],VAL:[area],VAL:[C(x)],VAL:[qS]
     global df = CSV.read(fn, DataFrame)
     

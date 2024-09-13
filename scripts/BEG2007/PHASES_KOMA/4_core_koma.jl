@@ -6,7 +6,7 @@
     using MetXNetHub
     using BlobBatches
     using Base.Threads
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
 end
 
 # ------------------------------------------------------------

@@ -26,7 +26,7 @@ function _setup_iJR904(;solver = LP_SOLVER)
     
     # # fva
     # cid = (hash(net), hash(solver))
-    # net = lcache(NutrientLimitedGEMs, cid) do 
+    # net = lcache(NutrientLimitedGEMs_2023, cid) do 
     #    box(net, solver; verbose = true)
     # end
 

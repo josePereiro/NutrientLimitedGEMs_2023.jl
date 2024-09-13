@@ -2,7 +2,7 @@ import Pkg
 
 ## ---------------------------------------------------
 proj = Pkg.project()
-proj.name == "NutrientLimitedGEMs" || error("Bad project, ", proj.name)
+proj.name == "NutrientLimitedGEMs_2023" || error("Bad project, ", proj.name)
 
 ## ---------------------------------------------------
 @info("DEVING")
@@ -11,5 +11,5 @@ Pkg.develop(todev)
 Pkg.precompile()
 
 ## ---------------------------------------------------
-import NutrientLimitedGEMs
+import NutrientLimitedGEMs_2023
 @info("DONE")

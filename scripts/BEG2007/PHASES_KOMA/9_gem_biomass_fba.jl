@@ -6,7 +6,7 @@
     using BlobBatches
     using MetXBase
     using MetXOptim
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
 end
 
 # ------------------------------------------------------------

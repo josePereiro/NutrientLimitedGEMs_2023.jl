@@ -6,7 +6,7 @@
     using MetXBase
     using MetXOptim
     using MetXNetHub
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
 end
 
 # ------------------------------------------------------------

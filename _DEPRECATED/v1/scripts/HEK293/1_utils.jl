@@ -1,6 +1,6 @@
 ## ------------------------------------------------------------------
 begin
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
     using ProjFlows
     using MetX
     using MetXBase
@@ -184,7 +184,7 @@ function _foreach_sim(f::Function, PROJ, netid, simid)
         ep_statuses = epdat["ep_statuses"]
 
         val_idxs1 = findall(ep_statuses .== :converged)
-        val_idxs2 = NutrientLimitedGEMs._find_val_idxs(Ss, Fs)
+        val_idxs2 = NutrientLimitedGEMs_2023._find_val_idxs(Ss, Fs)
         val_idxs = intersect(val_idxs1, val_idxs2)
         isempty(val_idxs) && continue
 

@@ -4,7 +4,7 @@ LP_SOLVER = Gurobi.Optimizer
 KO_FACTOR = 1e-2
 
 ## ------------------------------------------------------------------
-TRAJ_DIR = procdir(NutrientLimitedGEMs, ["ECOLI_CORE", "trajs"])
+TRAJ_DIR = procdir(NutrientLimitedGEMs_2023, ["ECOLI_CORE", "trajs"])
 EP_ENTROPY_ALG_VERSION = "EPv6"
 ILL_ΔSTH = 20
 

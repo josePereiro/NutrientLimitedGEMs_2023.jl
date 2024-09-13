@@ -1,5 +1,5 @@
 @time begin
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
     using ProjFlows
     using Gurobi
     using ContextDBs
@@ -10,7 +10,7 @@ end
 # PROJECT
 ## ------------------------------------------------------------------
 
-PROJ = Project0(NutrientLimitedGEMs)
+PROJ = Project0(NutrientLimitedGEMs_2023)
 
 ## ------------------------------------------------------------------
 # ContextDB

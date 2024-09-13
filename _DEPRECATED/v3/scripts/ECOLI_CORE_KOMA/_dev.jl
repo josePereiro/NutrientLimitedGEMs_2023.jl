@@ -8,7 +8,7 @@
     using MetXNetHub
     using Base.Threads
     using ProgressMeter
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
     # using CairoMakie
     using Plots
     using ProjFlows

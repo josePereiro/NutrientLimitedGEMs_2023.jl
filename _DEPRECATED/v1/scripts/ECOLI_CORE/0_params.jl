@@ -2,7 +2,7 @@
 
 ## ------------------------------------------------------------------
 # Project
-PROJ = Project0(NutrientLimitedGEMs)
+PROJ = Project0(NutrientLimitedGEMs_2023)
 
 ## ------------------------------------------------------------------
 # TODO: load ContextDB

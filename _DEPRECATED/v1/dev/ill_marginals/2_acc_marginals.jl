@@ -1,6 +1,6 @@
 ## ------------------------------------------------------------------
 @time begin
-    using NutrientLimitedGEMs
+    using NutrientLimitedGEMs_2023
     using MetX
     using MetXBase
     using MetXBase: _histogram!

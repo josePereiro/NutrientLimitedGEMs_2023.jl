@@ -169,6 +169,6 @@ end
 
 # # ## ------------------------------------------------------------
 # # let
-# #     fn = "/Users/Pereiro/.julia/dev/NutrientLimitedGEMs/data/raw/jain_et_al_2012/CORE_data.tsv"
+# #     fn = "/Users/Pereiro/.julia/dev/NutrientLimitedGEMs_2023/data/raw/jain_et_al_2012/CORE_data.tsv"
 # #     df = CSV.read(fn, DataFrame)
 # # end
