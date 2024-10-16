@@ -49,7 +49,7 @@ let
 
     # net
     global net0 = pull_net("ecoli_core_Beg2007")
-    global net = box(net0, Clp.Optimizer)
+    global net = fva_strip(net0, Clp.Optimizer)
 end
 
 ## ------------------------------------------------------------

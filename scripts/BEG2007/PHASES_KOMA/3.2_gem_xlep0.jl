@@ -60,7 +60,7 @@ include("2_utils.jl")
     # TODO: this kill growth, fix it
     cid = (:BOX, GEM_NET_ID, hash(gem_lep0))
     _, gem_blep0ref = withcachedat(PROJ, :get!, cid) do 
-        gem_blep0 = box(gem_lep0, LP_SOLVER; nths = NTHREADS, verbose = true)
+        gem_blep0 = fva_strip(gem_lep0, LP_SOLVER; nths = NTHREADS, verbose = true)
         return CacheRef(gem_blep0)
     end
 

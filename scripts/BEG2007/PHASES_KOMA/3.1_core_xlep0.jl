@@ -383,7 +383,7 @@ include("2_utils.jl")
     # blep
     cid = (:BOX, CORE_NET_ID, hash(core_lep0))
     _, core_blep0ref = withcachedat(PROJ, :get!, cid) do 
-        core_blep0 = box(core_lep0, LP_SOLVER; nths = NTHREADS, verbose = true)
+        core_blep0 = fva_strip(core_lep0, LP_SOLVER; nths = NTHREADS, verbose = true)
         return CacheRef(core_blep0)
     end
 

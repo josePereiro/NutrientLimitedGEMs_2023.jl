@@ -37,7 +37,7 @@ include("1_setup.jl")
     # blep
     cid = (:BOX, hash(lep0))
     _, blep0ref = withcachedat(PROJ, :get!, cid) do 
-        blep0 = box(lep0, LP_SOLVER; nths = NTHREADS, verbose = true)
+        blep0 = fva_strip(lep0, LP_SOLVER; nths = NTHREADS, verbose = true)
         return CacheRef(blep0)
     end
 
